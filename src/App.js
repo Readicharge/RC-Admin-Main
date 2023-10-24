@@ -49,7 +49,9 @@ const fixedUserName = "Brian@readicharge.com"
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <div className="app">
+        <div className="app" style={{
+          backgroundColor:"#F4F7FE"
+        }}>
           {isLoggedIn ? (
             <>
               <Sidebar isSidebar={isSidebar} username={userName} isLoggedIn={isLoggedIn} enabledSections={roles} />

@@ -41,10 +41,10 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
   };
 
   const columns = [
-    { field: "shown_id", headerName: "ID", width: 100 },
-    { field: "service_name", headerName: "Service", width: 200 },
-    { field: "number_of_installs", headerName: "Number of Installs", width: 400 },
-    { field: "price", headerName: "Price", width: 200 },
+    { field: "shown_id", headerName: "ID", width: 250 },
+    { field: "service_name", headerName: "Service", width: 150 },
+    { field: "number_of_installs", headerName: "Number of Installs", width: 150 },
+    { field: "price", headerName: "Price", width: 100 },
     {
       field: "actions",
       headerName: "Actions",
@@ -63,8 +63,8 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
   ];
 
   return (
-    <Box m="20px">
-      <Box m="40px 0 0 0" height="75vh"
+    <Box m="20px" style={{alignItems:"center"}}>
+      <Box m="40px 0 0 0" height="75vh" width="50vw"
               sx={{
                 "& .MuiDataGrid-root": {
                   border: "none",
@@ -78,13 +78,17 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
                 "& .MuiDataGrid-columnHeaders": {
                   backgroundColor: "#94d034",
                   borderBottom: "none",
+                  borderTopLeftRadius:"12px",
+                  borderTopRightRadius:"12px"
                 },
                 "& .MuiDataGrid-virtualScroller": {
-                  backgroundColor: "#f0f0f0",
+                  backgroundColor: "#ffffff",
                 },
                 "& .MuiDataGrid-footerContainer": {
                   borderTop: "none",
                   backgroundColor: "#94d034",
+                  borderBottomLeftRadius:"12px",
+                  borderBottomRightRadius:"12px"
                 },
                 "& .MuiCheckbox-root": {
                   color: `${colors.greenAccent[700]} !important`,

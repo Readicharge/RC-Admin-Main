@@ -37,7 +37,7 @@ const getServiceNameById = async (serviceId) => {
     }
 }
 
-const getServiceCodeById = async (serviceId) =>{
+const getServiceCodeById = async (serviceId) => {
     try {
         const response = await axios.get(`http://localhost:5000/api/admin_web_app/service-code/${serviceId}`);
         return response.data;
@@ -51,8 +51,7 @@ const getServiceCodeById = async (serviceId) =>{
 const deleteServiceTimeById = async (id) => {
     try {
         const response = await axios.delete(`http://localhost:5000/api/admin_web_app/service-time-delete-specific/${id}`);
-        if(response.status===200)
-        {
+        if (response.status === 200) {
             alert("Service Time deleted successfully")
         }
     } catch (error) {
@@ -84,9 +83,9 @@ const getserviceTimeList = async (formData) => {
 }
 
 
-const updateServiceTime = async (id,formData) => {
+const updateServiceTime = async (id, formData) => {
     try {
-        const resposne = await axios.put(`http://localhost:5000/api/admin_web_app/service-time-update/${id}`,formData);
+        const resposne = await axios.put(`http://localhost:5000/api/admin_web_app/service-time-update/${id}`, formData);
         return resposne;
 
     }
@@ -142,9 +141,9 @@ const deleteServicePrice = async (id) => {
 }
 
 
-const updateServicePrice = async (id,formData) => {
+const updateServicePrice = async (id, formData) => {
     try {
-        const resposne = await axios.put(`http://localhost:5000/api/admin_web_app/service-price-update/${id}`,formData);
+        const resposne = await axios.put(`http://localhost:5000/api/admin_web_app/service-price-update/${id}`, formData);
         return resposne;
 
     }
@@ -222,6 +221,17 @@ const getMaterialList = async () => {
     }
 }
 
+
+const createCustomer = async (formData) => {
+    try {
+        await axios.post(`http://localhost:5000/api/customer_app/register`, formData);
+
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
 // ********************************************************************************
 
 
@@ -292,7 +302,7 @@ const getMaterialNameById = async (id) => {
 }
 
 
-const getCountInstaller = async()=>{
+const getCountInstaller = async () => {
     try {
         const response = await axios.get(`http://localhost:5000/api/installer`);
         return response.data.length;
@@ -405,7 +415,7 @@ const updateBooking = async (id, dataObject) => {
             service: dataObject.service_id,
             machinePurchasedByUser: dataObject.machinePurchasedByUser,
             labourRates: dataObject.labourRates,
-            changedBy:dataObject.changedBy
+            changedBy: dataObject.changedBy
         };
 
 
@@ -452,7 +462,7 @@ const updateAdmin = async (id, dataObject) => {
             phoneNumber: dataObject.phoneNumber,
             address: dataObject.address,
             password: dataObject.password,
-            roles:dataObject.roles
+            roles: dataObject.roles
 
         };
 
@@ -478,63 +488,105 @@ const deleteInstaller = async (id) => {
 
 const updateInstaller = async (id, dataObject) => {
     try {
-      const dataToBePushed = {
-        id: dataObject._id,
-        shown_id: `RC-I-${dataObject._id}`,
-        firstName: dataObject.firstName,
-        lastName: dataObject.lastName,
-        companyName: dataObject.companyName,
-        email: dataObject.email,
-        password: dataObject.password,
-        phoneNumber: dataObject.phoneNumber,
-        yearsOfExperience: dataObject.yearsOfExperience,
-        description: dataObject.description,
-        addressLine1: dataObject.addressLine1,
-        addressLine2: dataObject.addressLine2,
-        city: dataObject.city,
-        zip: dataObject.zip,
-        miles_distance: dataObject.miles_distance,
-        state: dataObject.state,
-        licenseNumber: dataObject.licenseNumber,
-        licenseExpirationDate: dataObject.licenseExpirationDate,
-        businessInsuranceCompany: dataObject.businessInsuranceCompany,
-        businessInsuranceNumber: dataObject.businessInsuranceNumber,
-        businessAgentPhoneNumber: dataObject.businessAgentPhoneNumber,
-        businessPolicyNumber: dataObject.businessPolicyNumber,
-        businessInsuranceEffectiveStartDate: dataObject.businessInsuranceEffectiveStartDate,
-        businessInsuranceEffectiveEndDate: dataObject.businessInsuranceEffectiveEndDate,
-        bondingCertificationNumber: dataObject.bondingCertificationNumber,
-        bondingCompany: dataObject.bondingCompany,
-        bondingAgentPhoneNumber: dataObject.bondingAgentPhoneNumber,
-        bondAmount: dataObject.bondAmount,
-        bondingEffectiveStartDate: dataObject.bondingEffectiveStartDate,
-        bondingEffectiveEndDate: dataObject.bondingEffectiveEndDate,
-        services: dataObject.services
-      };
-  
-      const response = await axios.put(`http://localhost:5000/api/installer/${id}`, dataToBePushed);
-      console.log(response)
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        const dataToBePushed = {
+            id: dataObject._id,
+            shown_id: `RC-I-${dataObject._id}`,
+            firstName: dataObject.firstName,
+            lastName: dataObject.lastName,
+            companyName: dataObject.companyName,
+            email: dataObject.email,
+            password: dataObject.password,
+            phoneNumber: dataObject.phoneNumber,
+            yearsOfExperience: dataObject.yearsOfExperience,
+            description: dataObject.description,
+            addressLine1: dataObject.addressLine1,
+            addressLine2: dataObject.addressLine2,
+            city: dataObject.city,
+            zip: dataObject.zip,
+            miles_distance: dataObject.miles_distance,
+            state: dataObject.state,
+            licenseNumber: dataObject.licenseNumber,
+            licenseExpirationDate: dataObject.licenseExpirationDate,
+            businessInsuranceCompany: dataObject.businessInsuranceCompany,
+            businessInsuranceNumber: dataObject.businessInsuranceNumber,
+            businessAgentPhoneNumber: dataObject.businessAgentPhoneNumber,
+            businessPolicyNumber: dataObject.businessPolicyNumber,
+            businessInsuranceEffectiveStartDate: dataObject.businessInsuranceEffectiveStartDate,
+            businessInsuranceEffectiveEndDate: dataObject.businessInsuranceEffectiveEndDate,
+            bondingCertificationNumber: dataObject.bondingCertificationNumber,
+            bondingCompany: dataObject.bondingCompany,
+            bondingAgentPhoneNumber: dataObject.bondingAgentPhoneNumber,
+            bondAmount: dataObject.bondAmount,
+            bondingEffectiveStartDate: dataObject.bondingEffectiveStartDate,
+            bondingEffectiveEndDate: dataObject.bondingEffectiveEndDate,
+            services: dataObject.services
+        };
 
-  const fetchPayments = async () => {
+        const response = await axios.put(`http://localhost:5000/api/installer/${id}`, dataToBePushed);
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+const fetchPayments = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/payments/getPaymentList');
-      const data = await response.data();
-      return data;
-      
+        const response = await fetch('http://localhost:5000/api/payments/getPaymentList');
+        const data = await response.data();
+        return data;
+
     } catch (error) {
-      console.error('Error fetching payments:', error);
+        console.error('Error fetching payments:', error);
     }
-  };
-  
+};
 
 
 
 
 
 
-export { updateServicePrice,updateServiceTime, getServiceCodeById ,fetchPayments, getMaterialNameById,getBookingCount,getCountInstaller,getAdminData, deleteAdmin, updateAdmin, deleteInstaller,updateInstaller, createService, createTime, getserviceList, getServiceNameById, getserviceTimeList, deleteServiceTimeById, createServicePrice, getServicePriceList, deleteServicePrice, createMaterial, deleteMaterialById, getMaterialList, getMaterialTax, createMaterialTax, getLabourRate, createLabourRate, getInstallerList, createInstaller, getMostSuitableInstaller, createBooking, createAdmin, validateAdmin, getLabourRateByServiceId, getBookingsList, deleteBooking, updateBooking ,getInstallerNameById}
+
+export {
+    createCustomer,
+    updateServicePrice,
+    updateServiceTime,
+    getServiceCodeById,
+    fetchPayments,
+    getMaterialNameById,
+    getBookingCount
+    , getCountInstaller,
+    getAdminData,
+    deleteAdmin,
+    updateAdmin,
+    deleteInstaller,
+    updateInstaller,
+    createService,
+    createTime,
+    getserviceList,
+    getServiceNameById,
+    getserviceTimeList,
+    deleteServiceTimeById,
+    createServicePrice,
+    getServicePriceList,
+    deleteServicePrice,
+    createMaterial,
+    deleteMaterialById,
+    getMaterialList,
+    getMaterialTax,
+    createMaterialTax,
+    getLabourRate,
+    createLabourRate,
+    getInstallerList,
+    createInstaller,
+    getMostSuitableInstaller,
+    createBooking,
+    createAdmin,
+    validateAdmin,
+    getLabourRateByServiceId,
+    getBookingsList,
+    deleteBooking,
+    updateBooking
+    , getInstallerNameById
+}
+

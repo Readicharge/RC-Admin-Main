@@ -166,19 +166,22 @@ const LabourRateForm = () => {
         <form onSubmit={handleSubmit}>
           <Grid spacing={8}>
             <Grid container item>
-              <div style={{ height: '70vh', overflow: 'auto' }}>
+              <div style={{ height: '70vh', overflow: 'auto' , marginLeft: '20px'}}>
                 <Table>
                   <TableHead>
-                    <TableRow>
-                      <TableCell>State</TableCell>
-                      <TableCell>Price 1</TableCell>
-                      <TableCell>Price 2</TableCell>
-                      <TableCell>Price 3</TableCell>
+                    <TableRow style={{backgroundColor:"#96D232"}}>
+                      <TableCell style={{fontWeight: "bold"}}>State</TableCell>
+                      <TableCell style={{fontWeight: "bold"}}>Price 1</TableCell>
+                      <TableCell style={{fontWeight: "bold"}}>Price 2</TableCell>
+                      <TableCell style={{fontWeight: "bold"}}>Price 3</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {formState.map((item, index) => (
-                      <TableRow key={index}>
+                      <TableRow key={index}
+                      style={{
+                        backgroundColor:"#FFFFFF"
+                      }}>
                         <TableCell>
                           <TextField
                             name={`price_statewise[${index}][state]`}
@@ -205,7 +208,7 @@ const LabourRateForm = () => {
                 </Table>
               </div>
             </Grid>
-            <Grid item>
+            <Grid container >
               <Button variant="contained" type="submit" fullWidth style={{ padding: "20px" }}>
                 Submit
               </Button>
@@ -213,7 +216,7 @@ const LabourRateForm = () => {
           </Grid>
         </form>
 
-        <Paper sx={{ backgroundColor: "#f5f5f5", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+        <Paper sx={{ backgroundColor: "#FFFFFF" }}>
           <Table sx={{ minWidth: 400 }}>
             <TableHead>
               <TableRow>

@@ -25,9 +25,9 @@ const MaterialList = ({ material, setMaterial }) => {
     setMaterial(material.filter((st) => st.id !== id));
   };
   const columns = [
-    { field: "shown_id", headerName: "ID", width: 100 },
-    { field: "material_name", headerName: "Material Name", width: 100 },
-    { field: "material_desc", headerName: "Material Description", width: 100 },
+    { field: "shown_id", headerName: "ID", width: 250 },
+    { field: "material_name", headerName: "Material Name", width: 150 },
+    { field: "material_desc", headerName: "Material Description", width: 150 },
     { field: "service_code", headerName: "Service", width: 100 },
     { field: "number_of_chargers", headerName: "Number of Installs", width: 100 },
     { field: "price", headerName: "Price", width: 100 },
@@ -47,45 +47,45 @@ const MaterialList = ({ material, setMaterial }) => {
     },
   ];
   return (
-    <Box m="20px">
-
-      <Box
-        m="40px 0 0 0"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#94d034",
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: "#f0f0f0",
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: "#94d034",
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[700]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `#141E5A !important`,
-          },
-        }}
-      >
+    <Box m="20px" style={{alignItems:"center"}}>
+      <Box m="40px 0 0 0" height="75vh" width="60vw"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .name-column--cell": {
+                  color: colors.greenAccent[300],
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#94d034",
+                  borderBottom: "none",
+                  borderTopLeftRadius:"12px",
+                  borderTopRightRadius:"12px"
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: "#ffffff",
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  borderTop: "none",
+                  backgroundColor: "#94d034",
+                  borderBottomLeftRadius:"12px",
+                  borderBottomRightRadius:"12px"
+                },
+                "& .MuiCheckbox-root": {
+                  color: `${colors.greenAccent[700]} !important`,
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `#141E5A !important`,
+                },
+              }} /* Rest of the styles */>
         <DataGrid
           rows={material}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          className="col-span-12 bg-white p-4 shadow-md rounded-xl"
+       
         />
       </Box>
     </Box>

@@ -54,17 +54,21 @@ const Item = ({ title, to, icon, selected, setSelected, isLoggedIn, username, en
       active={selected === title}
       style={{
         color: colors.grey[200],
-        backgroundColor: selected === title ? "#94d034" : "inherit",
+        backgroundColor: selected === title ? "#96D232" : "inherit",
         marginLeft: "-25px",
         borderTopRightRadius: selected === title ? "23px" : 0,
         borderBottomRightRadius: selected === title ? "23px" : 0,
         pointerEvents: isSectionEnabled() ? "auto" : "none",
         opacity: isSectionEnabled() ? 1 : 0.5,
+        
       }}
       onClick={() => setSelected(title)}
       icon={icon}
     >
-      <Typography>{title}</Typography>
+      <Typography
+      style={{
+        fontSize: "16px",
+      }}>{title}</Typography>
       <Link to={to} />
     </MenuItem>
   );
@@ -81,7 +85,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
     <Box
       sx={{
         "& .pro-sidebar-inner": {
-          background: `${colors.primary[400]} !important`,
+          background: `#0B0E37 !important`,
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
@@ -90,10 +94,11 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
-          color: "#868dfb !important",
+          color: "#D2FF00 !important",
         },
         "& .pro-menu-item.active": {
-          color: "#6870fa !important",
+          color: "#0B0E37 !important",
+          fontWeight: "bold",
         },
       }}
     >
@@ -115,7 +120,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]}>
+                <Typography variant="h2" color={colors.grey[100]}>
                   READICHARGE
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>

@@ -21,6 +21,7 @@ const Service = () => {
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
+        
       >
         {({
           values,
@@ -35,8 +36,8 @@ const Service = () => {
               display="grid"
               width="49%"
               gap="30px"
-              style={{marginBottom:"10px"}}
-              gridTemplateColumns={isNonMobile ? "1fr 1fr " : "1fr"}
+              style={{marginBottom:"10px" }}
+              gridTemplateColumns={isNonMobile ? "1fr 1fr 1fr " : "1fr"}
             >
               <TextField
                 fullWidth

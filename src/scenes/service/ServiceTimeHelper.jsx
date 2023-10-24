@@ -63,37 +63,40 @@ const ServiceTimeHelper = ({ serviceTime, setServiceTime }) => {
   ];
 
   return (
-    <Box m="20px">
-      <Box m="40px 0 0 0" height="75vh"
-      
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: "#94d034",
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: "#f0f0f0",
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: "#94d034",
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[700]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `#141E5A !important`,
-          },
-        }} /* Rest of the styles */>
+    <Box m="20px" style={{alignItems:"center"}}>
+      <Box m="40px 0 0 0" height="75vh" width="50vw"
+              sx={{
+                "& .MuiDataGrid-root": {
+                  border: "none",
+                },
+                "& .MuiDataGrid-cell": {
+                  borderBottom: "none",
+                },
+                "& .name-column--cell": {
+                  color: colors.greenAccent[300],
+                },
+                "& .MuiDataGrid-columnHeaders": {
+                  backgroundColor: "#94d034",
+                  borderBottom: "none",
+                  borderTopLeftRadius:"12px",
+                  borderTopRightRadius:"12px"
+                },
+                "& .MuiDataGrid-virtualScroller": {
+                  backgroundColor: "#ffffff",
+                },
+                "& .MuiDataGrid-footerContainer": {
+                  borderTop: "none",
+                  backgroundColor: "#94d034",
+                  borderBottomLeftRadius:"12px",
+                  borderBottomRightRadius:"12px"
+                },
+                "& .MuiCheckbox-root": {
+                  color: `${colors.greenAccent[700]} !important`,
+                },
+                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+                  color: `#141E5A !important`,
+                },
+              }} /* Rest of the styles */>
         <DataGrid
           rows={serviceTime}
           columns={columns}
