@@ -152,9 +152,43 @@ const updateServicePrice = async (id,formData) => {
         console.log(error)
     }
 }
-// ********************************************************************************
 
+const getLabourRate = async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin_web_app/labor-rate-get-all/`);
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
 
+const getLabourRateByServiceId = async (serviceId) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin_web_app/labor-rate-get-service-id/${serviceId}`);
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+const createLabourRate = async (formData) => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin_web_app/labor-rate-get-all`);
+        const sortedResponse = response.data.filter(item => item.service_id === formData.service_id && item.number_of_installs === formData.number_of_installs);
+        if (sortedResponse.length > 0) {
+            await axios.put(`http://localhost:5000/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData);
+        } else {
+            await axios.post(`http://localhost:5000/api/admin_web_app/labor-rate-create`, formData);
+        }
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
 
 
 
@@ -162,7 +196,7 @@ const updateServicePrice = async (id,formData) => {
 
 const createMaterial = async (formData) => {
     try {
-        const response = await axios.post(`http://localhost:5000/api/materials/`, formData);
+        const response = await axios.post(`http://localhost:5000/api/admin_web_app/material-create`, formData);
     } catch (error) {
         console.log(error);
         return null;
@@ -171,7 +205,7 @@ const createMaterial = async (formData) => {
 
 const deleteMaterialById = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/materials/${id}`);
+        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/material-delete/${id}`);
     } catch (error) {
         console.log(error);
         return null;
@@ -180,13 +214,20 @@ const deleteMaterialById = async (id) => {
 
 const getMaterialList = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/materials/`);
+        const response = await axios.get(`http://localhost:5000/api/admin_web_app/material-get-all/`);
         return response;
     } catch (error) {
         console.log(error);
         return null;
     }
 }
+
+// ********************************************************************************
+
+
+
+
+
 
 
 const getMaterialTax = async () => {
@@ -218,52 +259,6 @@ const createMaterialTax = async (formData) => {
 
 
 
-
-const getLabourRate = async () => {
-    try {
-        const response = await axios.get(`http://localhost:5000/api/LabourRates/`);
-        console.log(response)
-        return response;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
-
-const getLabourRateByServiceId = async (serviceId) => {
-    try {
-        const response = await axios.get(`http://localhost:5000/api/LabourRates/service/${serviceId}`);
-        console.log(response)
-        return response;
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
-
-const createLabourRate = async (formData) => {
-    try {
-        const response = await axios.get(`http://localhost:5000/api/LabourRates/`);
-        const sortedResponse = response.data.filter(item => item.service_id === formData.service_id && item.number_of_installs === formData.number_of_installs);
-        if (sortedResponse.length > 0) {
-            await axios.put(`http://localhost:5000/api/LabourRates/${sortedResponse[0]._id}`, formData);
-        } else {
-            await axios.post(`http://localhost:5000/api/LabourRates/`, formData);
-        }
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
-
-const deleteLabourRate = async (id) => {
-    try {
-        const response = await axios.delete(`http://localhost:5000/api/LabourRates/${id}`);
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
 
 
 const getInstallerList = async () => {
@@ -542,4 +537,4 @@ const updateInstaller = async (id, dataObject) => {
 
 
 
-export { updateServicePrice,updateServiceTime, getServiceCodeById ,fetchPayments, getMaterialNameById,getBookingCount,getCountInstaller,getAdminData, deleteAdmin, updateAdmin, deleteInstaller,updateInstaller, createService, createTime, getserviceList, getServiceNameById, getserviceTimeList, deleteServiceTimeById, createServicePrice, getServicePriceList, deleteServicePrice, createMaterial, deleteMaterialById, getMaterialList, getMaterialTax, createMaterialTax, getLabourRate, createLabourRate, deleteLabourRate, getInstallerList, createInstaller, getMostSuitableInstaller, createBooking, createAdmin, validateAdmin, getLabourRateByServiceId, getBookingsList, deleteBooking, updateBooking ,getInstallerNameById}
+export { updateServicePrice,updateServiceTime, getServiceCodeById ,fetchPayments, getMaterialNameById,getBookingCount,getCountInstaller,getAdminData, deleteAdmin, updateAdmin, deleteInstaller,updateInstaller, createService, createTime, getserviceList, getServiceNameById, getserviceTimeList, deleteServiceTimeById, createServicePrice, getServicePriceList, deleteServicePrice, createMaterial, deleteMaterialById, getMaterialList, getMaterialTax, createMaterialTax, getLabourRate, createLabourRate, getInstallerList, createInstaller, getMostSuitableInstaller, createBooking, createAdmin, validateAdmin, getLabourRateByServiceId, getBookingsList, deleteBooking, updateBooking ,getInstallerNameById}
