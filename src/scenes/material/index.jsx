@@ -80,7 +80,7 @@ const Material = () => {
       material_desc: materialDesc,
       number_of_chargers: numberOfInstall,
       price: price,
-      material_code: `${selectedMaterials}_I_${numberOfInstall}_${service_code}`,
+      material_code: `${selectedMaterials}`,
       service_code: service_code,
     };
     console.log(newMaterial)
