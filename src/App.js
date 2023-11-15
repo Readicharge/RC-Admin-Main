@@ -50,7 +50,7 @@ const fixedUserName = "Brian@readicharge.com"
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app" style={{
-          backgroundColor:"#F4F7FE"
+          backgroundColor:"#F9FAFC"
         }}>
           {isLoggedIn ? (
             <>

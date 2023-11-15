@@ -13,18 +13,14 @@ const AdminForm = () => {
 
   const handleFormSubmit = (values) => {
     const adminData = { ...values, roles: selectedRoles };
-    const formData = new FormData();
-    formData.append('image', selectedImage); // Append the image file to the FormData
-    for (const key in adminData) {
-      formData.append(key, adminData[key]);
-    }
-    createAdmin(formData); // Assuming createAdmin accepts FormData
+
+    createAdmin(adminData); // Assuming createAdmin accepts FormData
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedImage(file);
-  };
+  // const handleImageChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setSelectedImage(file);
+  // };
 
 
   const checkoutSchema = yup.object().shape({
@@ -53,13 +49,14 @@ const AdminForm = () => {
   };
 
   return (
-    <Box m="20px">
+    <Box m="20px" >
       <Header title="Admin" subtitle="Admin Details" />
 
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
+
       >
         {({
           values,
@@ -69,7 +66,7 @@ const AdminForm = () => {
           handleChange,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column'}}>
             <Box
               display="grid"
               gap="30px"
@@ -77,14 +74,17 @@ const AdminForm = () => {
               sx={{
                 '& > div': { gridColumn: isNonMobile ? undefined : 'span 2' },
               }}
-              bgcolor="#f5f5f5"
+              bgcolor="#fff"
               borderRadius="10px"
+              width="40%"
+              margin="10px"
               padding="20px"
               boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
             >
+              
               <TextField
                 fullWidth
-                variant="filled"
+                variant="standard"
                 type="text"
                 label="Username"
                 onBlur={handleBlur}
@@ -96,7 +96,7 @@ const AdminForm = () => {
               />
               <TextField
                 fullWidth
-                variant="filled"
+                variant="standard"
                 type="password"
                 label="Password"
                 onBlur={handleBlur}
@@ -108,7 +108,7 @@ const AdminForm = () => {
               />
               <TextField
                 fullWidth
-                variant="filled"
+                variant="standard"
                 type="email"
                 label="Email"
                 onBlur={handleBlur}
@@ -118,21 +118,9 @@ const AdminForm = () => {
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
               />
-              <TextField
+                <TextField
                 fullWidth
-                variant="filled"
-                type="text"
-                label="Address"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address}
-                name="address"
-                error={!!touched.address && !!errors.address}
-                helperText={touched.address && errors.address}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
+                variant="standard"
                 type="tel"
                 label="Phone Number"
                 onBlur={handleBlur}
@@ -142,119 +130,135 @@ const AdminForm = () => {
                 error={!!touched.phoneNumber && !!errors.phoneNumber}
                 helperText={touched.phoneNumber && errors.phoneNumber}
               />
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Installer')}
-                      onChange={handleRoleChange}
-                      value="Installer"
-                    />
-                  }
-                  label="Installer"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Company')}
-                      onChange={handleRoleChange}
-                      value="Company"
-                    />
-                  }
-                  label="Company"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Customer')}
-                      onChange={handleRoleChange}
-                      value="Customer"
-                    />
-                  }
-                  label="Customer"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Service')}
-                      onChange={handleRoleChange}
-                      value="Service"
-                    />
-                  }
-                  label="Service"
-                />
+              <TextField
+                fullWidth
+                variant="standard"
+                type="text"
+                label="Address"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.address}
+                name="address"
+                error={!!touched.address && !!errors.address}
+                helperText={touched.address && errors.address}
+              />
+            
 
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Material')}
-                      onChange={handleRoleChange}
-                      value="Material"
-                    />
-                  }
-                  label="Material"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Labor')}
-                      onChange={handleRoleChange}
-                      value="Labor"
-                    />
-                  }
-                  label="Labor"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Payments')}
-                      onChange={handleRoleChange}
-                      value="Payments"
-                    />
-                  }
-                  label="Payments"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Booking')}
-                      onChange={handleRoleChange}
-                      value="Booking"
-                    />
-                  }
-                  label="Booking"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedRoles.includes('Helpdesk')}
-                      onChange={handleRoleChange}
-                      value="Helpdesk"
-                    />
-                  }
-                  label="Help Desk"
-                />
+             
+            </Box>
+            <Box
+              display="grid"
+              gap="30px"
+              gridTemplateColumns="repeat(3, minmax(0, 1fr))"
+              sx={{
+                '& > div': { gridColumn: isNonMobile ? undefined : 'span 2' },
+              }}
+              bgcolor="#fff"
+              borderRadius="10px"
+              width="40%"
+              margin="10px"
+              padding="20px"
+              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Installer')}
+                    onChange={handleRoleChange}
+                    value="Installer"
+                  />
+                }
+                label="Installer"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Company')}
+                    onChange={handleRoleChange}
+                    value="Company"
+                  />
+                }
+                label="Company"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Customer')}
+                    onChange={handleRoleChange}
+                    value="Customer"
+                  />
+                }
+                label="Customer"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Service')}
+                    onChange={handleRoleChange}
+                    value="Service"
+                  />
+                }
+                label="Service"
+              />
 
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Material')}
+                    onChange={handleRoleChange}
+                    value="Material"
+                  />
+                }
+                label="Material"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Labor')}
+                    onChange={handleRoleChange}
+                    value="Labor"
+                  />
+                }
+                label="Labor"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Payments')}
+                    onChange={handleRoleChange}
+                    value="Payments"
+                  />
+                }
+                label="Payments"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Booking')}
+                    onChange={handleRoleChange}
+                    value="Booking"
+                  />
+                }
+                label="Booking"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Helpdesk')}
+                    onChange={handleRoleChange}
+                    value="Helpdesk"
+                  />
+                }
+                label="Help Desk"
+              />
+               <Box display="flex" mt="20px">
+                <Button type="submit" color="primary" variant="contained">
+                  Save Admin Details
+                </Button>
               </Box>
+
             </Box>
-            <Box display="flex" mt="20px">
-              <Button type="submit" color="primary" variant="contained">
-                Save Admin Details
-              </Button>
-            </Box>
-            <input
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="image-input"
-              onChange={handleImageChange}
-            />
-            <label htmlFor="image-input">
-              <Button component="span" variant="contained" color="primary">
-                Upload Image
-              </Button>
-            </label>
-            {selectedImage && <span>{selectedImage.name}</span>}
+            
           </form>
         )}
       </Formik>

@@ -16,15 +16,11 @@ import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
 
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
+
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 
-import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 
 const fixed_username = 'Brian@readicharge.com';
 
@@ -196,7 +192,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
             />
             <Item
               title="Customers"
-              to="/under-progress"
+              to="/customerForm"
               icon={<PermIdentityOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

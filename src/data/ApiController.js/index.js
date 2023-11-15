@@ -224,11 +224,37 @@ const getMaterialList = async () => {
 
 const createCustomer = async (formData) => {
     try {
-        await axios.post(`http://localhost:5000/api/customer_app/register`, formData);
+        const response = await axios.post(`http://localhost:5000/api/customerApp/register`, formData);
+
+        return response;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
+}
+
+
+
+const createInstaller = async (formData) => {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/installerApp/register`, formData);
+        console.log(response)
 
     } catch (error) {
         console.log(error);
         return null;
+    }
+}
+
+
+const createAdmin = async (formData) => {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/admin_web_app/registerAdmin`, formData);
+        console.log(response)
+    }
+    catch (error) {
+        console.log(error);
+
     }
 }
 
@@ -312,16 +338,7 @@ const getCountInstaller = async () => {
 }
 
 
-const createInstaller = async (formData) => {
-    try {
-        const response = await axios.post(`http://localhost:5000/api/installer/`, formData);
-        console.log(response)
 
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
-}
 
 
 
@@ -350,16 +367,7 @@ const createBooking = async (formData) => {
 
 
 
-const createAdmin = async (formData) => {
-    try {
-        const response = await axios.post(`http://localhost:5000/api/admins/`, formData);
-        console.log(response)
-    }
-    catch (error) {
-        console.log(error);
 
-    }
-}
 
 
 

@@ -193,7 +193,8 @@ const InstallerForm = ({changedBy}) => {
                 gridColumn: isNonMobile ? undefined : "span 4",
               },
               backgroundColor: "#f5f5f5",
-              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              boxShadow: "0 2px 4px rgba(238, 242, 250,1)",
+              width: "60%",
               padding: "20px",
               borderRadius: "10px",
             }}
@@ -201,7 +202,7 @@ const InstallerForm = ({changedBy}) => {
             {/* Add Personal Information fields here */}
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               value={formData1.firstName}
               label="First Name"
@@ -211,7 +212,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Last Name"
               value={formData1.lastName}
@@ -221,7 +222,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Company Name"
               value={formData1.companyName}
@@ -231,7 +232,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Email"
               value={formData1.email}
@@ -241,7 +242,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="password"
               label="Password"
               value={formData1.password}
@@ -251,7 +252,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Phone Number"
               value={formData1.phoneNumber}
@@ -261,7 +262,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="number"
               label="Years of Experience"
               value={formData1.yearsOfExperience}
@@ -273,7 +274,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Description"
               value={formData1.description}
@@ -283,7 +284,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Address Line 1"
               value={formData1.addressLine1}
@@ -293,7 +294,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Address Line 2"
               value={formData1.addressLine2}
@@ -303,7 +304,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="City"
               value={formData1.city}
@@ -313,7 +314,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Zip"
               value={formData1.zip}
@@ -321,7 +322,7 @@ const InstallerForm = ({changedBy}) => {
               id="zip"
               sx={{ gridColumn: "span 2" }}
             />
-            <FormControl fullWidth variant="filled" sx={{ gridColumn: "span 2" }}>
+            <FormControl fullWidthvariant="standard" sx={{ gridColumn: "span 2" }}>
               <InputLabel id="miles-distance-label">Miles Distance</InputLabel>
               <Select
                 labelId="miles-distance-label"
@@ -390,13 +391,14 @@ const InstallerForm = ({changedBy}) => {
               },
               backgroundColor: "#f5f5f5",
               boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+              width: "78%",
               padding: "20px"
             }}
           >
             {/* Add Company Information fields here */}
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="License Number"
 
@@ -410,7 +412,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="date"
               value={formData2.licenseExpirationDate}
               label={isDateActive ? "" : "License Expiration Date"}
@@ -431,7 +433,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="file"
               label={isFileActive ? "" : "Image License"}
 
@@ -452,7 +454,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="file"
               label={isFileActive ? "" : "PDF License"}
 
@@ -473,7 +475,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Business Insurance Number"
 
@@ -486,7 +488,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Business Insurance Company"
 
@@ -500,7 +502,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="tel"
               label="Business Agent Phone Number"
 
@@ -514,7 +516,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Business Policy Number"
 
@@ -528,7 +530,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="date"
               label={isDateActive ? "" : "Business Insurance Effective Start Date"}
 
@@ -551,7 +553,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="date"
               label={isDateActive ? "" : "Business Insurance Effective End Date"}
 
@@ -574,7 +576,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="file"
               label={isFileActive ? "" : "Image Business Insurance"}
 
@@ -595,7 +597,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="file"
               label={isFileActive ? "" : "PDF Business Insurance"}
 
@@ -616,7 +618,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Bonding Certification Number"
 
@@ -630,7 +632,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="text"
               label="Bonding Company"
 
@@ -644,7 +646,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="tel"
               label="Bonding Agent Phone Number"
 
@@ -658,7 +660,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="number"
               label="Bond Amount"
               name="bondAmount"
@@ -671,7 +673,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="date"
               label={isDateActive ? "" : "Bonding Effective Start Date"}
 
@@ -694,7 +696,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="date"
               label={isDateActive ? "" : "Bonding Effective End Date"}
 
@@ -717,7 +719,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="file"
               label={isFileActive ? "" : "Image Bonding"}
 
@@ -738,7 +740,7 @@ const InstallerForm = ({changedBy}) => {
             />
             <TextField
               fullWidth
-              variant="filled"
+            variant="outlined"
               type="file"
               label={isFileActive ? "" : "PDF Bonding"}
 
@@ -779,8 +781,9 @@ const InstallerForm = ({changedBy}) => {
                 "& > div": {
                   gridColumn: isNonMobile ? undefined : "span 4",
                 },
-                backgroundColor: "#f5f5f5",
+                backgroundColor: "#fcfcfc",
                 boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                width: "78%",
                 padding: "20px"
               }}
             >
@@ -806,10 +809,18 @@ const InstallerForm = ({changedBy}) => {
                 })}
               </List>
 
+             
+
+
+            </Box>
+            <Box display="flex" width="40%" height="40%" mt="20px">
+              <Button  color="primary" variant="contained">
+                Send ClearCheck Mail 
+              </Button>
             </Box>
             <Box display="flex" mt="20px">
               <Button type="submit" color="primary" variant="contained">
-                Submit
+                Create Record
               </Button>
             </Box>
 
