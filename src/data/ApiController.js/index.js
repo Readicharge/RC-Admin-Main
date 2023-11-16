@@ -6,7 +6,7 @@ const createService = async (formData) => {
 
     try {
         console.log(formData)
-        const response = await axios.post(`http://localhost:5000/api/admin_web_app/service-create`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-create`, formData);
         alert(response)
         console.log(response)
         console.log(response.data);
@@ -19,7 +19,7 @@ const createService = async (formData) => {
 
 const getserviceList = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/service-get-all`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-get-all`);
         return response;
     } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ const getserviceList = async () => {
 
 const getServiceNameById = async (serviceId) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/service-name/${serviceId}`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-name/${serviceId}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -39,7 +39,7 @@ const getServiceNameById = async (serviceId) => {
 
 const getServiceCodeById = async (serviceId) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/service-code/${serviceId}`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-code/${serviceId}`);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -50,7 +50,7 @@ const getServiceCodeById = async (serviceId) => {
 
 const deleteServiceTimeById = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/service-time-delete-specific/${id}`);
+        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-delete-specific/${id}`);
         if (response.status === 200) {
             alert("Service Time deleted successfully")
         }
@@ -63,7 +63,7 @@ const deleteServiceTimeById = async (id) => {
 
 const createTime = async (formData) => {
     try {
-        const resposne = await axios.post(`http://localhost:5000/api/admin_web_app/service-time-create`, formData);
+        const resposne = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-create`, formData);
         alert(resposne)
     }
     catch (error) {
@@ -73,7 +73,7 @@ const createTime = async (formData) => {
 
 const getserviceTimeList = async (formData) => {
     try {
-        const resposne = await axios.get(`http://localhost:5000/api/admin_web_app/service-time-get-all`);
+        const resposne = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-get-all`);
         return resposne;
 
     }
@@ -85,7 +85,7 @@ const getserviceTimeList = async (formData) => {
 
 const updateServiceTime = async (id, formData) => {
     try {
-        const resposne = await axios.put(`http://localhost:5000/api/admin_web_app/service-time-update/${id}`, formData);
+        const resposne = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-update/${id}`, formData);
         return resposne;
 
     }
@@ -98,7 +98,7 @@ const updateServiceTime = async (id, formData) => {
 const validateAdmin = async (formData) => {
     try {
         console.log(formData)
-        const response = await axios.post(`http://localhost:5000/api/admin_web_app/sign-in`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/sign-in`, formData);
         return response;
     }
     catch (error) {
@@ -111,7 +111,7 @@ const validateAdmin = async (formData) => {
 
 const createServicePrice = async (formData) => {
     try {
-        const resposne = await axios.post(`http://localhost:5000/api/admin_web_app/service-price-create`, formData);
+        const resposne = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-create`, formData);
         alert(resposne)
     }
     catch (error) {
@@ -122,7 +122,7 @@ const createServicePrice = async (formData) => {
 
 const getServicePriceList = async () => {
     try {
-        const resposne = await axios.get(`http://localhost:5000/api/admin_web_app/service-price-get-all`);
+        const resposne = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-get-all`);
         return resposne;
     }
     catch (error) {
@@ -132,7 +132,7 @@ const getServicePriceList = async () => {
 
 const deleteServicePrice = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/service-price-delete/${id}`);
+        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-delete/${id}`);
 
     } catch (error) {
         console.log(error);
@@ -143,7 +143,7 @@ const deleteServicePrice = async (id) => {
 
 const updateServicePrice = async (id, formData) => {
     try {
-        const resposne = await axios.put(`http://localhost:5000/api/admin_web_app/service-price-update/${id}`, formData);
+        const resposne = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-update/${id}`, formData);
         return resposne;
 
     }
@@ -154,7 +154,7 @@ const updateServicePrice = async (id, formData) => {
 
 const getLabourRate = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/labor-rate-get-all/`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-get-all/`);
         console.log(response)
         return response;
     } catch (error) {
@@ -165,7 +165,7 @@ const getLabourRate = async () => {
 
 const getLabourRateByServiceId = async (serviceId) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/labor-rate-get-service-id/${serviceId}`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-get-service-id/${serviceId}`);
         console.log(response)
         return response;
     } catch (error) {
@@ -176,12 +176,12 @@ const getLabourRateByServiceId = async (serviceId) => {
 
 const createLabourRate = async (formData) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/labor-rate-get-all`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-get-all`);
         const sortedResponse = response.data.filter(item => item.service_id === formData.service_id && item.number_of_installs === formData.number_of_installs);
         if (sortedResponse.length > 0) {
-            await axios.put(`http://localhost:5000/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData);
+            await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData);
         } else {
-            await axios.post(`http://localhost:5000/api/admin_web_app/labor-rate-create`, formData);
+            await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-create`, formData);
         }
     } catch (error) {
         console.log(error);
@@ -195,7 +195,7 @@ const createLabourRate = async (formData) => {
 
 const createMaterial = async (formData) => {
     try {
-        const response = await axios.post(`http://localhost:5000/api/admin_web_app/material-create`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-create`, formData);
     } catch (error) {
         console.log(error);
         return null;
@@ -204,7 +204,7 @@ const createMaterial = async (formData) => {
 
 const deleteMaterialById = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/material-delete/${id}`);
+        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-delete/${id}`);
     } catch (error) {
         console.log(error);
         return null;
@@ -213,7 +213,7 @@ const deleteMaterialById = async (id) => {
 
 const getMaterialList = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admin_web_app/material-get-all/`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-get-all/`);
         return response;
     } catch (error) {
         console.log(error);
@@ -224,7 +224,7 @@ const getMaterialList = async () => {
 
 const createCustomer = async (formData) => {
     try {
-        await axios.post(`http://localhost:5000/api/customer_app/register`, formData);
+        await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/customer_app/register`, formData);
 
     } catch (error) {
         console.log(error);
@@ -242,7 +242,7 @@ const createCustomer = async (formData) => {
 
 const getMaterialTax = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/MaterialTax/`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/`);
         return response;
     } catch (error) {
         console.log(error);
@@ -252,14 +252,14 @@ const getMaterialTax = async () => {
 
 const createMaterialTax = async (formData) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/MaterialTax/`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/`);
 
         if (response.data.length === 0) {
-            await axios.post(`http://localhost:5000/api/MaterialTax/`, formData);
+            await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/`, formData);
         }
         else {
             const id = response.data[0]._id;
-            await axios.put(`http://localhost:5000/api/MaterialTax/${id}`, formData);
+            await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/${id}`, formData);
         }
     } catch (error) {
         console.log(error);
@@ -273,7 +273,7 @@ const createMaterialTax = async (formData) => {
 
 const getInstallerList = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/installer`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/installer`);
         return response;
     } catch (error) {
         console.log(error);
@@ -282,7 +282,7 @@ const getInstallerList = async () => {
 
 const getInstallerNameById = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/installer/${id}`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/installer/${id}`);
         console.log(response)
         return response.data.firstName;
     } catch (error) {
@@ -293,7 +293,7 @@ const getInstallerNameById = async (id) => {
 
 const getMaterialNameById = async (id) => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/materials/${id}`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/materials/${id}`);
         console.log(response)
         return response.data.material_name;
     } catch (error) {
@@ -304,7 +304,7 @@ const getMaterialNameById = async (id) => {
 
 const getCountInstaller = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/installer`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/installer`);
         return response.data.length;
     } catch (error) {
         console.log(error);
@@ -314,7 +314,7 @@ const getCountInstaller = async () => {
 
 const createInstaller = async (formData) => {
     try {
-        const response = await axios.post(`http://localhost:5000/api/installer/`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/installer/`, formData);
         console.log(response)
 
     } catch (error) {
@@ -327,7 +327,7 @@ const createInstaller = async (formData) => {
 
 const getMostSuitableInstaller = async (formData) => {
     try {
-        const response = await axios.post(`http://localhost:5000/api/booking/installer_mapping`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/booking/installer_mapping`, formData);
         return response;
     }
     catch (error) {
@@ -339,7 +339,7 @@ const getMostSuitableInstaller = async (formData) => {
 
 const createBooking = async (formData) => {
     try {
-        const response = await axios.post(`http://localhost:5000/api/booking/`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/booking/`, formData);
         return response
     }
     catch (error) {
@@ -352,7 +352,7 @@ const createBooking = async (formData) => {
 
 const createAdmin = async (formData) => {
     try {
-        const response = await axios.post(`http://localhost:5000/api/admins/`, formData);
+        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admins/`, formData);
         console.log(response)
     }
     catch (error) {
@@ -366,7 +366,7 @@ const createAdmin = async (formData) => {
 
 const getBookingsList = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/booking`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/booking`);
         return response;
     } catch (error) {
         console.log(error);
@@ -376,7 +376,7 @@ const getBookingsList = async () => {
 
 const getBookingCount = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/booking`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/booking`);
         return response.data.length;
     } catch (error) {
         console.log(error);
@@ -386,7 +386,7 @@ const getBookingCount = async () => {
 
 const deleteBooking = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/booking/${id}`);
+        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/booking/${id}`);
         return response;
     } catch (error) {
         console.log(error);
@@ -419,7 +419,7 @@ const updateBooking = async (id, dataObject) => {
         };
 
 
-        const response = await axios.put(`http://localhost:5000/api/booking/${id}`, dataToBePushed);
+        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/booking/${id}`, dataToBePushed);
         return response;
     } catch (error) {
         console.log(error);
@@ -430,7 +430,7 @@ const updateBooking = async (id, dataObject) => {
 
 const getAdminData = async () => {
     try {
-        const response = await axios.get(`http://localhost:5000/api/admins/`);
+        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admins/`);
         return response;
     } catch (error) {
         console.log(error);
@@ -440,7 +440,7 @@ const getAdminData = async () => {
 
 const deleteAdmin = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/admins/${id}`);
+        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admins/${id}`);
         return response;
     } catch (error) {
         console.log(error);
@@ -467,7 +467,7 @@ const updateAdmin = async (id, dataObject) => {
         };
 
 
-        const response = await axios.put(`http://localhost:5000/api/admins/${id}`, dataToBePushed);
+        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admins/${id}`, dataToBePushed);
         console.log(response)
         return response;
     } catch (error) {
@@ -479,7 +479,7 @@ const updateAdmin = async (id, dataObject) => {
 
 const deleteInstaller = async (id) => {
     try {
-        const response = await axios.delete(`http://localhost:5000/api/installer/${id}`);
+        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/installer/${id}`);
         return response;
     } catch (error) {
         console.log(error);
@@ -522,7 +522,7 @@ const updateInstaller = async (id, dataObject) => {
             services: dataObject.services
         };
 
-        const response = await axios.put(`http://localhost:5000/api/installer/${id}`, dataToBePushed);
+        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/installer/${id}`, dataToBePushed);
         console.log(response)
         return response;
     } catch (error) {
@@ -532,7 +532,7 @@ const updateInstaller = async (id, dataObject) => {
 
 const fetchPayments = async () => {
     try {
-        const response = await fetch('http://localhost:5000/api/payments/getPaymentList');
+        const response = await fetch('https://rc-backend-main-f9u1.vercel.app/api/payments/getPaymentList');
         const data = await response.data();
         return data;
 
