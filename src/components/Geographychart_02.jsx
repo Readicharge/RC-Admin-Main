@@ -45,7 +45,7 @@ import statesJson from "../states.json";
       {legendItems.map(({ color, label }) => (
         <div key={label} style={{ display: "flex", alignItems: "center", marginRight: "20px" }}>
           <div style={{ width: "20px", height: "20px", backgroundColor: color, marginRight: "5px" }} />
-          <span>{label}</span>
+          <span style={{color:"#fff"}}>{label}</span>
         </div>
       ))}
     </div>

@@ -1,227 +1,221 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import React from "react";
+import { useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { tokens } from "../../theme";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import PersonIcon from "@mui/icons-material/Person";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import BookOnlineIcon from '@mui/icons-material/BookOnline';
-import Header from "../../components/Header";
-import { getCountInstaller ,getBookingCount} from "../../data/ApiController.js";
+import { BarList, Bold, Card, Flex, Metric, Text, List, ListItem, ProgressBar, Grid, DonutChart, Title } from "@tremor/react";
+import { getInstallerList, getCustomerData, getServicePriceList } from "../../data/ApiController.js";
 import { useEffect } from "react";
 import { useState } from "react";
-import StripePayments from "./PaymentList";
 
-const Dashboard =  () => {
-  const [totalInstaller,setTotalInstaller] = useState("");
-  const [totalCount,setTotalCount] = useState("");
+
+
+
+
+const valueFormatter = (number) => `$ ${new Intl.NumberFormat("us").format(number).toString()}`;
+
+const Dashboard = () => {
+
+  // The Primaries
+  const [totalInstaller, setTotalInstaller] = useState("");
+  const [totalCustomer, setTotalCustomer] = useState("");
+  const [value, setValue] = React.useState(null);
+
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
-    const fetchData = async ()=>{
-     const count  = await getCountInstaller();
-     const booking = await getBookingCount();
-    setTotalInstaller(count)
-    setTotalCount(booking);
+    const fetchData = async () => {
+      const installerCount = await getInstallerList();
+      const customerCount = await getCustomerData();
+
+      setTotalInstaller(installerCount.data.odata.length);
+      setTotalCustomer(customerCount.data.length)
     }
     fetchData();
   }, [])
-  
+
 
   // Sample data
+  const locationA = [
+    {
+      name: "Growth %",
+      share: (totalInstaller / 20),
+      amount: `${totalInstaller}`,
+    }
+  ];
+
+  const locationB = [
+    {
+      name: "Growth %",
+      share: (totalCustomer / 20),
+      amount: `${totalCustomer}`,
+    }
+  ];
+
+  const locationC = [
+    {
+      name: "Growth %",
+      share: 45,
+      amount: "255",
+    },
+
+  ];
+
+  const categories = [
+    {
+      title: "Installers",
+      metric: totalInstaller,
+      data: locationA,
+    },
+    {
+      title: "Customers",
+      metric: totalCustomer,
+      data: locationB,
+    },
+    {
+      title: "Companies",
+      metric: "23",
+      data: locationC,
+    },
+
+  ];
+
+
+  var servicePrice = {}
+  const seerviceOData = async () => {
+    const data = await getServicePriceList();
+  }
+
+  seerviceOData();
+
+  console.log(seerviceOData)
+
+  const cities = [
+    {
+      name: "Basic Install",
+      sales: 6,
+    },
+    {
+      name: "Immidiate Install",
+      sales: 8,
+    },
+    {
+      name: "Advance Install",
+      sales: 10,
+    },
+    {
+      name: "Advance 80 Install",
+      sales: 12,
+    },
+  ];
+
 
   return (
-    <Box m="20px">
-      {/* HEADER */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        <Box>
-          <Button
-            sx={{
-              backgroundColor: "#96D232",
-              color: colors.grey[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box>
-      </Box>
-
-      {/* GRID & CHARTS */}
-      <Box
-        display="grid"
-        gridTemplateColumns="repeat(12, 1fr)"
-        gridAutoRows="140px"
-        gap="20px"
-      >
-        {/* ROW 1 */}
-        <Box
-          gridColumn="span 3"
-          backgroundColor="#f0f0f0"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box>
-            <Typography variant="h2" fontWeight="bold" color="#96D232">
-              {totalInstaller }
-            </Typography>
-            <Typography variant="h6" color={colors.grey[600]}>
-              Total Installer
-            </Typography>
-          </Box>
-          <PersonIcon sx={{ color: "#96D232", fontSize: "32px" }} />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor="#f0f0f0"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box>
-            <Typography variant="h2" fontWeight="bold" color="#96D232">
-              {totalInstaller}
-            </Typography>
-            <Typography variant="h6" color={colors.grey[600]}>
-              Active Installer
-            </Typography>
-          </Box>
-          <PointOfSaleIcon sx={{ color: "#96D232", fontSize: "32px" }} />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor="#f0f0f0"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box>
-            <Typography variant="h2" fontWeight="bold" color="#96D232">
-              {totalCount}
-            </Typography>
-            <Typography variant="h6" color={colors.grey[600]}>
-              Today's Bookings
-            </Typography>
-          </Box>
-          <BookOnlineIcon sx={{ color: "#96D232", fontSize: "32px" }} />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor="#f0f0f0"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <Box>
-            <Typography variant="h2" fontWeight="bold" color="#96D232">
-              {totalCount}
-            </Typography>
-            <Typography variant="h6" color={colors.grey[600]}>
-              Total Customers
-            </Typography>
-          </Box>
-          <PersonAddIcon sx={{ color: "#96D232", fontSize: "32px" }} />
-        </Box>
-
-        {/* ROW 2 */}
-        {/* ... */}
-        <Box
-          gridColumn="span 8"
-          gridRow="span 2"
-          backgroundColor="#f0f0f0"
-        >
-          <Box
-            mt="25px"
-            p="0 30px"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box>
-              <Typography variant="h5" fontWeight="600" color="#96D232">
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: "#96D232" }}
-                />
-              </IconButton>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            {/* <LineChart isDashboard={true} /> */}
-          </Box>
-        </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor="#f0f0f0"
-          overflow="auto"
-        >
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            borderBottom={`4px solid #96D232`}
-            colors={colors.grey[100]}
-            p="15px"
-          >
-
-            <StripePayments/>
-          </Box>
-          {/* {mockTransactions.map((transaction, i) => (
-            <Box
-              key={`${transaction.txId}-${i}`}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              borderBottom={`4px solid ${colors.primary[500]}`}
-              p="15px"
-            >
-              <Box>
-                <Typography
-                  color={colors.greenAccent[500]}
-                  variant="h5"
-                  fontWeight="600"
-                >
-                  {transaction.txId}
-                </Typography>
-                <Typography color={colors.grey[100]}>
-                  {transaction.user}
-                </Typography>
-              </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
-            </Box>
-          ))} */}
-        </Box>
-
-        {/* ROW 3 */}
-
-      </Box>
+    <Box>
+      <Grid numItemsSm={2} numItemsLg={3} className="gap-6 p-4">
+        {categories.map((item) => (
+          <Card key={item.title}>
+            <Text>{item.title}</Text>
+            <Metric>{item.metric}</Metric>
+            <List className="mt-4">
+              {item.data.map((product) => (
+                <ListItem key={product.name}>
+                  <div className="w-full">
+                    <Text>{product.name}</Text>
+                    <ProgressBar
+                      value={product.share}
+                      label={`${product.share}%`}
+                      tooltip={product.amount}
+                    />
+                  </div>
+                </ListItem>
+              ))}
+            </List>
+          </Card>
+        ))}
+      </Grid>
+      <Grid numItemsSm={2} numItemsLg={3} className="gap-6 p-4 flex">
+        <Card className="px-4">
+          <Title>Services</Title>
+          <DonutChart
+            className="mt-6"
+            data={cities}
+            showLabel={true}
+            category="sales"
+            variant="pie"
+            index="name"
+            colors={["green", "yellow", "orange", "indigo", "blue", "emerald"]}
+            onValueChange={(v) => setValue(v)}
+          />
+        </Card>
+        <Card className="max-w-lg">
+          <Title>Transaction Analytics</Title>
+          <Flex className="mt-4">
+            <Text>
+              <Bold>Source</Bold>
+            </Text>
+            <Text>
+              <Bold>Amount</Bold>
+            </Text>
+          </Flex>
+          <BarList data={data} className="mt-2 " />
+        </Card>
+      </Grid>
+      <Grid numItemsSm={2} numItemsLg={3} className="p-4 flex">
+        <Card className="w-36 p-4 m-4" decoration="top" decorationColor="green">
+          <Text>ClearChecks</Text>
+        </Card>
+        <Card className="w-36 p-4 m-4" decoration="top" decorationColor="green">
+          <Text>Stripe</Text>
+        </Card>
+        <Card className="w-36 p-4 m-4" decoration="top" decorationColor="green">
+          <Text>Autel</Text>
+        </Card>
+        <Card className="w-36 p-4 m-4" decoration="top" decorationColor="green">
+          <Text>Customr Service</Text>
+        </Card>
+        <Card className="w-36 p-4 m-4" decoration="top" decorationColor="green">
+          <Text>Mongo DataBase</Text>
+        </Card>
+      </Grid>
     </Box>
   );
 };
 
 export default Dashboard;
+
+
+
+const data = [
+  {
+    name: "Transferred",
+    value: 456,
+    href: "#",
+
+  },
+  {
+    name: "Pending",
+    value: 351,
+    href: "#",
+
+  },
+  {
+    name: "Cancelled",
+    value: 271,
+    href: "#",
+
+  },
+  {
+    name: "Refunded",
+    value: 191,
+    href: "#",
+
+  },
+  {
+    name: "Profits",
+    value: 391,
+    href: "#",
+
+  },
+];  

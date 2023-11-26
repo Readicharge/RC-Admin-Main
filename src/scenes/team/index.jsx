@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
-import { FormControl,FormLabel,FormGroup,FormControlLabel,Checkbox, Tabs,
-  Tab,Box, TextField, useTheme, Button, Dialog, DialogTitle,Typography,
+import {
+  FormControl, FormLabel, FormGroup, FormControlLabel, Checkbox, Tabs,
+  Tab, Box, TextField, useTheme, Button, Dialog, DialogTitle, Typography,
   Accordion,
   AccordionSummary,
-  AccordionDetails, DialogContent, DialogActions } from "@mui/material";
+  AccordionDetails, DialogContent, DialogActions
+} from "@mui/material";
 import { getInstallerList, deleteInstaller, updateInstaller, getServiceNameById, createInstaller, getserviceList } from "../../data/ApiController.js";
 import InstallerServicesPieChart from "../../components/PieChart";
 import GeographyChart_02 from "../../components/Geographychart_02";
@@ -27,7 +29,7 @@ const formatDate = (date) => {
 const handleUpdate = async (id, row) => {
   console.log(row)
   const response = await updateInstaller(id, row);
-  if(response.status===200) alert("done")
+  if (response.status === 200) alert("done")
   getInstallerList(); // Refresh the installer list after update
 };
 const getCountBasedPadStart = (count) => {
@@ -102,12 +104,12 @@ const InstallerList = () => {
 
   const fetchInstallerList = async () => {
     const installerData = await getInstallerList();
-    console.log(installerData.data.length);
+    console.log(installerData.data.odata.length);
 
     // for the Geo map this section of code is being used 
-    if (installerData.data.length > 0) {
+    if (installerData.data.odata.length > 0) {
       const updatedFormState = formState.map((formStateItem) => {
-        const correspondingItems = installerData.data.filter(
+        const correspondingItems = installerData.data.odata.filter(
           (item) => item.state === formStateItem.state
         );
         console.log(formStateItem.state)
@@ -118,16 +120,17 @@ const InstallerList = () => {
     }
 
     var temp_data = [];
-    for (let i = 0; i < installerData.data.length; i++) {
-      const dataObject = installerData.data[i];
+    for (let i = 0; i < installerData.data.odata.length; i++) {
+      const dataObject = installerData.data.odata[i];
 
       // For the installer Id Count  ** These ID is use for no technical functionalities , just for the client demand for the better reference 
-    const count = i + 1;
-     const padStartCount = getCountBasedPadStart(count);
+      const count = i + 1;
+      const padStartCount = getCountBasedPadStart(count);
 
       let data_to_be_pushed = {
         id: dataObject._id,
-        shown_id:`RC-IN-${count.toString().padStart(padStartCount, "0")}`,
+        shown_id: `RC-IN-${count.toString().padStart(padStartCount, "0")}`,
+        name : `${dataObject.firstName} ${dataObject.lastName}`,
         firstName: dataObject.firstName,
         lastName: dataObject.lastName,
         companyName: dataObject.companyName,
@@ -157,9 +160,9 @@ const InstallerList = () => {
         bondingEffectiveStartDate: dataObject.bondingEffectiveStartDate,
         bondingEffectiveEndDate: dataObject.bondingEffectiveEndDate,
         services: dataObject.services,
-        changedBy:dataObject.changedBy,
-        number_of_jobs:dataObject.Number_of_bookings,
-        ratingsAndReviews:dataObject.ratingsAndReviews
+        changedBy: dataObject.changedBy,
+        number_of_jobs: dataObject.Number_of_bookings,
+        ratingsAndReviews: dataObject.ratingsAndReviews
       };
 
       temp_data.push(data_to_be_pushed);
@@ -193,17 +196,38 @@ const InstallerList = () => {
         }
       });
 
-      const pieData = Object.keys(services).map((serviceId) => {
-        return {
-          id: serviceId,
-          label: serviceId,
-          value: services[serviceId].count,
-        };
-      });
-      setPieData(pieData);
+
+      const fetchData = async () => {
+       
+        const pieData = await Promise.all(
+          Object.keys(services).map(async (serviceId) => {
+            try {
+              const serviceName = await getServiceNameById(serviceId);
+           
+              return {
+                id: serviceId,
+                label: serviceName,
+                value: services[serviceId].count,
+              };
+            } catch (error) {
+              console.error(`Error fetching service name for id ${serviceId}:`, error);
+              // You can handle errors here, e.g., return a default label
+              return {
+                id: serviceId,
+                label: "Unknown Service",
+                value: services[serviceId].count,
+              };
+            }
+          })
+        );
+      
+        setPieData(pieData);
+      };
+
+      fetchData();
     }
   }, [getInstaller]);
-  
+
 
   const handleOpenModal = (installer) => {
     console.log(installer)
@@ -223,7 +247,7 @@ const InstallerList = () => {
   const columns = [
     { field: "shown_id", headerName: "ID" },
     {
-      field: "firstName",
+      field: "name",
       headerName: "Name",
       flex: 1,
       editable: true, // Make this cell editable
@@ -233,6 +257,7 @@ const InstallerList = () => {
       field: "email",
       headerName: "Email",
       flex: 1,
+      width:300,
       editable: true, // Make this cell editable
     },
     {
@@ -240,15 +265,11 @@ const InstallerList = () => {
       headerName: "State",
       headerAlign: "left",
       align: "left",
-       // Make this cell editable
+      width: 100,
+      // Make this cell editable
     },
     {
-      field: "zip",
-      headerName: "Zip Code",
-      flex: 1,
-       // Make this cell editable
-    },
-    {
+   
       field: "Number_of_bookings",
       headerName: "Jobs Completed",
       flex: 1,
@@ -263,18 +284,18 @@ const InstallerList = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 350,
+      width: 210,
 
       renderCell: (params) => (
         <Box>
           <Button
-            variant="contained"
-            color="primary"
+            variant="outlined"
+            color="warning"
             onClick={() => handleDelete(params.row.id)}
           >
             Delete
           </Button>
-{/*           <Button
+          {/*           <Button
             variant="contained"
             style={{ marginLeft: "16px" }}
             color="primary"
@@ -283,7 +304,7 @@ const InstallerList = () => {
             Update
           </Button> */}
           <Button
-            variant="contained"
+            variant="outlined"
             style={{ marginLeft: "16px" }}
             color="primary"
             onClick={() => handleOpenModal(params.row)}
@@ -298,7 +319,7 @@ const InstallerList = () => {
       field: "changedBy",
       headerName: "Change Log",
       flex: 1,
-     
+
       // Make this cell editable
     },
   ];
@@ -333,7 +354,7 @@ const InstallerList = () => {
   };
 
   return (
-    <div style={{ overflowY: 'auto', height: 'calc(100vh - 150px)' }}>
+    <div style={{ overflowY: 'auto', height: 'calc(110vh)' }}>
       <Box m="20px">
         <Header
           title="Installer List"
@@ -342,27 +363,36 @@ const InstallerList = () => {
 
         <Box
           m="40px 0 0 0"
-          height="75vh"
+          height="70vh"
           sx={{
+            "& .MuiDataGrid-toolbar" : {
+              color:"#fff"
+            },
             "& .MuiDataGrid-root": {
-              border: "none",
+              border: "1px solid #06061E",
+              backgroundColor:"#96D232",
+              borderRadius: "14px",
+              overflow: "hidden",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              fontWeight:"bold"
             },
             "& .MuiDataGrid-cell": {
-              borderBottom: "none",
+              borderBottom: "1px solid #e1e1e1",
             },
             "& .name-column--cell": {
               color: colors.greenAccent[300],
             },
             "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#94d034",
-              borderBottom: "none",
+              borderTop : "1px solid #06061E",
+              borderBottom: "1px solid #e1e1e1",
+              color: "#06061E",
             },
             "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: "#f0f0f0",
+              backgroundColor: "#f5f5f5",
             },
             "& .MuiDataGrid-footerContainer": {
-              borderTop: "none",
-              backgroundColor: "#94d034",
+              borderTop: "1px solid #e1e1e1",
+              backgroundColor: "#96D232",
             },
             "& .MuiCheckbox-root": {
               color: `${colors.greenAccent[700]} !important`,
@@ -374,12 +404,12 @@ const InstallerList = () => {
               fontWeight: "bold",
             },
             "& .MuiDataGrid-cellEditable": {
-              backgroundColor: colors.greenAccent[200],
+              backgroundColor: colors.greenAccent[100],
             },
           }}
         >
-          <Box m="20px">
-            <input
+          {/* <Box m="20px">
+            <input 
               accept=".csv"
               id="contained-button-file"
               type="file"
@@ -391,7 +421,7 @@ const InstallerList = () => {
                 Import CSV
               </Button>
             </label>
-          </Box>
+          </Box> */}
           <DataGrid
             rows={getInstaller}
             columns={columns}
@@ -404,22 +434,15 @@ const InstallerList = () => {
           <InstallerDetailsModal selectedInstaller={selectedInstaller} handleCloseModal={handleCloseModal} isModalOpen={isModalOpen} handleUpdate={handleUpdate} />
         </Box>
       </Box>
-      <div style={{ display: 'flex', flexDirection: 'row', marginTop: "90px" }}>
-        <div style={{ flex: 1 }}>
-          <Header
-            title="Service Ratio"
-            subtitle="Ratio of installers/Service"
-          />
-          <InstallerServicesPieChart pieData={pieData} />
-        </div>
-        <div style={{ flex: 1 }}>
-          <Header
-            title="Installers per State"
-            subtitle="Installers List per state"
-          />
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "90px" }}>
+      
+        <div style={{ marginTop: "10vh", marginBottom: "10vh", display: "flex" }}>
+          <Header title="Installers per State" subtitle="Installers List per state" />
           <GeographyChart_02 data={formState} />
         </div>
+        
       </div>
+
 
     </div>
   );
@@ -482,14 +505,14 @@ const InstallerDetailsModal = ({
       const updatedServices = checked
         ? [...prevFormData.services, serviceId]
         : prevFormData.services.filter((id) => id !== serviceId);
-  
+
       return {
         ...prevFormData,
         services: updatedServices,
       };
     });
   };
-  
+
   if (!formData) {
     return null; // You can render a loading spinner or placeholder while waiting for selectedInstaller data
   }
@@ -498,20 +521,20 @@ const InstallerDetailsModal = ({
   return (
 
 
-    <Dialog open={isModalOpen} onClose={handleCloseModal}>
-    <DialogTitle>Installer Details</DialogTitle>
-    <DialogContent>
-    <Tabs value={selectedTab} onChange={handleTabChange} variant="fullWidth">
-        <Tab label="Personal Information" />
-        <Tab label="Certifications" />
-        <Tab label="Services" />
-      </Tabs>
-      <Box>
-        {/* Personal Information Tab */}
-        <div role="tabpanel" hidden={selectedTab !== 0}>
+    <Dialog open={isModalOpen} onClose={handleCloseModal}  maxWidth="md" fullWidth>
+      <DialogTitle style={{fontSize:24, alignItems:"center"}}>Installer Details</DialogTitle>
+      <DialogContent>
+        <Tabs value={selectedTab} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary" aria-label="full width tabs example">
+          <Tab style={{fontSize:16}} label="Personal Information" />
+          <Tab style={{fontSize:16}} label="Certifications" />
+          <Tab style={{fontSize:16}} label="Services" />
+        </Tabs>
+        <Box p={4}>
+          {/* Personal Information Tab */}
+          <div role="tabpanel" hidden={selectedTab !== 0}>
             <Accordion>
               <AccordionSummary>
-                <Typography>Address Details</Typography>
+                <Typography style={{fontWeight:"bold"}}>Address Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -570,7 +593,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary >
-                <Typography>Contact Info</Typography>
+                <Typography style={{fontWeight:"bold"}}>Contact Info</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -612,7 +635,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary >
-                <Typography>Profile</Typography>
+                <Typography style={{fontWeight:"bold"}}>Profile</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -666,11 +689,11 @@ const InstallerDetailsModal = ({
             </Accordion>
           </div>
 
-        {/* Certifications Tab */}
-        <div role="tabpanel" hidden={selectedTab !== 1}>
+          {/* Certifications Tab */}
+          <div role="tabpanel" hidden={selectedTab !== 1}>
             <Accordion>
               <AccordionSummary>
-                <Typography>License Details</Typography>
+                <Typography style={{fontWeight:"bold"}}>License Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -700,7 +723,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary>
-                <Typography>Business Insurance Details</Typography>
+                <Typography style={{fontWeight:"bold"}}>Business Insurance Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -766,7 +789,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary>
-                <Typography>Bonding Details</Typography>
+                <Typography style={{fontWeight:"bold"}}>Bonding Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -832,34 +855,34 @@ const InstallerDetailsModal = ({
             </Accordion>
           </div>
 
-        {/* Services Tab */}
-        <div role="tabpanel" hidden={selectedTab !== 2}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Services</FormLabel>
-            <FormGroup>
-              {services.map((service) => (
-                <FormControlLabel
-                  key={service._id}
-                  control={
-                    <Checkbox
-                      checked={formData.services.includes(service._id)}
-                      onChange={handleServiceChange}
-                      value={service._id.toString()}
-                    />
-                  }
-                  label={service.name}
-                />
-              ))}
-            </FormGroup>
-          </FormControl>
-        </div>
-      </Box>
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={handleCloseModal}>Close</Button>
-      <Button onClick={() => handleUpdate(selectedInstaller.id, formData)}>Update and Save</Button>
-    </DialogActions>
-  </Dialog>
+          {/* Services Tab */}
+          <div role="tabpanel" hidden={selectedTab !== 2}>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Services</FormLabel>
+              <FormGroup>
+                {services.map((service) => (
+                  <FormControlLabel
+                    key={service._id}
+                    control={
+                      <Checkbox
+                        checked={formData.services.includes(service._id)}
+                        onChange={handleServiceChange}
+                        value={service._id.toString()}
+                      />
+                    }
+                    label={service.name}
+                  />
+                ))}
+              </FormGroup>
+            </FormControl>
+          </div>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseModal}   variant="outlined" color="warning">Close</Button>
+        <Button onClick={() => handleUpdate(selectedInstaller.id, formData)}   variant="outlined" color="primary">Update and Save</Button>
+      </DialogActions>
+    </Dialog>
 
 
   );

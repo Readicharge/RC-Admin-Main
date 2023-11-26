@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Button, Box } from '@mui/material';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import Header from "../../components/Header.jsx"
 
 import ServicePriceHelper from './servicePriceHelper'; // u1
 
@@ -63,8 +64,8 @@ import { getServicePriceList,getServiceNameById } from "../../data/ApiController
     return <div>Sorry you have to create Services first</div>;
   }
    return (
-    <div>
-      <form onSubmit={handleServicePriceSubmit}>
+    <Box px={2}>
+      {/* <form onSubmit={handleServicePriceSubmit}>
         <Grid spacing={2}>
           <Grid item>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -113,9 +114,10 @@ import { getServicePriceList,getServiceNameById } from "../../data/ApiController
             </Box>
           </Grid>
         </Grid>
-      </form>
+      </form> */}
+           <Header title="Service Price" subtitle="Manage Customer Rates" />
       <ServicePriceHelper servicePrice={servicePrice} setServicePrice={setServicePrice} />
-    </div>
+    </Box>
   );
 };
  export default ServicePrice;

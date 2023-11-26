@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Box, Typography, useTheme, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
 import { getAdminData, deleteAdmin, updateAdmin } from "../../data/ApiController.js";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/Header";
+import Header from "../../components/Header"; 
 import { tokens } from "../../theme";
 
 const AdminList = () => {
@@ -20,8 +20,8 @@ const AdminList = () => {
     var tempEditableFields = [];
     var tempCheckboxStates = {};
 
-    for (let i = 0; i < adminData.data.length; i++) {
-      const dataObject = adminData.data[i];
+    for (let i = 0; i < adminData.data.odata.length; i++) {
+      const dataObject = adminData.data.odata[i];
       let roles = dataObject.roles || [];
 
       let data_to_be_pushed = {
@@ -131,7 +131,7 @@ const AdminList = () => {
     {
       field: "name",
       headerName: "Name",
-      flex: 1,
+      width:100,
       cellClassName: "name-column--cell",
       editable: true,
       cellClassName: (params) =>
@@ -140,27 +140,12 @@ const AdminList = () => {
     {
       field: "email",
       headerName: "Email",
-      flex: 1,
+      width:200,
       editable: false,
       cellClassName: (params) =>
         params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
     },
-    {
-      field: "phoneNumber",
-      headerName: "Phone Number",
-      flex: 1,
-      editable: true,
-      cellClassName: (params) =>
-        params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      flex: 1,
-      editable: true,
-      cellClassName: (params) =>
-        params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
-    },
+  
     ...roles.map((role) => ({
       field: role,
       headerName: role,
@@ -184,14 +169,14 @@ const AdminList = () => {
         params.row.email === "Brian@readicharge.com" ? null : (
           <Box>
             <Button
-              variant="contained"
-              color="primary"
+              variant="outlined"
+              color="warning"
               onClick={() => handleDelete(params.row.id)}
             >
               Delete
             </Button>
             <Button
-              variant="contained"
+              variant="outlined"
               style={{ marginLeft: "16px" }}
               color="primary"
               onClick={() => handleEdit(params)}
@@ -206,42 +191,59 @@ const AdminList = () => {
   ];
 
   return (
-    <div style={{ overflowY: "auto", height: "calc(100vh - 150px)" }}>
+    <div style={{ overflowY: "auto", height: "calc(110vh)" }}>
       <Box m="20px">
         <Header title="Admin List" subtitle="Managing the Admins on the platform" />
         <Box
           m="40px 0 0 0"
-          height="75vh"
+          height="70vh"
           sx={{
+            "& .MuiDataGrid-toolbar" : {
+              color:"#fff"
+            },
             "& .MuiDataGrid-root": {
-              border: "none",
+              border: "1px solid #06061E",
+              backgroundColor:"#96D232",
+              borderRadius: "14px",
+              overflow: "hidden",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              fontWeight:"bold"
             },
             "& .MuiDataGrid-cell": {
-              borderBottom: "none",
+              borderBottom: "1px solid #e1e1e1",
+             
             },
             "& .name-column--cell": {
-              color: colors.grey[400],
+              color: colors.greenAccent[300],
             },
             "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#94d034",
-              borderBottom: "none",
+              borderTop : "1px solid #06061E",
+              borderBottom: "1px solid #e1e1e1",
+              color: "#06061E",
             },
             "& .MuiDataGrid-virtualScroller": {
-              backgroundColor: "#f0f0f0",
+              backgroundColor:"#EBEBEF"
             },
             "& .MuiDataGrid-footerContainer": {
-              borderTop: "none",
-              backgroundColor: "#94d034",
+              borderTop: "1px solid #e1e1e1",
+              backgroundColor: "#96D232",
             },
             "& .MuiCheckbox-root": {
               color: `${colors.greenAccent[700]} !important`,
             },
-            "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-              color: colors.white,
+            "& .MuiDataGrid-iconSeparator": {
+              display: "none",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cellEditable": {
+              backgroundColor: colors.greenAccent[100],
             },
             "& .highlighted-row": {
               backgroundColor: "#F0DD5D",
               fontWeight: "bold",
+              fontSize:16
             },
           }}
         >
@@ -257,7 +259,7 @@ const AdminList = () => {
         </Box>
       </Box>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Edit Admin</DialogTitle>
+        <DialogTitle style={{fontSize:24, alignItems:"center"}}>Edit Admin</DialogTitle>
         <DialogContent>
           {selectedRow && (
             <>
@@ -294,7 +296,9 @@ const AdminList = () => {
                 fullWidth
                 style={{ marginBottom: "16px" }}
               />
+               <Typography style={{fontWeight:"bold", marginBottom:"20px"}}>Has access to :</Typography>
               <div style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}>
+             
                 {roles.map((role) => (
                   <div key={role} style={{ marginRight: "16px" }}>
                     <Checkbox
@@ -310,10 +314,10 @@ const AdminList = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color="warning" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleSave} color="primary">
+          <Button onClick={handleSave} color="primary" variant="outlined">
             Save
           </Button>
         </DialogActions>

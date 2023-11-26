@@ -3,6 +3,7 @@ import { Grid, TextField, Button, Box } from '@mui/material';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { getserviceList, createMaterial, getMaterialList, getServiceNameById , getServiceCodeById} from '../../data/ApiController.js';
 import MaterialsList from './materailList';
+import Header from '../../components/Header.jsx';
 
 const Material = () => {
   const materailList = ["Wire_4_4_25",
@@ -90,8 +91,8 @@ const Material = () => {
   };
 
   return (
-    <div >
-      <form onSubmit={handleSubmitMaterial}>
+    <Box px={2}>
+      {/* <form onSubmit={handleSubmitMaterial}>
         <Grid spacing={2}>
           <Grid item>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -178,9 +179,10 @@ const Material = () => {
             </Box>
           </Grid>
         </Grid>
-      </form>
+      </form> */}
+      <Header title="Manage Materials" subtitle="Manage your material price"/>
       <MaterialsList material={material} setMaterial={setMaterial} />
-    </div>
+    </Box>
   )
 };
 export default Material;

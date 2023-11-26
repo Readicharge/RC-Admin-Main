@@ -258,6 +258,139 @@ const createAdmin = async (formData) => {
     }
 }
 
+
+const getAdminData = async () => {
+    try {
+        const response = await axios.post(`http://localhost:5000/api/admin_web_app/getAdmin`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+const getInstallerList = async () => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin_web_app/installer-get-all`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+const deleteInstaller = async (id) => {
+    try {
+        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/installer-delete/${id}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+const updateInstaller = async (id, dataObject) => {
+    try {
+        const dataToBePushed = {
+            id: dataObject._id,
+            shown_id: `RC-I-${dataObject._id}`,
+            firstName: dataObject.firstName,
+            lastName: dataObject.lastName,
+            companyName: dataObject.companyName,
+            email: dataObject.email,
+            password: dataObject.password,
+            phoneNumber: dataObject.phoneNumber,
+            yearsOfExperience: dataObject.yearsOfExperience,
+            description: dataObject.description,
+            addressLine1: dataObject.addressLine1,
+            addressLine2: dataObject.addressLine2,
+            city: dataObject.city,
+            zip: dataObject.zip,
+            miles_distance: dataObject.miles_distance,
+            state: dataObject.state,
+            licenseNumber: dataObject.licenseNumber,
+            licenseExpirationDate: dataObject.licenseExpirationDate,
+            businessInsuranceCompany: dataObject.businessInsuranceCompany,
+            businessInsuranceNumber: dataObject.businessInsuranceNumber,
+            businessAgentPhoneNumber: dataObject.businessAgentPhoneNumber,
+            businessPolicyNumber: dataObject.businessPolicyNumber,
+            businessInsuranceEffectiveStartDate: dataObject.businessInsuranceEffectiveStartDate,
+            businessInsuranceEffectiveEndDate: dataObject.businessInsuranceEffectiveEndDate,
+            bondingCertificationNumber: dataObject.bondingCertificationNumber,
+            bondingCompany: dataObject.bondingCompany,
+            bondingAgentPhoneNumber: dataObject.bondingAgentPhoneNumber,
+            bondAmount: dataObject.bondAmount,
+            bondingEffectiveStartDate: dataObject.bondingEffectiveStartDate,
+            bondingEffectiveEndDate: dataObject.bondingEffectiveEndDate,
+            services: dataObject.services
+        };
+
+        const response = await axios.put(`http://localhost:5000/api/installerApp/update/${id}`, dataToBePushed);
+        console.log(response)
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+
+const deleteAdmin = async (id) => {
+    try {
+        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/deleteAdmin/${id}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+// Progress
+
+
+const getCustomerData = async() => {
+    try {
+        const response = await axios.get(`http://localhost:5000/api/admin_web_app/customer-get-all`);
+        return response
+    }
+    catch (error)
+    {
+        console.log(error)
+    }
+}
+
+
+const updateCustomerData =  async(id,idata) => {
+    try {
+        const response = await axios.put(`http://localhost:5000/api/customerApp/getCustomer/${id}`,idata);
+        return response
+    }
+    catch (error)
+    {
+        console.log(error)
+    }
+}
+
+const deleteCustomer = async(id) => {
+    try {
+        const response = await axios.delete(`http://localhost:5000/api/admin_web_app/deleteAdmin/${id}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
 // ********************************************************************************
 
 
@@ -297,14 +430,7 @@ const createMaterialTax = async (formData) => {
 
 
 
-const getInstallerList = async () => {
-    try {
-        const response = await axios.get(`http://localhost:5000/api/installer`);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-}
+
 
 const getInstallerNameById = async (id) => {
     try {
@@ -436,24 +562,8 @@ const updateBooking = async (id, dataObject) => {
 
 
 
-const getAdminData = async () => {
-    try {
-        const response = await axios.get(`http://localhost:5000/api/admins/`);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 
-const deleteAdmin = async (id) => {
-    try {
-        const response = await axios.delete(`http://localhost:5000/api/admins/${id}`);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 
 
@@ -485,58 +595,9 @@ const updateAdmin = async (id, dataObject) => {
 
 
 
-const deleteInstaller = async (id) => {
-    try {
-        const response = await axios.delete(`http://localhost:5000/api/installer/${id}`);
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
-const updateInstaller = async (id, dataObject) => {
-    try {
-        const dataToBePushed = {
-            id: dataObject._id,
-            shown_id: `RC-I-${dataObject._id}`,
-            firstName: dataObject.firstName,
-            lastName: dataObject.lastName,
-            companyName: dataObject.companyName,
-            email: dataObject.email,
-            password: dataObject.password,
-            phoneNumber: dataObject.phoneNumber,
-            yearsOfExperience: dataObject.yearsOfExperience,
-            description: dataObject.description,
-            addressLine1: dataObject.addressLine1,
-            addressLine2: dataObject.addressLine2,
-            city: dataObject.city,
-            zip: dataObject.zip,
-            miles_distance: dataObject.miles_distance,
-            state: dataObject.state,
-            licenseNumber: dataObject.licenseNumber,
-            licenseExpirationDate: dataObject.licenseExpirationDate,
-            businessInsuranceCompany: dataObject.businessInsuranceCompany,
-            businessInsuranceNumber: dataObject.businessInsuranceNumber,
-            businessAgentPhoneNumber: dataObject.businessAgentPhoneNumber,
-            businessPolicyNumber: dataObject.businessPolicyNumber,
-            businessInsuranceEffectiveStartDate: dataObject.businessInsuranceEffectiveStartDate,
-            businessInsuranceEffectiveEndDate: dataObject.businessInsuranceEffectiveEndDate,
-            bondingCertificationNumber: dataObject.bondingCertificationNumber,
-            bondingCompany: dataObject.bondingCompany,
-            bondingAgentPhoneNumber: dataObject.bondingAgentPhoneNumber,
-            bondAmount: dataObject.bondAmount,
-            bondingEffectiveStartDate: dataObject.bondingEffectiveStartDate,
-            bondingEffectiveEndDate: dataObject.bondingEffectiveEndDate,
-            services: dataObject.services
-        };
 
-        const response = await axios.put(`http://localhost:5000/api/installer/${id}`, dataToBePushed);
-        console.log(response)
-        return response;
-    } catch (error) {
-        console.log(error);
-    }
-};
+
 
 const fetchPayments = async () => {
     try {
@@ -556,6 +617,7 @@ const fetchPayments = async () => {
 
 
 export {
+    getCustomerData,
     createCustomer,
     updateServicePrice,
     updateServiceTime,

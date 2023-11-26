@@ -68,6 +68,8 @@ export const themeSettings = (mode) => {
       mode: mode,
       primary: {
         main: colors.primary[500],
+        warning : "red",
+        others:"#48AA0F"
       },
       secondary: {
         main: colors.blueAccent[500],

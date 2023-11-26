@@ -51,10 +51,10 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
       width: 200,
       renderCell: (params) => (
         <>
-          <Button variant="contained" color="primary" onClick={() => handleEdit(params)} style={{marginRight:"5px"}}>
+          <Button variant="outlined" color="primary" onClick={() => handleEdit(params)} style={{marginRight:"5px"}}>
             Edit
           </Button>
-          <Button variant="contained" color="primary" onClick={() => handleDelete(params.row.id)} style={{marginLeft:"16px"}}>
+          <Button  variant="outlined" color="warning" onClick={() => handleDelete(params.row.id)} style={{marginLeft:"16px"}}>
             Delete
           </Button>
         </>
@@ -63,40 +63,54 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
   ];
 
   return (
-    <Box m="20px" style={{alignItems:"center"}}>
-      <Box m="40px 0 0 0" height="75vh" width="50vw"
-              sx={{
-                "& .MuiDataGrid-root": {
-                  border: "none",
-                },
-                "& .MuiDataGrid-cell": {
-                  borderBottom: "none",
-                },
-                "& .name-column--cell": {
-                  color: colors.greenAccent[300],
-                },
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: "#94d034",
-                  borderBottom: "none",
-                  borderTopLeftRadius:"12px",
-                  borderTopRightRadius:"12px"
-                },
-                "& .MuiDataGrid-virtualScroller": {
-                  backgroundColor: "#ffffff",
-                },
-                "& .MuiDataGrid-footerContainer": {
-                  borderTop: "none",
-                  backgroundColor: "#94d034",
-                  borderBottomLeftRadius:"12px",
-                  borderBottomRightRadius:"12px"
-                },
-                "& .MuiCheckbox-root": {
-                  color: `${colors.greenAccent[700]} !important`,
-                },
-                "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-                  color: `#141E5A !important`,
-                },
-              }} /* Rest of the styles */>
+    <Box  style={{alignItems:"center"}}>
+      <Box
+          m="40px 0 0 0"
+          height="70vh"
+          sx={{
+            "& .MuiDataGrid-toolbar" : {
+              color:"#fff"
+            },
+            "& .MuiDataGrid-root": {
+              border: "1px solid #06061E",
+              backgroundColor:"#96D232",
+              borderRadius: "14px",
+              overflow: "hidden",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              fontWeight:"bold"
+            },
+            "& .MuiDataGrid-cell": {
+              borderBottom: "1px solid #e1e1e1",
+            },
+            "& .name-column--cell": {
+              color: colors.greenAccent[300],
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              borderTop : "1px solid #06061E",
+              borderBottom: "1px solid #e1e1e1",
+              color: "#06061E",
+            },
+            "& .MuiDataGrid-virtualScroller": {
+              backgroundColor: "#f5f5f5",
+            },
+            "& .MuiDataGrid-footerContainer": {
+              borderTop: "1px solid #e1e1e1",
+              backgroundColor: "#96D232",
+            },
+            "& .MuiCheckbox-root": {
+              color: `${colors.greenAccent[700]} !important`,
+            },
+            "& .MuiDataGrid-iconSeparator": {
+              display: "none",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cellEditable": {
+              backgroundColor: colors.greenAccent[100],
+            },
+          }}
+        >
         <DataGrid
           rows={servicePrice}
           columns={columns}
@@ -119,6 +133,7 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
             value={editedData.number_of_installs || ""}
             onChange={(e) => setEditedData({ ...editedData, number_of_installs: e.target.value })}
             fullWidth
+            disabled
             style={{marginBottom:"6px"}}
           />
           <TextField
@@ -130,8 +145,8 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={()=>handleUpdate(editedData.id,editedData)} color="primary">
+          <Button onClick={handleClose}  variant="outlined" color="warning">Cancel</Button>
+          <Button onClick={()=>handleUpdate(editedData.id,editedData)} color="primary" variant="outlined"> 
             Save
           </Button>
         </DialogActions>

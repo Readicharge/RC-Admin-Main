@@ -66,22 +66,23 @@ const AdminForm = () => {
           handleChange,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column'}}>
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
             <Box
               display="grid"
               gap="30px"
-              gridTemplateColumns="repeat(2, minmax(0, 1fr))"
+              p={10}
+              gridTemplateColumns="repeat(5, minmax(0, 1fr))"
               sx={{
-                '& > div': { gridColumn: isNonMobile ? undefined : 'span 2' },
+                "& > div": {
+                  gridColumn: isNonMobile ? undefined : "span 5",
+                },
+                backgroundColor: "#F6F6F8",
+                boxShadow: "0 2px 4px rgba(238, 242, 250,1)",
+                width: "74%",
+                padding: "20px",
+                borderRadius: "10px",
               }}
-              bgcolor="#fff"
-              borderRadius="10px"
-              width="40%"
-              margin="10px"
-              padding="20px"
-              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
             >
-              
               <TextField
                 fullWidth
                 variant="standard"
@@ -118,7 +119,7 @@ const AdminForm = () => {
                 error={!!touched.email && !!errors.email}
                 helperText={touched.email && errors.email}
               />
-                <TextField
+              <TextField
                 fullWidth
                 variant="standard"
                 type="tel"
@@ -142,24 +143,10 @@ const AdminForm = () => {
                 error={!!touched.address && !!errors.address}
                 helperText={touched.address && errors.address}
               />
-            
 
-             
-            </Box>
-            <Box
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(3, minmax(0, 1fr))"
-              sx={{
-                '& > div': { gridColumn: isNonMobile ? undefined : 'span 2' },
-              }}
-              bgcolor="#fff"
-              borderRadius="10px"
-              width="40%"
-              margin="10px"
-              padding="20px"
-              boxShadow="0 2px 4px rgba(0, 0, 0, 0.1)"
-            >
+
+
+    
               <FormControlLabel
                 control={
                   <Checkbox
@@ -251,14 +238,30 @@ const AdminForm = () => {
                 }
                 label="Help Desk"
               />
-               <Box display="flex" mt="20px">
-                <Button type="submit" color="primary" variant="contained">
+                <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={selectedRoles.includes('Scheduler')}
+                    onChange={handleRoleChange}
+                    value="Scheduler"
+                  />
+                }
+                label="Task Scheduler"
+              />
+              <Box display="flex" mt="20px">
+                <Button type="submit"
+                  color="success"
+                  style={{
+                    padding: "8px",
+                    borderRadius: "8px",
+                  }}
+                  variant="outlined">
                   Save Admin Details
                 </Button>
               </Box>
 
             </Box>
-            
+
           </form>
         )}
       </Formik>

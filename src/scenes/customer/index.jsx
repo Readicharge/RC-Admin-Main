@@ -49,24 +49,25 @@ const CustomerForm = ({ changedBy }) => {
       <Header title="Customer Details" subtitle="Enroll a new customer" />
       <form onSubmit={handleFormSubmit}>
 
-        <Box
-          display="grid"
-          gap="30px"
-          gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-          sx={{
-            "& > div": {
-              gridColumn: isNonMobile ? undefined : "span 4",
-            },
-            backgroundColor: "#f5f5f5",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
-        >
+      <Box
+              display="grid"
+              gap="30px"
+              p={10}
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              sx={{
+                "& > div": {
+                  gridColumn: isNonMobile ? undefined : "span 4",
+                },
+                backgroundColor: "#F6F6F8",
+                boxShadow: "0 2px 4px rgba(238, 242, 250,1)",
+                width: "70%",
+                padding: "20px",
+                borderRadius: "10px",
+              }}
+            >
           {/* Add Personal Information fields here */}
           <TextField
             fullWidth
-            variant="filled"
             type="text"
             value={formData1.firstName}
             label="First Name"
@@ -76,7 +77,6 @@ const CustomerForm = ({ changedBy }) => {
           />
           <TextField
             fullWidth
-            variant="filled"
             type="text"
             label="Last Name"
             value={formData1.lastName}
@@ -84,9 +84,17 @@ const CustomerForm = ({ changedBy }) => {
             id="lastName"
             sx={{ gridColumn: "span 1" }}
           />
+            <TextField
+            fullWidth
+            type="text"
+            label="Phone Number"
+            value={formData1.phoneNumber}
+            name="phoneNumber"
+            id="phoneNumber"
+            sx={{ gridColumn: "span 1" }}
+          />
           <TextField
             fullWidth
-            variant="filled"
             type="text"
             label="Email"
             value={formData1.email}
@@ -96,7 +104,6 @@ const CustomerForm = ({ changedBy }) => {
           />
           <TextField
             fullWidth
-            variant="filled"
             type="password"
             label="Password"
             value={formData1.password}
@@ -104,27 +111,17 @@ const CustomerForm = ({ changedBy }) => {
             id="password"
             sx={{ gridColumn: "span 2" }}
           />
-          <TextField
-            fullWidth
-            variant="filled"
-            type="text"
-            label="Phone Number"
-            value={formData1.phoneNumber}
-            name="phoneNumber"
-            id="phoneNumber"
-            sx={{ gridColumn: "span 1" }}
-          />
+        
 
           <Box display="flex" mt="20px" gridColumn="span 4">
             <Button
               type="submit"
+              color="success"
               style={{
-                backgroundColor: "#96D232",
                 padding: "8px",
-                color: "#fff",
                 borderRadius: "8px",
               }}
-              variant="contained"
+              variant="outlined"
             >
               Submit and Continue
             </Button>

@@ -27,6 +27,7 @@ import ResidenceForm from "./scenes/bookings_01/form_page_1";
 import NumberOfChargersForm from "./scenes/bookings_01/form_page_2";
 import ChargerDetails1Form from "./scenes/bookings_01/form_page_3";
 import ChargingStationForm from "./scenes/bookings_01/form_page_4";
+import CustomerList from "./scenes/customer/customerList";
 
 const fixedUserName = "Brian@readicharge.com"
  function App() {
@@ -50,18 +51,21 @@ const fixedUserName = "Brian@readicharge.com"
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app" style={{
-          backgroundColor:"#F9FAFC"
+          backgroundColor:"#06061E",
+      
         }}>
           {isLoggedIn ? (
             <>
               <Sidebar isSidebar={isSidebar} username={userName} isLoggedIn={isLoggedIn} enabledSections={roles} />
-              <main className="content">
+              <main className="content" style={{   
+          overflow:"scroll"}}>
                 <Topbar setIsSidebar={setIsSidebar} handleLogout={handleLogout} />
                 <Routes>
                   <Route path="/" element={<Navigate to="/dashboard" />} />
                   <Route path="/under-progress" element={<UnderProgress/>} />
                   <Route path="/dashboard" element={<DashboardComponent />} />
                   <Route path="/installer" element={<InstallerList/>} />
+                  <Route path="/customer" element={<CustomerList/>} />
                   <Route path="/contacts" element={<Contacts />} />
                   <Route path="/jobs" element={<Invoices admin={userName} />} />
                   <Route path="/form" element={<Form />} />
