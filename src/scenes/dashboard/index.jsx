@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import { Box } from "@mui/material";
 import { tokens } from "../../theme";
 import { BarList, Bold, Card, Flex, Metric, Text, List, ListItem, ProgressBar, BadgeDelta, DeltaType, Grid, DonutChart, Title } from "@tremor/react";
-import { getInstallerList, getCustomerData, getServicePriceList } from "../../data/ApiController.js";
+import { getInstallerList, getCustomerData, getServicePriceList, getServiceNameById } from "../../data/ApiController.js";
 import { useEffect } from "react";
 import { useState } from "react";
 
@@ -18,6 +18,7 @@ const Dashboard = () => {
   // The Primaries
   const [totalInstaller, setTotalInstaller] = useState("");
   const [totalCustomer, setTotalCustomer] = useState("");
+  const [serviceMap,setServiceMap] = useState({});
   const [value, setValue] = React.useState(null);
    
 
@@ -30,7 +31,36 @@ const Dashboard = () => {
       const customerCount = await getCustomerData();
 
       setTotalInstaller(installerCount.data.odata.length);
-      setTotalCustomer(customerCount.data.length)
+      setTotalCustomer(customerCount.data.length);
+
+
+      // Setting up the data for the pie chart which will keep the track for each of the installers 
+      var servicesMap = {}
+      const seerviceOData = async () => {
+        for(let i = 0 ; i < installerCount.data.odata.length;i++)
+        {
+          const services = installerCount.data.odata[i].services
+          for(const serviceId in services)
+          {
+            // Here we have to check if the servicesMap has the service name as the key then we will increase the counter for that service otherwise we will add the servicename as the key and the value will bet he servie name and the count of the service
+            if(servicesMap[(services[serviceId])]!= undefined)
+            {
+              servicesMap[services[serviceId]].count = servicesMap[services[serviceId]].count + 1;
+            }
+            else
+            {
+              const sName = await getServiceNameById(services[serviceId]);
+              servicesMap[services[serviceId]] = {
+                name : sName,
+                count: 1
+              }
+            }
+          }
+        }
+        setServiceMap(servicesMap);
+        console.log(servicesMap)
+      }
+      seerviceOData()
     }
     fetchData();
   }, [])
@@ -85,29 +115,32 @@ const Dashboard = () => {
   ];
 
 
-  var servicePrice = {}
-  const seerviceOData = async () => {
-    const data = await getServicePriceList();
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
   }
 
-  seerviceOData();
 
-  console.log(seerviceOData)
+
+
 
   const cities = [
     {
+      id: "65374fe8f735dd38a821bd38",
       name: "Basic Install",
       sales: 6,
     },
     {
+      id : "65374ffdf735dd38a821bd3a",
       name: "Immidiate Install",
       sales: 8,
     },
     {
+      id:"6537500ff735dd38a821bd3c",
       name: "Advance Install",
       sales: 10,
     },
     {
+      id:"6537501df735dd38a821bd3e",
       name: "Advance 80 Install",
       sales: 12,
     },
@@ -155,6 +188,30 @@ const Dashboard = () => {
             colors={["green", "yellow", "orange", "indigo", "blue", "emerald"]}
             onValueChange={(v) => setValue(v)}
           />
+           <List className="w-2/3">
+          {cities.map((locationData) => (
+            <ListItem key={locationData.name} className="space-x-2">
+              <div className="flex items-center space-x-2 truncate">
+                <span
+                  className={classNames(
+                    locationData.name === "Basic Install"
+                      ? "bg-indigo-500"
+                      : locationData.name === "Immidiate Install"
+                      ? "bg-violet-500"
+                      : locationData.name === "Advance Install"
+                      ? "bg-fuchsia-500"
+                      : locationData.name === "Advance 80 Install"
+                      ? "bg-red-300"
+                      : "",
+                    "h-2.5 w-2.5 rounded-sm flex-shrink-0",
+                  )}
+                />
+                <span className="truncate">{locationData.name}</span>
+              </div>
+              {/* <span>{serviceMap[locationData.id].name}</span> */}
+            </ListItem>
+          ))}
+        </List>
         </Card>
         <Card className="max-w-lg">
           <Title>Transaction Analytics</Title>
