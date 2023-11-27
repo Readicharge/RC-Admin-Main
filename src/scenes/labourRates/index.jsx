@@ -80,6 +80,7 @@ const LabourRateForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("Heloo")
 
     // Submitting the form three times
     for (let i = 0; i < 3; i++) {
@@ -147,7 +148,7 @@ const LabourRateForm = () => {
 
       <div style={{ padding: "20px" }}>
         <Header title="Labor Rates" subtitle="Manage your labor rate" />
-        <Box style={{alignContents:"space-between" , justifyContent:"space-between"}}>
+        <Box style={{alignContents:"space-between" , justifyContent:"space-between" ,margin:"10px"}}>
           <FormControl sx={{ minWidth: 120, marginLeft: '20px', border: "1px solid #fff" }} >
             <InputLabel style={{ color: "#fff" }} id="service-select-label">Service</InputLabel>
             <Select
@@ -155,6 +156,7 @@ const LabourRateForm = () => {
               id="service-select"
               value={selectedService}
               onChange={handleServiceSelect}
+              style={{ color: "#fff" }}
             >
               {serviceList.map((service) => (
                 <MenuItem key={service._id} value={service._id}>
@@ -163,21 +165,20 @@ const LabourRateForm = () => {
               ))}
             </Select>
           </FormControl>
-          <Button variant="contained" type="submit" style={{ padding: "20px" }}>
-            Submit
-          </Button>
+        
         </Box>
 
         <form onSubmit={handleSubmit}>
           <Grid spacing={8}>
             <Grid item>
-              <div style={{ height: '65vh', overflow: 'auto' }}>
+              <div style={{ height: '65vh', overflow: 'auto' , borderRadius:"14px"}}>
                 <Table>
                   <TableHead
                     style={{
                       backgroundColor: "#96D232",
                       borderTopLeftRadius: "14px",
-                      borderTopLeftRadius: "14px"
+                      borderTopLeftRadius: "14px",
+                      position:"sticky"
                     }}>
                     <TableRow style={{
                       backgroundColor: "#96D232",
@@ -226,7 +227,9 @@ const LabourRateForm = () => {
                 </Table>
               </div>
             </Grid>
-
+            <Button variant="contained" type="submit"  style={{ backgroundColor: "#96D232", padding: "17px" , marginLeft:"10px" , marginTop:"10px",padding:"4px", width:"200px"}}>
+            Submit
+          </Button>
           </Grid>
         </form>
 

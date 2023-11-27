@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "@mui/material";
 import { Box } from "@mui/material";
 import { tokens } from "../../theme";
-import { BarList, Bold, Card, Flex, Metric, Text, List, ListItem, ProgressBar, Grid, DonutChart, Title } from "@tremor/react";
+import { BarList, Bold, Card, Flex, Metric, Text, List, ListItem, ProgressBar, BadgeDelta, DeltaType, Grid, DonutChart, Title } from "@tremor/react";
 import { getInstallerList, getCustomerData, getServicePriceList } from "../../data/ApiController.js";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [totalInstaller, setTotalInstaller] = useState("");
   const [totalCustomer, setTotalCustomer] = useState("");
   const [value, setValue] = React.useState(null);
-
+   
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -67,16 +67,19 @@ const Dashboard = () => {
       title: "Installers",
       metric: totalInstaller,
       data: locationA,
+      activeCount: 0
     },
     {
       title: "Customers",
       metric: totalCustomer,
       data: locationB,
+      activeCount: totalCustomer
     },
     {
       title: "Companies",
       metric: "23",
       data: locationC,
+      activeCount: 10
     },
 
   ];
@@ -116,7 +119,11 @@ const Dashboard = () => {
       <Grid numItemsSm={2} numItemsLg={3} className="gap-6 p-4">
         {categories.map((item) => (
           <Card key={item.title}>
-            <Text>{item.title}</Text>
+            <Flex alignItems="start">
+              <Text>{item.title}</Text>
+              <BadgeDelta deltaType="increase">{item.activeCount}</BadgeDelta>
+            </Flex>
+
             <Metric>{item.metric}</Metric>
             <List className="mt-4">
               {item.data.map((product) => (

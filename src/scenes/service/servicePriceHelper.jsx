@@ -29,9 +29,9 @@ const ServicePriceHelper = ({ servicePrice, setServicePrice }) => {
   const handleUpdate = async  (id,editedData) => {
     // Call your updateData function here with editedData
     // updateData(editedData);
-
+    console.log(editedData)
     await updateServicePrice(id,editedData);
-
+    
     // Close the edit dialog
     setEditDialogOpen(false);
   };

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-import { deleteMaterialById } from "../../data/ApiController.js";
+import { deleteMaterialById,updateMaterial } from "../../data/ApiController.js";
 
 // import { deleteMaterial, getMaterials } from "api/materials";
 
@@ -14,16 +14,44 @@ import { deleteMaterialById } from "../../data/ApiController.js";
 const MaterialList = ({ material, setMaterial }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [editedRow, setEditedRow] = useState({});
+  const [editedData, setEditedData] = useState({});
 
 
-
-
-
-  const handleDelete = async (id) => {
-    console.log(id)
-    await deleteMaterialById(id);
-    setMaterial(material.filter((st) => st.id !== id));
+const handleEdit = (params) => {
+    setEditedRow(params.row);
+    setEditedData({ ...params.row }); // Copy the row data to editedData
+    setEditDialogOpen(true);
   };
+
+  const handleUpdate = async  (id,editedData) => {
+    // Call your updateData function here with editedData
+    // updateData(editedData);
+    console.log("editedData",editedData)
+    const response = await updateMaterial(id,editedData);
+    console.log(response)
+    // Close the edit dialog
+    // setEditDialogOpen(false);
+  };
+
+  const handleClose = () => {
+    setEditDialogOpen(false);
+  };
+
+
+
+
+
+
+  // const handleDelete = async (id) => {
+  //   console.log(id)
+  //   await deleteMaterialById(id);
+  //   setMaterial(material.filter((st) => st.id !== id));
+  // };
+
+
+
   const columns = [
     { field: "shown_id", headerName: "ID", width: 250 },
     { field: "material_name", headerName: "Material Name", width: 150 },
@@ -38,10 +66,10 @@ const MaterialList = ({ material, setMaterial }) => {
       renderCell: (params) => (
         <Button
           variant="outlined"
-          color="warning"
-          onClick={() => handleDelete(params.row.id)}
+          color="primary"
+          onClick={() => handleEdit(params)}
         >
-          Delete
+          Update
         </Button>
       ),
     },
@@ -103,6 +131,42 @@ const MaterialList = ({ material, setMaterial }) => {
        
         />
       </Box>
+
+      {/* Modal for the Edit Price */}
+      <Dialog open={editDialogOpen} onClose={handleClose}>
+        <DialogTitle>Edit Row</DialogTitle>
+        <DialogContent style={{padding:"20px"}}>
+          {/* Render the editable fields here */}
+          <TextField
+            label="Service"
+            value={editedData.service_name || ""}
+            disabled
+            fullWidth
+            style={{marginBottom:"6px"}}
+          />
+          <TextField
+            label="Number of Installs"
+            value={editedData.number_of_installs || ""}
+            onChange={(e) => setEditedData({ ...editedData, number_of_installs: e.target.value })}
+            fullWidth
+            disabled
+            style={{marginBottom:"6px"}}
+          />
+          <TextField
+            label="Price"
+            value={editedData.price || ""}
+            onChange={(e) => setEditedData({ ...editedData, price: e.target.value })}
+            fullWidth
+            style={{marginBottom:"6px"}}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}  variant="outlined" color="warning">Cancel</Button>
+          <Button onClick={()=>handleUpdate(editedData.id,editedData)} color="primary" variant="outlined"> 
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
