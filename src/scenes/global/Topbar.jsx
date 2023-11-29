@@ -16,7 +16,7 @@ import { LogoutOutlined } from "@mui/icons-material";
         borderRadius="3px"
       ></Box>
       {/* ICONS */}
-      <Box display="flex">
+      <Box display="flex" style={{marginRight:"9px"}}>
      
         <IconButton style={{
           color:"red",
@@ -25,6 +25,7 @@ import { LogoutOutlined } from "@mui/icons-material";
           width:"110px",
           border:"1px solid red",
           borderRadius:"14px",
+          
           alignContent:"space-between",
           justifyContent:"space-between"
         }} onClick={handleLogout}>
