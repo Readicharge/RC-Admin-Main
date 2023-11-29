@@ -133,7 +133,7 @@ const Dashboard = () => {
       metric: totalInstaller,
       data: locationA,
       activeCount: totalActive,
-      subCategoryValues: [(totalScheduled/totalInstaller)*100, ((totalTodayAvail-totalScheduled) /totalInstaller)*100],
+      subCategoryValues: [totalScheduled/totalInstaller, totalTodayAvail-totalScheduled ],
       subCategroyColors: ["cyan", "green"],
       subCategoryTitles: ["Scheduled Today", "Active Today"],
     },
