@@ -1,14 +1,19 @@
 
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Container } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
+
 import { validateAdmin } from '../../data/ApiController.js';
-import { useNavigate } from 'react-router-dom';
 
 const LoginScreen = ({ onLogin, setUserName, setRoles }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -35,6 +40,10 @@ const LoginScreen = ({ onLogin, setUserName, setRoles }) => {
     } else {
       setError('Invalid email or password');
     }
+  };
+
+    const handleTogglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
   };
 
   return (
@@ -86,6 +95,7 @@ const LoginScreen = ({ onLogin, setUserName, setRoles }) => {
             InputLabelProps={{
               style: { color: '#fff' },
             }}
+           
           />
           <TextField
             margin="normal"
@@ -93,17 +103,29 @@ const LoginScreen = ({ onLogin, setUserName, setRoles }) => {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={handlePasswordChange}
             InputProps={{
               style: { color: '#fff' },
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    edge="end"
+                    onClick={handleTogglePasswordVisibility}
+                    style={{ color: '#fff' }}
+                  >
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
             InputLabelProps={{
               style: { color: '#fff' },
             }}
+      
           />
           {error && (
             <Typography variant="body1" color="error" gutterBottom style={{ textShadow: '1px 1px 2px #ff0000' }}>

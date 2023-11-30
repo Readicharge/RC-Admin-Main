@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, TextField, Button, Box } from '@mui/material';
-import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import ServiceTimeHelper from './ServiceTimeHelper';
 import { createTime, getserviceList } from '../../data/ApiController.js';
 import { getserviceTimeList, getServiceNameById } from "../../data/ApiController.js";
@@ -9,9 +8,9 @@ import Header from "../../components/Header";
 
 
 const ServiceTime = () => {
-  const [serviceList, setServiceList] = useState([]);
-  const [selectedService, setSelectedService] = useState('');
-  const [numberOfInstalls, setNumberOfInstalls] = useState('');
+  // const [serviceList, setServiceList] = useState([]);
+  // const [selectedService, setSelectedService] = useState('');
+  // const [numberOfInstalls, setNumberOfInstalls] = useState('');
   const [serviceTime, setServiceTime] = useState([]);
 
   useEffect(() => {
@@ -50,25 +49,28 @@ const ServiceTime = () => {
   }, []);
 
 
+  
 
-  const handleServiceTimeSubmit = (event) => {
-    event.preventDefault();
-    const serviceMinTime = event.target.serviceMinTime.value;
-    const serviceMaxTime = event.target.serviceMaxTime.value;
-    const numberOfInstall = event.target.numberOfInstall.value;
-    const newServiceTime = {
-      time_min: serviceMinTime,
-      time_max: serviceMaxTime,
-      number_of_installs: numberOfInstall,
-      service_id: selectedService,
-    };
-    console.log(newServiceTime);
-    createTime(newServiceTime);
-    fetchserviceTime();
-  };
-  if (!serviceList || serviceList.length === 0) {
-    return <div>Sorry you have to create Services first</div>;
-  }
+
+
+  // const handleServiceTimeSubmit = (event) => {
+  //   event.preventDefault();
+  //   const serviceMinTime = event.target.serviceMinTime.value;
+  //   const serviceMaxTime = event.target.serviceMaxTime.value;
+  //   const numberOfInstall = event.target.numberOfInstall.value;
+  //   const newServiceTime = {
+  //     time_min: serviceMinTime,
+  //     time_max: serviceMaxTime,
+  //     number_of_installs: numberOfInstall,
+  //     service_id: selectedService,
+  //   };
+  //   console.log(newServiceTime);
+  //   createTime(newServiceTime);
+  //   fetchserviceTime();
+  // };
+  // if (!serviceList || serviceList.length === 0) {
+  //   return <div>Sorry you have to create Services first</div>;
+  // }
 
 
   return (

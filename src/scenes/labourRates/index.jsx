@@ -15,6 +15,7 @@ import {
 import Header from '../../components/Header.jsx';
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { getLabourRate, createLabourRate, getserviceList } from '../../data/ApiController.js';
+import PasswordModal from '../global/passwordConfirm.jsx';
 
 const states = [
   'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
@@ -34,7 +35,7 @@ const LabourRateForm = () => {
   const [selectedService, setSelectedService] = useState('');
   const [labourRatesList, setLabourRatesList] = useState([]);
   const [formState, setFormState] = useState([]);
-
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -118,6 +119,19 @@ const LabourRateForm = () => {
     }
   };
 
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+
+
+
+
   const handleServiceSelect = (event) => {
     const selectedServiceId = event.target.value;
     const selectedLabourRates = labourRatesList.filter((labourRate) => labourRate.service_id === selectedServiceId);
@@ -148,7 +162,7 @@ const LabourRateForm = () => {
 
       <div style={{ padding: "20px" }}>
         <Header title="Labor Rates" subtitle="Manage your labor rate" />
-        <Box style={{alignContents:"space-between" , justifyContent:"space-between" ,margin:"10px"}}>
+        <Box style={{ alignContents: "space-between", justifyContent: "space-between", margin: "10px" }}>
           <FormControl sx={{ minWidth: 120, marginLeft: '20px', border: "1px solid #fff" }} >
             <InputLabel style={{ color: "#fff" }} id="service-select-label">Service</InputLabel>
             <Select
@@ -165,20 +179,20 @@ const LabourRateForm = () => {
               ))}
             </Select>
           </FormControl>
-        
+
         </Box>
 
         <form onSubmit={handleSubmit}>
           <Grid spacing={8}>
             <Grid item>
-              <div style={{ height: '65vh', overflow: 'auto' , borderRadius:"14px"}}>
+              <div style={{ height: '65vh', overflow: 'auto', borderRadius: "14px" }}>
                 <Table>
                   <TableHead
                     style={{
                       backgroundColor: "#96D232",
                       borderTopLeftRadius: "14px",
                       borderTopLeftRadius: "14px",
-                      position:"sticky"
+                      position: "sticky"
                     }}>
                     <TableRow style={{
                       backgroundColor: "#96D232",
@@ -227,9 +241,9 @@ const LabourRateForm = () => {
                 </Table>
               </div>
             </Grid>
-            <Button variant="contained" type="submit"  style={{ backgroundColor: "#96D232", padding: "17px" , marginLeft:"10px" , marginTop:"10px",padding:"4px", width:"200px"}}>
-            Submit
-          </Button>
+            <Button variant="contained" type="submit" style={{ backgroundColor: "#96D232", padding: "17px", marginLeft: "10px", marginTop: "10px", padding: "4px", width: "200px" }} onClick={handleOpenModal}>
+              Submit
+            </Button>
           </Grid>
         </form>
 
@@ -264,6 +278,7 @@ const LabourRateForm = () => {
 </Box>
 
       </Box> */}
+      <PasswordModal open={modalOpen} handleClose={handleCloseModal} onConfirm={handleSubmit} />
     </Box>
   );
 };

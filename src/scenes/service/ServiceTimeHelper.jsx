@@ -3,6 +3,7 @@ import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextFie
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
+import PasswordModal from '../global/passwordConfirm.jsx';
 import { deleteServiceTimeById,updateServiceTime } from "../../data/ApiController.js";
 
 const ServiceTimeHelper = ({ serviceTime, setServiceTime }) => {
@@ -11,6 +12,8 @@ const ServiceTimeHelper = ({ serviceTime, setServiceTime }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editedRow, setEditedRow] = useState({});
   const [editedData, setEditedData] = useState({});
+  const [modalOpen_Confirm, setModalOpen_Confirm] = useState(false);
+
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(`This field with ID ${id} will be permanently deleted. Are you sure?`);
@@ -39,6 +42,15 @@ const ServiceTimeHelper = ({ serviceTime, setServiceTime }) => {
     setEditDialogOpen(false);
   };
 
+  const handleOpenModal_Confirm = () => {
+    setModalOpen_Confirm(true);
+  };
+
+  const handleCloseModal_Confirm = () => {
+    setModalOpen_Confirm(false);
+  };
+
+
   const columns = [
     { field: "shown_id", headerName: "ID", width: 250 },
     { field: "service_name", headerName: "Service", width: 200 },
@@ -54,9 +66,9 @@ const ServiceTimeHelper = ({ serviceTime, setServiceTime }) => {
           <Button variant="outlined" color="primary" onClick={() => handleEdit(params)} style={{marginRight:"5px"}}>
             Edit
           </Button>
-          <Button variant="outlined" color="warning" onClick={() => handleDelete(params.row.id)} style={{marginLeft:"16px"}}>
+          {/* <Button variant="outlined" color="warning" onClick={() => handleDelete(params.row.id)} style={{marginLeft:"16px"}}>
             Delete
-          </Button>
+          </Button> */}
         </>
       ),
     },
@@ -152,11 +164,12 @@ const ServiceTimeHelper = ({ serviceTime, setServiceTime }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="outlined" color="warning">Cancel</Button>
-          <Button onClick={()=>handleUpdate(editedData.id,editedData)} color="primary" variant="outlined">
+          <Button onClick={()=>handleOpenModal_Confirm(editedData.id,editedData)} color="primary" variant="outlined"> 
             Save
           </Button>
         </DialogActions>
       </Dialog>
+      <PasswordModal open={modalOpen_Confirm} handleClose={handleCloseModal_Confirm} onConfirm={()=>{handleUpdate(editedRow.id,editedData)}} />
     </Box>
   );
 };

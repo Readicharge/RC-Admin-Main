@@ -243,7 +243,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               username={username}
               enabled={enabledSections}
             />
-            <Item
+            {/* <Item
               title="Job Ticket"
               to="/bookingForm"
               icon={<NoteAddOutlinedIcon />}
@@ -252,7 +252,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               isLoggedIn={isLoggedIn}
               username={username}
               enabled={enabledSections}
-            />
+            /> */}
             <Item
               title="Admin Users"
               to="/admin"

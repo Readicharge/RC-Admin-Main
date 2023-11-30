@@ -3,6 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Box, Typography, useTheme, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
 import { getAdminData, deleteAdmin, updateAdmin } from "../../data/ApiController.js";
 import { useNavigate } from "react-router-dom";
+import PasswordModal from '../global/passwordConfirm.jsx';
 import Header from "../../components/Header"; 
 import { tokens } from "../../theme";
 
@@ -13,6 +14,7 @@ const AdminList = () => {
   const [selectedRow, setSelectedRow] = useState(null);
   const [open, setOpen] = useState(false);
   const [updatedValues, setUpdatedValues] = useState({});
+  const [modalOpen_Confirm, setModalOpen_Confirm] = useState(false);
 
   const fetchAdminList = async () => {
     const adminData = await getAdminData();
@@ -106,6 +108,15 @@ const AdminList = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+
+  const handleOpenModal_Confirm = () => {
+    setModalOpen_Confirm(true);
+  };
+
+  const handleCloseModal_Confirm = () => {
+    setModalOpen_Confirm(false);
   };
 
   const handleSave = async () => {
@@ -317,11 +328,12 @@ const AdminList = () => {
           <Button onClick={handleClose} color="warning" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={handleSave} color="primary" variant="outlined">
+          <Button onClick={()=>handleOpenModal_Confirm()} color="primary" variant="outlined"> 
             Save
           </Button>
         </DialogActions>
       </Dialog>
+      <PasswordModal open={modalOpen_Confirm} handleClose={handleCloseModal_Confirm} onConfirm={()=>{handleSave()}} />
     </div>
   );
 };

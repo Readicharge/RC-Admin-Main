@@ -58,8 +58,7 @@ const CustomerList = () => {
       width: 150,
       renderCell: (params) => (
         <Button
-          variant="contained"
-          color="primary"
+        variant="outlined" color="warning"
           onClick={() => handleDelete(params.row.id)}
         >
           Delete

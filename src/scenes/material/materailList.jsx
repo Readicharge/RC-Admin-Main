@@ -3,8 +3,8 @@ import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextFie
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-
-import { deleteMaterialById,updateMaterial } from "../../data/ApiController.js";
+import PasswordModal from '../global/passwordConfirm.jsx';
+import {updateMaterial } from "../../data/ApiController.js";
 
 // import { deleteMaterial, getMaterials } from "api/materials";
 
@@ -17,6 +17,8 @@ const MaterialList = ({ material, setMaterial }) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editedRow, setEditedRow] = useState({});
   const [editedData, setEditedData] = useState({});
+  const [modalOpen_Confirm, setModalOpen_Confirm] = useState(false);
+
 
 
 const handleEdit = (params) => {
@@ -41,6 +43,13 @@ const handleEdit = (params) => {
 
 
 
+  const handleOpenModal_Confirm = () => {
+    setModalOpen_Confirm(true);
+  };
+
+  const handleCloseModal_Confirm = () => {
+    setModalOpen_Confirm(false);
+  };
 
 
 
@@ -162,11 +171,12 @@ const handleEdit = (params) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}  variant="outlined" color="warning">Cancel</Button>
-          <Button onClick={()=>handleUpdate(editedData.id,editedData)} color="primary" variant="outlined"> 
+          <Button onClick={()=>handleOpenModal_Confirm(editedData.id,editedData)} color="primary" variant="outlined"> 
             Save
           </Button>
         </DialogActions>
       </Dialog>
+      <PasswordModal open={modalOpen_Confirm} handleClose={handleCloseModal_Confirm} onConfirm={()=>{handleUpdate(editedRow.id,editedData)}} />
     </Box>
   );
 };
