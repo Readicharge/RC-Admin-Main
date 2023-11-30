@@ -8,9 +8,9 @@ import Header from "../../components/Header";
 
 
 const ServiceTime = () => {
-  // const [serviceList, setServiceList] = useState([]);
-  // const [selectedService, setSelectedService] = useState('');
-  // const [numberOfInstalls, setNumberOfInstalls] = useState('');
+  const [serviceList, setServiceList] = useState([]);
+  const [selectedService, setSelectedService] = useState('');
+  const [numberOfInstalls, setNumberOfInstalls] = useState('');
   const [serviceTime, setServiceTime] = useState([]);
 
   useEffect(() => {
