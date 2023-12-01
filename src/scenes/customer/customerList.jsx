@@ -8,7 +8,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 // Replace this import with the actual API function that fetches customer data
-import { getCustomerData } from "../../data/ApiController.js";
+import { getCustomerData , deleteCustomerById} from "../../data/ApiController.js";
 import Header from "../../components/Header.jsx";
 
 const CustomerList = () => {
@@ -28,6 +28,7 @@ const CustomerList = () => {
             last_name: customerData.data[i].last_name,
             email: customerData.data[i].email,
             phone_number: customerData.data[i].phone_number,
+            zip_code: customerData.data[i].zip_code,
           });
     }
     console.log(iarr)
@@ -39,9 +40,13 @@ const CustomerList = () => {
   }, []);
 
   const handleDelete = async (id) => {
-    console.log(id);
-    // await deleteCustomerById(id);
-    setCustomers(customers.filter((customer) => customer.id !== id));
+    const confirmDelete = window.confirm(
+      `This field with ID ${id} will be permanently deleted. Are you sure?`
+    );
+    if (confirmDelete) {
+    await deleteCustomerById(id);
+    fetchCustomerList();
+    }
   };
 
   const columns = [
@@ -50,7 +55,7 @@ const CustomerList = () => {
     { field: "last_name", headerName: "Last Name", width: 150 },
     { field: "email", headerName: "Email", width: 200 },
     { field: "phone_number", headerName: "Phone Number", width: 150 },
-    // { field: "address", headerName: "Address", width: 300 },
+    { field: "zip_code", headerName: "Zip code", width: 150 },
     // { field: "additionalNotes", headerName: "Additional Notes", width: 300 },
     {
       field: "actions",

@@ -8,7 +8,7 @@ import {
   Tab, Box, TextField, useTheme, Button, Dialog, DialogTitle, Typography,
   Accordion,
   AccordionSummary,
-  AccordionDetails, DialogContent, DialogActions
+  AccordionDetails, DialogContent, DialogActions, Alert
 } from "@mui/material";
 import { getInstallerList, deleteInstaller, updateInstaller, getServiceNameById, createInstaller, getserviceList } from "../../data/ApiController.js";
 import InstallerServicesPieChart from "../../components/PieChart";
@@ -127,10 +127,15 @@ const InstallerList = () => {
       const count = i + 1;
       const padStartCount = getCountBasedPadStart(count);
 
+      const iverified = dataObject.clearCheck_status.verified;
+      const icompleted = dataObject.clearCheck_status.completed;
       let data_to_be_pushed = {
+        verified: iverified,
+        completed: icompleted,
+        status: (iverified === true && icompleted === true) ? "Certified" : (iverified === false && icompleted === true) ? "Not Certified" : "Not Applied",
         id: dataObject._id,
         shown_id: `RC-IN-${count.toString().padStart(padStartCount, "0")}`,
-        name : `${dataObject.firstName} ${dataObject.lastName}`,
+        name: `${dataObject.firstName} ${dataObject.lastName}`,
         firstName: dataObject.firstName,
         lastName: dataObject.lastName,
         companyName: dataObject.companyName,
@@ -198,12 +203,12 @@ const InstallerList = () => {
 
 
       const fetchData = async () => {
-       
+
         const pieData = await Promise.all(
           Object.keys(services).map(async (serviceId) => {
             try {
               const serviceName = await getServiceNameById(serviceId);
-           
+
               return {
                 id: serviceId,
                 label: serviceName,
@@ -220,7 +225,7 @@ const InstallerList = () => {
             }
           })
         );
-      
+
         setPieData(pieData);
       };
 
@@ -252,12 +257,13 @@ const InstallerList = () => {
       flex: 1,
       editable: true, // Make this cell editable
       cellClassName: "name-column--cell",
+      width: 100
     },
     {
       field: "email",
       headerName: "Email",
       flex: 1,
-      width:300,
+      width: 400,
       editable: true, // Make this cell editable
     },
     {
@@ -269,7 +275,45 @@ const InstallerList = () => {
       // Make this cell editable
     },
     {
-   
+      field: "zip",
+      headerName: "Zip code",
+      headerAlign: "left",
+      align: "left",
+      width: 100,
+      // Make this cell editable
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      headerAlign: "left",
+      align: "left",
+      width: 100,
+      renderCell: (params) => {
+        if (params.row.verified === true && params.row.completed === true) {
+          return (
+            <div style={{ color: "#09111A", backgroundColor: "#81E1D7", padding: "5px", borderRadius: "14px" }}>
+              Certified
+            </div>
+          )
+        }
+        else if (params.row.verified === false && params.row.completed === true) {
+          return (
+            <div style={{ color: "#09111A", backgroundColor: "#F194AB", padding: "5px", borderRadius: "14px" }}>
+              Not Certified
+            </div>
+          )
+        }
+        else if (params.row.verified === false && params.row.completed === false) {
+          return (
+            <div style={{ color: "#09111A", backgroundColor: "#EBCB8B", padding: "5px", borderRadius: "14px" }}>
+              Not Applied
+            </div>
+          )
+        }
+      }
+    },
+    {
+
       field: "Number_of_bookings",
       headerName: "Jobs Completed",
       flex: 1,
@@ -284,25 +328,21 @@ const InstallerList = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 210,
+      headerAlign: "center",
+      width: 410,
 
       renderCell: (params) => (
         <Box>
           <Button
             variant="outlined"
-            color="warning"
-            onClick={() => handleDelete(params.row.id)}
-          >
-            Delete
-          </Button>
-          {/*           <Button
-            variant="contained"
             style={{ marginLeft: "16px" }}
-            color="primary"
-            onClick={() => handleUpdate(params.row.id, params.row)}
+            color="success"
+            disabled={params.row.verified === true && params.row.completed === true}
+            onClick={() => alert("Mail for background Check sent to Installer")}
           >
-            Update
-          </Button> */}
+            Background Check
+          </Button>
+         
           <Button
             variant="outlined"
             style={{ marginLeft: "16px" }}
@@ -311,17 +351,18 @@ const InstallerList = () => {
           >
             Edit Details
           </Button>
+          <Button
+            variant="outlined"
+            color="warning"
+            style={{ marginLeft: "16px" }}
+            onClick={() => handleDelete(params.row.id)}
+          >
+            Delete
+          </Button>
         </Box>
       ),
 
-    },
-    {
-      field: "changedBy",
-      headerName: "Change Log",
-      flex: 1,
-
-      // Make this cell editable
-    },
+    }
   ];
 
   const handleDelete = async (id) => {
@@ -365,16 +406,16 @@ const InstallerList = () => {
           m="40px 0 0 0"
           height="70vh"
           sx={{
-            "& .MuiDataGrid-toolbar" : {
-              color:"#fff"
+            "& .MuiDataGrid-toolbar": {
+              color: "#fff"
             },
             "& .MuiDataGrid-root": {
               border: "1px solid #06061E",
-              backgroundColor:"#96D232",
+              backgroundColor: "#96D232",
               borderRadius: "14px",
               overflow: "hidden",
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              fontWeight:"bold"
+              fontWeight: "bold"
             },
             "& .MuiDataGrid-cell": {
               borderBottom: "1px solid #e1e1e1",
@@ -383,7 +424,7 @@ const InstallerList = () => {
               color: colors.greenAccent[300],
             },
             "& .MuiDataGrid-columnHeaders": {
-              borderTop : "1px solid #06061E",
+              borderTop: "1px solid #06061E",
               borderBottom: "1px solid #e1e1e1",
               color: "#06061E",
             },
@@ -435,12 +476,12 @@ const InstallerList = () => {
         </Box>
       </Box>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", marginTop: "90px" }}>
-      
+
         <div style={{ marginTop: "10vh", marginBottom: "10vh", display: "flex" }}>
           <Header title="Installers per State" subtitle="Installers List per state" />
           <GeographyChart_02 data={formState} />
         </div>
-        
+
       </div>
 
 
@@ -521,20 +562,20 @@ const InstallerDetailsModal = ({
   return (
 
 
-    <Dialog open={isModalOpen} onClose={handleCloseModal}  maxWidth="md" fullWidth>
-      <DialogTitle style={{fontSize:24, alignItems:"center"}}>Installer Details</DialogTitle>
+    <Dialog open={isModalOpen} onClose={handleCloseModal} maxWidth="md" fullWidth>
+      <DialogTitle style={{ fontSize: 24, alignItems: "center" }}>Installer Details</DialogTitle>
       <DialogContent>
         <Tabs value={selectedTab} onChange={handleTabChange} variant="fullWidth" indicatorColor="primary" textColor="primary" aria-label="full width tabs example">
-          <Tab style={{fontSize:16}} label="Personal Information" />
-          <Tab style={{fontSize:16}} label="Certifications" />
-          <Tab style={{fontSize:16}} label="Services" />
+          <Tab style={{ fontSize: 16 }} label="Personal Information" />
+          <Tab style={{ fontSize: 16 }} label="Certifications" />
+          <Tab style={{ fontSize: 16 }} label="Services" />
         </Tabs>
         <Box p={4}>
           {/* Personal Information Tab */}
           <div role="tabpanel" hidden={selectedTab !== 0}>
             <Accordion>
               <AccordionSummary>
-                <Typography style={{fontWeight:"bold"}}>Address Details</Typography>
+                <Typography style={{ fontWeight: "bold" }}>Address Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -593,7 +634,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary >
-                <Typography style={{fontWeight:"bold"}}>Contact Info</Typography>
+                <Typography style={{ fontWeight: "bold" }}>Contact Info</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -635,7 +676,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary >
-                <Typography style={{fontWeight:"bold"}}>Profile</Typography>
+                <Typography style={{ fontWeight: "bold" }}>Profile</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -693,7 +734,7 @@ const InstallerDetailsModal = ({
           <div role="tabpanel" hidden={selectedTab !== 1}>
             <Accordion>
               <AccordionSummary>
-                <Typography style={{fontWeight:"bold"}}>License Details</Typography>
+                <Typography style={{ fontWeight: "bold" }}>License Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -723,7 +764,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary>
-                <Typography style={{fontWeight:"bold"}}>Business Insurance Details</Typography>
+                <Typography style={{ fontWeight: "bold" }}>Business Insurance Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -789,7 +830,7 @@ const InstallerDetailsModal = ({
 
             <Accordion>
               <AccordionSummary>
-                <Typography style={{fontWeight:"bold"}}>Bonding Details</Typography>
+                <Typography style={{ fontWeight: "bold" }}>Bonding Details</Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Box display="flex" flexDirection="column">
@@ -879,8 +920,8 @@ const InstallerDetailsModal = ({
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCloseModal}   variant="outlined" color="warning">Close</Button>
-        <Button onClick={() => handleUpdate(selectedInstaller.id, formData)}   variant="outlined" color="primary">Update and Save</Button>
+        <Button onClick={handleCloseModal} variant="outlined" color="warning">Close</Button>
+        <Button onClick={() => handleUpdate(selectedInstaller.id, formData)} variant="outlined" color="primary">Update and Save</Button>
       </DialogActions>
     </Dialog>
 

@@ -37,6 +37,7 @@ const LabourRateForm = () => {
   const [formState, setFormState] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
+
   useEffect(() => {
     fetchData();
   }, []);

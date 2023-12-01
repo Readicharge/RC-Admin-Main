@@ -28,7 +28,7 @@ const PasswordModal = ({ open, handleClose, onConfirm }) => {
   return (
     <Modal open={open} onClose={handleClose}>
 
-      <div style={{ backgroundColor: "#06061E", borderRadius: "14px", padding: "20px", color: "#FFF", alignItems: "center", textAlign: "center", justifyContent: "center", position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -80%)', width: 300, boxShadow: 24, p: 4 }}>
+      <div style={{ background: 'linear-gradient(45deg, #06061E, #1F4068)', borderRadius: "14px", padding: "40px", color: "#FFF", alignItems: "center", textAlign: "center", justifyContent: "center", position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%, -80%)', width: 300, boxShadow: 24, p: 4 }}>
         <Header title="Confirm Action" subtitle="Enter your password to confirm" />
         <TextField
           label="Password"
@@ -40,18 +40,31 @@ const PasswordModal = ({ open, handleClose, onConfirm }) => {
           InputLabelProps={{
             style: {
               color: '#fff',
-              
+
             },
           }}
           InputProps={{
             style: {
               color: '#fff',
-              border : 'solid 1px #fff',
+              border: 'solid 1px #fff',
             },
           }}
         />
-        <Button variant="contained" onClick={handleConfirm} disabled={!password} style={{ backgroundColor: "#96D232", padding: "17px", marginTop: "10px", padding: "4px", width: "180px" }}>
+        <Button variant="outlined" onClick={handleConfirm} disabled={!password} style={{ backgroundColor: "#96D232", padding: "12px",  fontSize:16, marginTop: "10px",  width: "181px" }}>
           Submit
+        </Button>
+        <Button
+          onClick={handleClose}
+          variant='outlined'
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            backgroundColor: '#fff', // Set your desired background color
+            color: '#F194AB', // Set your desired text color
+          }}
+        >
+          Close
         </Button>
       </div>
     </Modal>
