@@ -4,7 +4,7 @@ import { Box, Typography, useTheme, Button, Checkbox, Dialog, DialogTitle, Dialo
 import { getAdminData, deleteAdmin, updateAdmin } from "../../data/ApiController.js";
 import { useNavigate } from "react-router-dom";
 import PasswordModal from '../global/passwordConfirm.jsx';
-import Header from "../../components/Header"; 
+import Header from "../../components/Header";
 import { tokens } from "../../theme";
 
 const AdminList = () => {
@@ -27,7 +27,7 @@ const AdminList = () => {
       let roles = dataObject.roles || [];
 
       let data_to_be_pushed = {
-        shown_id:dataObject.readicharge_unique_id,
+        shown_id: dataObject.readicharge_unique_id,
         id: dataObject._id,
         name: dataObject.name,
         email: dataObject.email,
@@ -58,10 +58,7 @@ const AdminList = () => {
     }
   };
 
-  const handleUpdate = async (id, row) => {
-    await updateAdmin(id, row);
-    fetchAdminList(); // Refresh the admin list after update
-  };
+
 
   const handleRoleCheckboxChange = async (adminId, role) => {
     const adminIndex = getAdmin.findIndex((admin) => admin.id === adminId);
@@ -129,7 +126,7 @@ const AdminList = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
-  const roles = ['Installer', 'Customer', 'Service','Company', 'Material', 'Payments','Labor','Booking','Helpdesk']
+  const roles = ['Installer', 'Customer', 'Service', 'Company', 'Material', 'Payments', 'Labor', 'Booking', 'Helpdesk']
 
   const columns = [
     {
@@ -138,11 +135,11 @@ const AdminList = () => {
       cellClassName: (params) =>
         params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
     },
-    
+
     {
       field: "name",
       headerName: "Name",
-      width:100,
+      width: 100,
       cellClassName: "name-column--cell",
       editable: true,
       cellClassName: (params) =>
@@ -151,12 +148,12 @@ const AdminList = () => {
     {
       field: "email",
       headerName: "Email",
-      width:200,
+      width: 200,
       editable: false,
       cellClassName: (params) =>
         params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
     },
-  
+
     ...roles.map((role) => ({
       field: role,
       headerName: role,
@@ -209,31 +206,31 @@ const AdminList = () => {
           m="40px 0 0 0"
           height="70vh"
           sx={{
-            "& .MuiDataGrid-toolbar" : {
-              color:"#fff"
+            "& .MuiDataGrid-toolbar": {
+              color: "#fff"
             },
             "& .MuiDataGrid-root": {
               border: "1px solid #06061E",
-              backgroundColor:"#96D232",
+              backgroundColor: "#96D232",
               borderRadius: "14px",
               overflow: "hidden",
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              fontWeight:"bold"
+              fontWeight: "bold"
             },
             "& .MuiDataGrid-cell": {
               borderBottom: "1px solid #e1e1e1",
-             
+
             },
             "& .name-column--cell": {
               color: colors.greenAccent[300],
             },
             "& .MuiDataGrid-columnHeaders": {
-              borderTop : "1px solid #06061E",
+              borderTop: "1px solid #06061E",
               borderBottom: "1px solid #e1e1e1",
               color: "#06061E",
             },
             "& .MuiDataGrid-virtualScroller": {
-              backgroundColor:"#EBEBEF"
+              backgroundColor: "#EBEBEF"
             },
             "& .MuiDataGrid-footerContainer": {
               borderTop: "1px solid #e1e1e1",
@@ -254,7 +251,7 @@ const AdminList = () => {
             "& .highlighted-row": {
               backgroundColor: "#F0DD5D",
               fontWeight: "bold",
-              fontSize:16
+              fontSize: 16
             },
           }}
         >
@@ -270,7 +267,7 @@ const AdminList = () => {
         </Box>
       </Box>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle style={{fontSize:24, alignItems:"center"}}>Edit Admin</DialogTitle>
+        <DialogTitle style={{ fontSize: 24, alignItems: "center" }}>Edit Admin</DialogTitle>
         <DialogContent>
           {selectedRow && (
             <>
@@ -280,7 +277,7 @@ const AdminList = () => {
                 value={updatedValues.name || ""}
                 onChange={handleInputChange}
                 fullWidth
-                style={{ marginBottom: "16px" ,marginTop:"16px" }}
+                style={{ marginBottom: "16px", marginTop: "16px" }}
               />
               <TextField
                 name="email"
@@ -307,9 +304,9 @@ const AdminList = () => {
                 fullWidth
                 style={{ marginBottom: "16px" }}
               />
-               <Typography style={{fontWeight:"bold", marginBottom:"20px"}}>Has access to :</Typography>
+              <Typography style={{ fontWeight: "bold", marginBottom: "20px" }}>Has access to :</Typography>
               <div style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}>
-             
+
                 {roles.map((role) => (
                   <div key={role} style={{ marginRight: "16px" }}>
                     <Checkbox
@@ -328,12 +325,12 @@ const AdminList = () => {
           <Button onClick={handleClose} color="warning" variant="outlined">
             Cancel
           </Button>
-          <Button onClick={()=>handleOpenModal_Confirm()} color="primary" variant="outlined"> 
+          <Button onClick={() => handleOpenModal_Confirm()} color="primary" variant="outlined">
             Save
           </Button>
         </DialogActions>
       </Dialog>
-      <PasswordModal open={modalOpen_Confirm} handleClose={handleCloseModal_Confirm} onConfirm={()=>{handleSave()}} />
+      <PasswordModal open={modalOpen_Confirm} handleClose={handleCloseModal_Confirm} onConfirm={() => { handleSave() }} />
     </div>
   );
 };

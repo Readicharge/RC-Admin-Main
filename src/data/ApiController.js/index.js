@@ -1,12 +1,55 @@
 import axios from "axios";
 
 
+async function generateHmacSHA256(message, secretKey) {
+    // Convert the secret key and message to ArrayBuffer
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(secretKey);
+    const messageData = encoder.encode(message);
+
+    // Import the secret key
+    const cryptoKey = await window.crypto.subtle.importKey(
+        'raw',
+        keyData,
+        { name: 'HMAC', hash: { name: 'SHA-256' } },
+        false,
+        ['sign']
+    );
+
+    // Generate the HMAC signature
+    const signature = await window.crypto.subtle.sign('HMAC', cryptoKey, messageData);
+
+    // Convert ArrayBuffer to a hex string
+    return Array.from(new Uint8Array(signature))
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+
+
+
+// Function to create headers with HMAC authentication
+const createHeaders = async (body = "") => {
+    const secret = 'your_shared_secret_code'; // Replace with your HMAC secret
+    const timestamp = Date.now().toString();
+    const signature = await generateHmacSHA256(`${body}:${timestamp}`, secret);
+
+    return {
+        'Content-Type': 'application/json',
+        Accept: 'Application/json',
+        'x-timestamp': timestamp, // Send timestamp in the headers
+        'x-hmac-signature': signature
+    };
+};
+
+
 // *********************************************************************************
 const createService = async (formData) => {
 
     try {
         console.log(formData)
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-create`, formData);
+        const headers = await createHeaders("/api/admin_web_app/service-create");
+        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/service-create`, formData, { headers });
         alert(response)
         console.log(response)
         console.log(response.data);
@@ -19,7 +62,8 @@ const createService = async (formData) => {
 
 const getserviceList = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-get-all`);
+        const headers = await createHeaders("/api/admin_web_app/service-get-all");
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-get-all`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -29,7 +73,8 @@ const getserviceList = async () => {
 
 const getServiceNameById = async (serviceId) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-name/${serviceId}`);
+        const headers = await createHeaders(`/api/admin_web_app/service-name/${serviceId}`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-name/${serviceId}`, { headers });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -39,7 +84,8 @@ const getServiceNameById = async (serviceId) => {
 
 const getServiceCodeById = async (serviceId) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-code/${serviceId}`);
+        const headers = await createHeaders(`api/admin_web_app/service-code/${serviceId}`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-code/${serviceId}`, { headers });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -50,7 +96,8 @@ const getServiceCodeById = async (serviceId) => {
 
 const deleteServiceTimeById = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-delete-specific/${id}`);
+        const headers = await createHeaders(`api/admin_web_app/service-time-delete-specific/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/service-time-delete-specific/${id}`, { headers });
         if (response.status === 200) {
             alert("Service Time deleted successfully")
         }
@@ -63,7 +110,8 @@ const deleteServiceTimeById = async (id) => {
 
 const createTime = async (formData) => {
     try {
-        const resposne = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-create`, formData);
+        const headers = await createHeaders(`api/admin_web_app/service-time-create`);
+        const resposne = await axios.post(`https://api.readicharge.com/api/admin_web_app/service-time-create`, formData, { headers });
         alert(resposne)
     }
     catch (error) {
@@ -73,7 +121,8 @@ const createTime = async (formData) => {
 
 const getserviceTimeList = async (formData) => {
     try {
-        const resposne = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-get-all`);
+        const headers = await createHeaders(`/api/admin_web_app/service-time-get-all`);
+        const resposne = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-time-get-all`, { headers });
         return resposne;
 
     }
@@ -85,7 +134,8 @@ const getserviceTimeList = async (formData) => {
 
 const updateServiceTime = async (id, formData) => {
     try {
-        const resposne = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-time-update/${id}`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/service-time-update/${id}`);
+        const resposne = await axios.put(`https://api.readicharge.com/api/admin_web_app/service-time-update/${id}`, formData, { headers });
         return resposne;
 
     }
@@ -97,8 +147,10 @@ const updateServiceTime = async (id, formData) => {
 
 const validateAdmin = async (formData) => {
     try {
-        console.log(formData)
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/sign-in`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/sign-in`);
+        console.log(formData, headers)
+        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/sign-in`, formData, { headers });
+        console.log(response)
         return response;
     }
     catch (error) {
@@ -111,7 +163,8 @@ const validateAdmin = async (formData) => {
 
 const createServicePrice = async (formData) => {
     try {
-        const resposne = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-create`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/service-price-create`);
+        const resposne = await axios.post(`https://api.readicharge.com/api/admin_web_app/service-price-create`, formData, { headers });
         alert(resposne)
     }
     catch (error) {
@@ -122,7 +175,8 @@ const createServicePrice = async (formData) => {
 
 const getServicePriceList = async () => {
     try {
-        const resposne = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-get-all`);
+        const headers = await createHeaders(`/api/admin_web_app/service-price-get-all`);
+        const resposne = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-price-get-all`, { headers });
         return resposne;
     }
     catch (error) {
@@ -132,7 +186,8 @@ const getServicePriceList = async () => {
 
 const deleteServicePrice = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-delete/${id}`);
+        const headers = await createHeaders(`/api/admin_web_app/service-price-delete/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/service-price-delete/${id}`, { headers });
 
     } catch (error) {
         console.log(error);
@@ -143,7 +198,8 @@ const deleteServicePrice = async (id) => {
 
 const updateServicePrice = async (id, formData) => {
     try {
-        const resposne = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/service-price-update/${id}`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/service-price-update/${id}`);
+        const resposne = await axios.put(`https://api.readicharge.com/api/admin_web_app/service-price-update/${id}`, formData, { headers });
         return resposne;
 
     }
@@ -154,7 +210,8 @@ const updateServicePrice = async (id, formData) => {
 
 const getLabourRate = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-get-all/`);
+        const headers = await createHeaders(`/api/admin_web_app/labor-rate-get-all`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/labor-rate-get-all`, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -165,7 +222,8 @@ const getLabourRate = async () => {
 
 const getLabourRateByServiceId = async (serviceId) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-get-service-id/${serviceId}`);
+        const headers = await createHeaders(`/api/admin_web_app/labor-rate-get-service-id/${serviceId}`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/labor-rate-get-service-id/${serviceId}`, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -176,13 +234,16 @@ const getLabourRateByServiceId = async (serviceId) => {
 
 const createLabourRate = async (formData) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-get-all`);
+        const headers = await createHeaders(`/api/admin_web_app/labor-rate-get-all`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/labor-rate-get-all`, { headers });
         const sortedResponse = response.data.filter(item => item.service_id === formData.service_id && item.number_of_installs === formData.number_of_installs);
         console.log(sortedResponse)
         if (sortedResponse.length > 0) {
-            await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData);
+            const headers = await createHeaders(`/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`);
+            await axios.put(`https://api.readicharge.com/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData, { headers });
         } else {
-            await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/labor-rate-create`, formData);
+            const headers = await createHeaders(`/api/admin_web_app/labor-rate-create`);
+            await axios.post(`https://api.readicharge.com/api/admin_web_app/labor-rate-create`, formData, { headers });
         }
     } catch (error) {
         console.log(error);
@@ -196,7 +257,8 @@ const createLabourRate = async (formData) => {
 
 const createMaterial = async (formData) => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-create`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/material-create`);
+        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/material-create`, formData, { headers });
     } catch (error) {
         console.log(error);
         return null;
@@ -205,7 +267,8 @@ const createMaterial = async (formData) => {
 
 const deleteMaterialById = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-delete/${id}`);
+        const headers = await createHeaders(`/api/admin_web_app/material-delete/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/material-delete/${id}`, { headers });
     } catch (error) {
         console.log(error);
         return null;
@@ -214,7 +277,8 @@ const deleteMaterialById = async (id) => {
 
 const getMaterialList = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-get-all/`);
+        const headers = await createHeaders(`/api/admin_web_app/material-get-all`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/material-get-all`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -224,7 +288,8 @@ const getMaterialList = async () => {
 
 const updateMaterial = async (id, formData) => {
     try {
-        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/material-update/${id}`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/material-update/${id}`);
+        const response = await axios.put(`https://api.readicharge.com/api/admin_web_app/material-update/${id}`, formData, { headers });
         return response;
     }
     catch (err) {
@@ -236,7 +301,8 @@ const updateMaterial = async (id, formData) => {
 
 const createCustomer = async (formData) => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/customerApp/register`, formData);
+        const headers = await createHeaders(`/api/customerApp/register`);
+        const response = await axios.post(`https://api.readicharge.com/api/customerApp/register`, formData, { headers });
 
         return response;
     } catch (error) {
@@ -249,7 +315,8 @@ const createCustomer = async (formData) => {
 
 const createInstaller = async (formData) => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/installerApp/register`, formData);
+        const headers = await createHeaders(`/api/installerApp/register`);
+        const response = await axios.post(`https://api.readicharge.com/api/installerApp/register`, formData, { headers });
         console.log(response)
 
     } catch (error) {
@@ -261,7 +328,9 @@ const createInstaller = async (formData) => {
 
 const createAdmin = async (formData) => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/registerAdmin`, formData);
+        const headers = await createHeaders(`/api/admin_web_app/registerAdmin`);
+        console.log("Over Here")
+        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/registerAdmin`, formData, { headers });
         console.log(response)
     }
     catch (error) {
@@ -273,7 +342,8 @@ const createAdmin = async (formData) => {
 
 const getAdminData = async () => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/getAdmin`);
+        const headers = await createHeaders(`/api/admin_web_app/getAdmin`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/getAdmin`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -285,7 +355,8 @@ const getAdminData = async () => {
 
 const getInstallerList = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/installer-get-all`);
+        const headers = await createHeaders(`/api/admin_web_app/installer-get-all`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/installer-get-all`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -296,7 +367,8 @@ const getInstallerList = async () => {
 
 const deleteInstaller = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/installer-delete/${id}`);
+        const headers = await createHeaders(`/api/admin_web_app/installer-delete/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/installer-delete/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -341,8 +413,8 @@ const updateInstaller = async (id, dataObject) => {
             bondingEffectiveEndDate: dataObject.bondingEffectiveEndDate,
             services: dataObject.services
         };
-
-        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/installerApp/update/${id}`, dataToBePushed);
+        const headers = await createHeaders(`/api/installerApp/update/${id}`);
+        const response = await axios.put(`https://api.readicharge.com/api/installerApp/update/${id}`, dataToBePushed, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -354,7 +426,8 @@ const updateInstaller = async (id, dataObject) => {
 
 const deleteAdmin = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/deleteAdmin/${id}`);
+        const headers = await createHeaders(`/api/admin_web_app/deleteAdmin/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/deleteAdmin/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -369,7 +442,8 @@ const deleteAdmin = async (id) => {
 
 const getCustomerData = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/customer-get-all`);
+        const headers = await createHeaders(`/api/admin_web_app/customer-get-all`);
+        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/customer-get-all`, { headers });
         return response
     }
     catch (error) {
@@ -380,7 +454,8 @@ const getCustomerData = async () => {
 
 const updateCustomerData = async (id, idata) => {
     try {
-        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/customerApp/getCustomer/${id}`, idata);
+        const headers = await createHeaders(`/api/customerApp/getCustomer/${id}`);
+        const response = await axios.put(`https://api.readicharge.com/api/customerApp/getCustomer/${id}`, idata, { headers });
         return response
     }
     catch (error) {
@@ -390,7 +465,8 @@ const updateCustomerData = async (id, idata) => {
 
 const deleteCustomer = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/deleteAdmin/${id}`);
+        const headers = await createHeaders(`/api/admin_web_app/deleteAdmin/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/deleteAdmin/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -401,7 +477,8 @@ const deleteCustomer = async (id) => {
 
 const dashboardInstallerCard_data = async () => {
     try {
-        const response = await axios.get('https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/dashboard-get-installer-header-card-data');
+        const headers = await createHeaders(`/api/admin_web_app/dashboard-get-installer-header-card-data`);
+        const response = await axios.get('https://api.readicharge.com/api/admin_web_app/dashboard-get-installer-header-card-data', { headers });
         return response;
     }
     catch (error) {
@@ -413,7 +490,8 @@ const dashboardInstallerCard_data = async () => {
 
 const dashboardJobMainCard_data = async () => {
     try {
-        const response = await axios.get('https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/dashboard-get-jobs-main-card-data');
+        const headers = await createHeaders(`/api/admin_web_app/dashboard-get-jobs-main-card-data`);
+        const response = await axios.get('https://api.readicharge.com/api/admin_web_app/dashboard-get-jobs-main-card-data', { headers });
         return response;
     }
     catch (error) {
@@ -426,7 +504,8 @@ const dashboardJobMainCard_data = async () => {
 
 const deleteCustomerById = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/customer-delete/${id}`);
+        const headers = await createHeaders(`/api/admin_web_app/customer-delete/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/customer-delete/${id}`, { headers });
         return response;
     }
     catch (error) {
@@ -442,7 +521,7 @@ const updateAdmin = async (id, dataObject) => {
     try {
 
 
-
+        const headers = await createHeaders(`/api/admin_web_app/updateAdmin/${id}`);
         const dataToBePushed = {
             id: dataObject._id,
             name: dataObject.name,
@@ -455,7 +534,7 @@ const updateAdmin = async (id, dataObject) => {
         };
 
 
-        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/admin_web_app/updateAdmin/${id}`, dataToBePushed);
+        const response = await axios.put(`https://api.readicharge.com/api/admin_web_app/updateAdmin/${id}`, dataToBePushed, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -474,7 +553,8 @@ const updateAdmin = async (id, dataObject) => {
 
 const getMaterialTax = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/`);
+        const headers = await createHeaders(`/api/MaterialTax`);
+        const response = await axios.get(`https://api.readicharge.com/api/MaterialTax`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -484,14 +564,17 @@ const getMaterialTax = async () => {
 
 const createMaterialTax = async (formData) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/`);
+        const headers = await createHeaders(`/api/MaterialTax/`);
+        const response = await axios.get(`https://api.readicharge.com/api/MaterialTax/`, { headers });
 
         if (response.data.length === 0) {
-            await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/`, formData);
+
+            await axios.post(`https://api.readicharge.com/api/MaterialTax/`, formData, { headers });
         }
         else {
             const id = response.data[0]._id;
-            await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/MaterialTax/${id}`, formData);
+            const headers1 = await createHeaders(`/api/MaterialTax/${id}`);
+            await axios.put(`https://api.readicharge.com/api/MaterialTax/${id}`, formData, { headers: headers1 });
         }
     } catch (error) {
         console.log(error);
@@ -507,7 +590,8 @@ const createMaterialTax = async (formData) => {
 
 const getInstallerNameById = async (id) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/installer/${id}`);
+        const headers = await createHeaders(`/api/installer/${id}`);
+        const response = await axios.get(`https://api.readicharge.com/api/installer/${id}`, { headers });
         console.log(response)
         return response.data.firstName;
     } catch (error) {
@@ -518,7 +602,8 @@ const getInstallerNameById = async (id) => {
 
 const getMaterialNameById = async (id) => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/materials/${id}`);
+        const headers = await createHeaders(`/api/materials/${id}`);
+        const response = await axios.get(`https://api.readicharge.com/api/materials/${id}`);
         console.log(response)
         return response.data.material_name;
     } catch (error) {
@@ -529,7 +614,8 @@ const getMaterialNameById = async (id) => {
 
 const getCountInstaller = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/installer`);
+        const headers = await createHeaders(`/api/installer`);
+        const response = await axios.get(`https://api.readicharge.com/api/installer`, { headers });
         return response.data.length;
     } catch (error) {
         console.log(error);
@@ -543,7 +629,8 @@ const getCountInstaller = async () => {
 
 const getMostSuitableInstaller = async (formData) => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/booking/installer_mapping`, formData);
+        const headers = await createHeaders(`/api/booking/installer_mapping`);
+        const response = await axios.post(`https://api.readicharge.com/api/booking/installer_mapping`, formData, { headers });
         return response;
     }
     catch (error) {
@@ -555,7 +642,8 @@ const getMostSuitableInstaller = async (formData) => {
 
 const createBooking = async (formData) => {
     try {
-        const response = await axios.post(`https://rc-backend-main-f9u1.vercel.app/api/booking/`, formData);
+        const headers = await createHeaders(`/api/booking`);
+        const response = await axios.post(`https://api.readicharge.com/api/booking`, formData, { headers });
         return response
     }
     catch (error) {
@@ -573,7 +661,8 @@ const createBooking = async (formData) => {
 
 const getBookingsList = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/booking`);
+        const headers = await createHeaders(`/api/booking`);
+        const response = await axios.get(`https://api.readicharge.com/api/booking`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -583,7 +672,8 @@ const getBookingsList = async () => {
 
 const getBookingCount = async () => {
     try {
-        const response = await axios.get(`https://rc-backend-main-f9u1.vercel.app/api/booking`);
+        const headers = await createHeaders(`/api/booking`);
+        const response = await axios.get(`https://api.readicharge.com/api/booking`, { headers });
         return response.data.length;
     } catch (error) {
         console.log(error);
@@ -593,7 +683,8 @@ const getBookingCount = async () => {
 
 const deleteBooking = async (id) => {
     try {
-        const response = await axios.delete(`https://rc-backend-main-f9u1.vercel.app/api/booking/${id}`);
+        const headers = await createHeaders(`/api/booking/${id}`);
+        const response = await axios.delete(`https://api.readicharge.com/api/booking/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -603,7 +694,7 @@ const deleteBooking = async (id) => {
 
 const updateBooking = async (id, dataObject) => {
     try {
-
+        const headers = await createHeaders(`/api/booking/${id}`);
 
 
         const dataToBePushed = {
@@ -626,7 +717,7 @@ const updateBooking = async (id, dataObject) => {
         };
 
 
-        const response = await axios.put(`https://rc-backend-main-f9u1.vercel.app/api/booking/${id}`, dataToBePushed);
+        const response = await axios.put(`https://api.readicharge.com/api/booking/${id}`, dataToBePushed, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -651,7 +742,8 @@ const updateBooking = async (id, dataObject) => {
 
 const fetchPayments = async () => {
     try {
-        const response = await fetch('https://rc-backend-main-f9u1.vercel.app/api/payments/getPaymentList');
+        const headers = await createHeaders(`/api/payments/getPaymentList`);
+        const response = await fetch('https://api.readicharge.com/api/payments/getPaymentList', { headers });
         const data = await response.data();
         return data;
 

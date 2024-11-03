@@ -27,6 +27,7 @@
     "@tremor/react": "^3.11.1",
     "axios": "^1.4.0",
     "chart.js": "^3.9.1",
+    "crypto": "^1.0.1",
     "dotenv": "^16.1.4",
     "formik": "^2.2.9",
     "react": "^18.2.0",
