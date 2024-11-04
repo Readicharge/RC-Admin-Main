@@ -165,7 +165,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
             >
               Data
             </Typography>
-            <Item
+            {/* <Item
               title="Installers"
               to="/installer"
               icon={<PermIdentityOutlinedIcon />}
@@ -174,8 +174,8 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               isLoggedIn={isLoggedIn}
               username={username}
               enabled={enabledSections}
-            />
-            <Item
+            /> */}
+            {/* <Item
               title="Customers"
               to="/customer"
               icon={<PermIdentityOutlinedIcon />}
@@ -184,7 +184,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               isLoggedIn={isLoggedIn}
               username={username}
               enabled={enabledSections}
-            />
+            /> */}
             <Item
               title="Admins"
               to="admin-list"
@@ -196,7 +196,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               enabled={enabledSections}
             />
 
-            <Item
+            {/* <Item
               title="Job Tickets"
               to="/jobs"
               selected={selected}
@@ -205,7 +205,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               isLoggedIn={isLoggedIn}
               username={username}
               enabled={enabledSections}
-            />
+            /> */}
 
             <Typography
               variant="h6"
@@ -214,7 +214,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
             >
               Create New
             </Typography>
-            <Item
+            {/* <Item
               title="Installer"
               to="/installerForm"
               icon={<PersonOutlinedIcon />}
@@ -233,7 +233,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               isLoggedIn={isLoggedIn}
               username={username}
               enabled={enabledSections}
-            />
+            /> */}
             {/* <Item
               title="Job Ticket"
               to="/bookingForm"
@@ -294,7 +294,7 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               enabled={enabledSections}
             />
             <Item
-              title="Labour Rate"
+              title="Labor Rate"
               to="/labourRate"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
