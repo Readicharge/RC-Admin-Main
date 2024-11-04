@@ -149,7 +149,7 @@ const AdminForm = () => {
                 <FieldArray name="roles">
                   {() => (
                     <>
-                      {['Installer', 'Customer', 'Service', 'Company', 'Material', 'Payments', 'Labor', 'Booking'].map((role) => (
+                      {['Service', 'Material', 'Labor Rate'].map((role) => (
                         <FormControlLabel
                           key={role}
                           control={<Checkbox checked={values.roles.includes(role)} onChange={(e) => {
