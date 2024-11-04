@@ -126,7 +126,7 @@ const AdminList = () => {
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
-  const roles = ['Installer', 'Customer', 'Service', 'Company', 'Material', 'Payments', 'Labor', 'Booking', 'Helpdesk']
+  const roles = ['Service', 'Material', 'Labor Rate']
 
   const columns = [
     {
