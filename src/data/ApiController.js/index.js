@@ -49,7 +49,7 @@ const createService = async (formData) => {
     try {
         console.log(formData)
         const headers = await createHeaders("/api/admin_web_app/service-create");
-        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/service-create`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-create`, formData, { headers });
         alert(response)
         console.log(response)
         console.log(response.data);
@@ -63,7 +63,7 @@ const createService = async (formData) => {
 const getserviceList = async () => {
     try {
         const headers = await createHeaders("/api/admin_web_app/service-get-all");
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-get-all`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-get-all`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -74,7 +74,7 @@ const getserviceList = async () => {
 const getServiceNameById = async (serviceId) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-name/${serviceId}`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-name/${serviceId}`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-name/${serviceId}`, { headers });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -85,7 +85,7 @@ const getServiceNameById = async (serviceId) => {
 const getServiceCodeById = async (serviceId) => {
     try {
         const headers = await createHeaders(`api/admin_web_app/service-code/${serviceId}`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-code/${serviceId}`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-code/${serviceId}`, { headers });
         return response.data;
     } catch (error) {
         console.log(error);
@@ -97,7 +97,7 @@ const getServiceCodeById = async (serviceId) => {
 const deleteServiceTimeById = async (id) => {
     try {
         const headers = await createHeaders(`api/admin_web_app/service-time-delete-specific/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/service-time-delete-specific/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-time-delete-specific/${id}`, { headers });
         if (response.status === 200) {
             alert("Service Time deleted successfully")
         }
@@ -111,7 +111,7 @@ const deleteServiceTimeById = async (id) => {
 const createTime = async (formData) => {
     try {
         const headers = await createHeaders(`api/admin_web_app/service-time-create`);
-        const resposne = await axios.post(`https://api.readicharge.com/api/admin_web_app/service-time-create`, formData, { headers });
+        const resposne = await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-time-create`, formData, { headers });
         alert(resposne)
     }
     catch (error) {
@@ -122,7 +122,7 @@ const createTime = async (formData) => {
 const getserviceTimeList = async (formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-time-get-all`);
-        const resposne = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-time-get-all`, { headers });
+        const resposne = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-time-get-all`, { headers });
         return resposne;
 
     }
@@ -135,7 +135,7 @@ const getserviceTimeList = async (formData) => {
 const updateServiceTime = async (id, formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-time-update/${id}`);
-        const resposne = await axios.put(`https://api.readicharge.com/api/admin_web_app/service-time-update/${id}`, formData, { headers });
+        const resposne = await axios.put(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-time-update/${id}`, formData, { headers });
         return resposne;
 
     }
@@ -149,7 +149,7 @@ const validateAdmin = async (formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/sign-in`);
         console.log(formData, headers)
-        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/sign-in`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/sign-in`, formData, { headers });
         console.log(response)
         return response;
     }
@@ -164,7 +164,7 @@ const validateAdmin = async (formData) => {
 const createServicePrice = async (formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-price-create`);
-        const resposne = await axios.post(`https://api.readicharge.com/api/admin_web_app/service-price-create`, formData, { headers });
+        const resposne = await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-price-create`, formData, { headers });
         alert(resposne)
     }
     catch (error) {
@@ -176,7 +176,7 @@ const createServicePrice = async (formData) => {
 const getServicePriceList = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-price-get-all`);
-        const resposne = await axios.get(`https://api.readicharge.com/api/admin_web_app/service-price-get-all`, { headers });
+        const resposne = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-price-get-all`, { headers });
         return resposne;
     }
     catch (error) {
@@ -187,7 +187,7 @@ const getServicePriceList = async () => {
 const deleteServicePrice = async (id) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-price-delete/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/service-price-delete/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-price-delete/${id}`, { headers });
 
     } catch (error) {
         console.log(error);
@@ -199,7 +199,7 @@ const deleteServicePrice = async (id) => {
 const updateServicePrice = async (id, formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/service-price-update/${id}`);
-        const resposne = await axios.put(`https://api.readicharge.com/api/admin_web_app/service-price-update/${id}`, formData, { headers });
+        const resposne = await axios.put(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/service-price-update/${id}`, formData, { headers });
         return resposne;
 
     }
@@ -211,7 +211,7 @@ const updateServicePrice = async (id, formData) => {
 const getLabourRate = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/labor-rate-get-all`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/labor-rate-get-all`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/labor-rate-get-all`, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -223,7 +223,7 @@ const getLabourRate = async () => {
 const getLabourRateByServiceId = async (serviceId) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/labor-rate-get-service-id/${serviceId}`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/labor-rate-get-service-id/${serviceId}`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/labor-rate-get-service-id/${serviceId}`, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -235,15 +235,15 @@ const getLabourRateByServiceId = async (serviceId) => {
 const createLabourRate = async (formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/labor-rate-get-all`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/labor-rate-get-all`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/labor-rate-get-all`, { headers });
         const sortedResponse = response.data.filter(item => item.service_id === formData.service_id && item.number_of_installs === formData.number_of_installs);
         console.log(sortedResponse)
         if (sortedResponse.length > 0) {
             const headers = await createHeaders(`/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`);
-            await axios.put(`https://api.readicharge.com/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData, { headers });
+            await axios.put(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/labor-rate-update/${sortedResponse[0]._id}`, formData, { headers });
         } else {
             const headers = await createHeaders(`/api/admin_web_app/labor-rate-create`);
-            await axios.post(`https://api.readicharge.com/api/admin_web_app/labor-rate-create`, formData, { headers });
+            await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/labor-rate-create`, formData, { headers });
         }
     } catch (error) {
         console.log(error);
@@ -258,7 +258,7 @@ const createLabourRate = async (formData) => {
 const createMaterial = async (formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/material-create`);
-        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/material-create`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/material-create`, formData, { headers });
     } catch (error) {
         console.log(error);
         return null;
@@ -268,7 +268,7 @@ const createMaterial = async (formData) => {
 const deleteMaterialById = async (id) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/material-delete/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/material-delete/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/material-delete/${id}`, { headers });
     } catch (error) {
         console.log(error);
         return null;
@@ -278,7 +278,7 @@ const deleteMaterialById = async (id) => {
 const getMaterialList = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/material-get-all`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/material-get-all`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/material-get-all`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -289,7 +289,7 @@ const getMaterialList = async () => {
 const updateMaterial = async (id, formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/material-update/${id}`);
-        const response = await axios.put(`https://api.readicharge.com/api/admin_web_app/material-update/${id}`, formData, { headers });
+        const response = await axios.put(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/material-update/${id}`, formData, { headers });
         return response;
     }
     catch (err) {
@@ -302,7 +302,7 @@ const updateMaterial = async (id, formData) => {
 const createCustomer = async (formData) => {
     try {
         const headers = await createHeaders(`/api/customerApp/register`);
-        const response = await axios.post(`https://api.readicharge.com/api/customerApp/register`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/customerApp/register`, formData, { headers });
 
         return response;
     } catch (error) {
@@ -316,7 +316,7 @@ const createCustomer = async (formData) => {
 const createInstaller = async (formData) => {
     try {
         const headers = await createHeaders(`/api/installerApp/register`);
-        const response = await axios.post(`https://api.readicharge.com/api/installerApp/register`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/installerApp/register`, formData, { headers });
         console.log(response)
 
     } catch (error) {
@@ -330,7 +330,7 @@ const createAdmin = async (formData) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/registerAdmin`);
         console.log("Over Here")
-        const response = await axios.post(`https://api.readicharge.com/api/admin_web_app/registerAdmin`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/registerAdmin`, formData, { headers });
         console.log(response)
     }
     catch (error) {
@@ -343,7 +343,7 @@ const createAdmin = async (formData) => {
 const getAdminData = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/getAdmin`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/getAdmin`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/getAdmin`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -356,7 +356,7 @@ const getAdminData = async () => {
 const getInstallerList = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/installer-get-all`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/installer-get-all`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/installer-get-all`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -368,7 +368,7 @@ const getInstallerList = async () => {
 const deleteInstaller = async (id) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/installer-delete/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/installer-delete/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/installer-delete/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -414,7 +414,7 @@ const updateInstaller = async (id, dataObject) => {
             services: dataObject.services
         };
         const headers = await createHeaders(`/api/installerApp/update/${id}`);
-        const response = await axios.put(`https://api.readicharge.com/api/installerApp/update/${id}`, dataToBePushed, { headers });
+        const response = await axios.put(`https://rc-backend-main-production.up.railway.app/api/installerApp/update/${id}`, dataToBePushed, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -427,7 +427,7 @@ const updateInstaller = async (id, dataObject) => {
 const deleteAdmin = async (id) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/deleteAdmin/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/deleteAdmin/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/deleteAdmin/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -443,7 +443,7 @@ const deleteAdmin = async (id) => {
 const getCustomerData = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/customer-get-all`);
-        const response = await axios.get(`https://api.readicharge.com/api/admin_web_app/customer-get-all`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/customer-get-all`, { headers });
         return response
     }
     catch (error) {
@@ -455,7 +455,7 @@ const getCustomerData = async () => {
 const updateCustomerData = async (id, idata) => {
     try {
         const headers = await createHeaders(`/api/customerApp/getCustomer/${id}`);
-        const response = await axios.put(`https://api.readicharge.com/api/customerApp/getCustomer/${id}`, idata, { headers });
+        const response = await axios.put(`https://rc-backend-main-production.up.railway.app/api/customerApp/getCustomer/${id}`, idata, { headers });
         return response
     }
     catch (error) {
@@ -466,7 +466,7 @@ const updateCustomerData = async (id, idata) => {
 const deleteCustomer = async (id) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/deleteAdmin/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/deleteAdmin/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/deleteAdmin/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -478,7 +478,7 @@ const deleteCustomer = async (id) => {
 const dashboardInstallerCard_data = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/dashboard-get-installer-header-card-data`);
-        const response = await axios.get('https://api.readicharge.com/api/admin_web_app/dashboard-get-installer-header-card-data', { headers });
+        const response = await axios.get('https://rc-backend-main-production.up.railway.app/api/admin_web_app/dashboard-get-installer-header-card-data', { headers });
         return response;
     }
     catch (error) {
@@ -488,10 +488,34 @@ const dashboardInstallerCard_data = async () => {
 }
 
 
+const dashboardCustomerCard_data = async () => {
+    try {
+        const headers = await createHeaders(`/api/admin_web_app/dashboard-get-customer-header-card-data`);
+        const response = await axios.get('https://rc-backend-main-production.up.railway.app/api/admin_web_app/dashboard-get-customer-header-card-data', { headers });
+        return response;
+    }
+    catch (error) {
+        console.log(error)
+        return null;
+    }
+}
+
+const dashboardPaymentsCard_data = async () => {
+    try {
+        const headers = await createHeaders(`/api/admin_web_app/dashboard-get-payments-header-card-data`);
+        const response = await axios.get('https://rc-backend-main-production.up.railway.app/api/admin_web_app/dashboard-get-payments-header-card-data', { headers });
+        return response;
+    }
+    catch (error) {
+        console.log(error)
+        return null;
+    }
+}
+
 const dashboardJobMainCard_data = async () => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/dashboard-get-jobs-main-card-data`);
-        const response = await axios.get('https://api.readicharge.com/api/admin_web_app/dashboard-get-jobs-main-card-data', { headers });
+        const response = await axios.get('https://rc-backend-main-production.up.railway.app/api/admin_web_app/dashboard-get-jobs-main-card-data', { headers });
         return response;
     }
     catch (error) {
@@ -505,7 +529,7 @@ const dashboardJobMainCard_data = async () => {
 const deleteCustomerById = async (id) => {
     try {
         const headers = await createHeaders(`/api/admin_web_app/customer-delete/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/admin_web_app/customer-delete/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/customer-delete/${id}`, { headers });
         return response;
     }
     catch (error) {
@@ -534,7 +558,7 @@ const updateAdmin = async (id, dataObject) => {
         };
 
 
-        const response = await axios.put(`https://api.readicharge.com/api/admin_web_app/updateAdmin/${id}`, dataToBePushed, { headers });
+        const response = await axios.put(`https://rc-backend-main-production.up.railway.app/api/admin_web_app/updateAdmin/${id}`, dataToBePushed, { headers });
         console.log(response)
         return response;
     } catch (error) {
@@ -554,7 +578,7 @@ const updateAdmin = async (id, dataObject) => {
 const getMaterialTax = async () => {
     try {
         const headers = await createHeaders(`/api/MaterialTax`);
-        const response = await axios.get(`https://api.readicharge.com/api/MaterialTax`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/MaterialTax`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -565,16 +589,16 @@ const getMaterialTax = async () => {
 const createMaterialTax = async (formData) => {
     try {
         const headers = await createHeaders(`/api/MaterialTax/`);
-        const response = await axios.get(`https://api.readicharge.com/api/MaterialTax/`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/MaterialTax/`, { headers });
 
         if (response.data.length === 0) {
 
-            await axios.post(`https://api.readicharge.com/api/MaterialTax/`, formData, { headers });
+            await axios.post(`https://rc-backend-main-production.up.railway.app/api/MaterialTax/`, formData, { headers });
         }
         else {
             const id = response.data[0]._id;
             const headers1 = await createHeaders(`/api/MaterialTax/${id}`);
-            await axios.put(`https://api.readicharge.com/api/MaterialTax/${id}`, formData, { headers: headers1 });
+            await axios.put(`https://rc-backend-main-production.up.railway.app/api/MaterialTax/${id}`, formData, { headers: headers1 });
         }
     } catch (error) {
         console.log(error);
@@ -591,7 +615,7 @@ const createMaterialTax = async (formData) => {
 const getInstallerNameById = async (id) => {
     try {
         const headers = await createHeaders(`/api/installer/${id}`);
-        const response = await axios.get(`https://api.readicharge.com/api/installer/${id}`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/installer/${id}`, { headers });
         console.log(response)
         return response.data.firstName;
     } catch (error) {
@@ -603,7 +627,7 @@ const getInstallerNameById = async (id) => {
 const getMaterialNameById = async (id) => {
     try {
         const headers = await createHeaders(`/api/materials/${id}`);
-        const response = await axios.get(`https://api.readicharge.com/api/materials/${id}`);
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/materials/${id}`);
         console.log(response)
         return response.data.material_name;
     } catch (error) {
@@ -615,7 +639,7 @@ const getMaterialNameById = async (id) => {
 const getCountInstaller = async () => {
     try {
         const headers = await createHeaders(`/api/installer`);
-        const response = await axios.get(`https://api.readicharge.com/api/installer`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/installer`, { headers });
         return response.data.length;
     } catch (error) {
         console.log(error);
@@ -630,7 +654,7 @@ const getCountInstaller = async () => {
 const getMostSuitableInstaller = async (formData) => {
     try {
         const headers = await createHeaders(`/api/booking/installer_mapping`);
-        const response = await axios.post(`https://api.readicharge.com/api/booking/installer_mapping`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/booking/installer_mapping`, formData, { headers });
         return response;
     }
     catch (error) {
@@ -643,7 +667,7 @@ const getMostSuitableInstaller = async (formData) => {
 const createBooking = async (formData) => {
     try {
         const headers = await createHeaders(`/api/booking`);
-        const response = await axios.post(`https://api.readicharge.com/api/booking`, formData, { headers });
+        const response = await axios.post(`https://rc-backend-main-production.up.railway.app/api/booking`, formData, { headers });
         return response
     }
     catch (error) {
@@ -662,7 +686,7 @@ const createBooking = async (formData) => {
 const getBookingsList = async () => {
     try {
         const headers = await createHeaders(`/api/booking`);
-        const response = await axios.get(`https://api.readicharge.com/api/booking`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/booking`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -673,7 +697,7 @@ const getBookingsList = async () => {
 const getBookingCount = async () => {
     try {
         const headers = await createHeaders(`/api/booking`);
-        const response = await axios.get(`https://api.readicharge.com/api/booking`, { headers });
+        const response = await axios.get(`https://rc-backend-main-production.up.railway.app/api/booking`, { headers });
         return response.data.length;
     } catch (error) {
         console.log(error);
@@ -684,7 +708,7 @@ const getBookingCount = async () => {
 const deleteBooking = async (id) => {
     try {
         const headers = await createHeaders(`/api/booking/${id}`);
-        const response = await axios.delete(`https://api.readicharge.com/api/booking/${id}`, { headers });
+        const response = await axios.delete(`https://rc-backend-main-production.up.railway.app/api/booking/${id}`, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -717,7 +741,7 @@ const updateBooking = async (id, dataObject) => {
         };
 
 
-        const response = await axios.put(`https://api.readicharge.com/api/booking/${id}`, dataToBePushed, { headers });
+        const response = await axios.put(`https://rc-backend-main-production.up.railway.app/api/booking/${id}`, dataToBePushed, { headers });
         return response;
     } catch (error) {
         console.log(error);
@@ -743,7 +767,7 @@ const updateBooking = async (id, dataObject) => {
 const fetchPayments = async () => {
     try {
         const headers = await createHeaders(`/api/payments/getPaymentList`);
-        const response = await fetch('https://api.readicharge.com/api/payments/getPaymentList', { headers });
+        const response = await fetch('https://rc-backend-main-production.up.railway.app/api/payments/getPaymentList', { headers });
         const data = await response.data();
         return data;
 
@@ -803,6 +827,8 @@ export {
     deleteBooking,
     updateBooking
     , getInstallerNameById,
-    dashboardInstallerCard_data
+    dashboardInstallerCard_data,
+    dashboardCustomerCard_data,
+    dashboardPaymentsCard_data
 }
 

@@ -21,34 +21,30 @@ body,
 }
 /* For WebKit browsers (Chrome, Safari) */
 ::-webkit-scrollbar {
-  width: 0.5px;
-  height: 4px;
+  width: 1px;
+  height: 1px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #94d034;
+  background-color: #06061e;
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f0f0f0;
+  background-color: transparent; /* Make track invisible */
 }
 
 /* For Firefox */
-/* Note: Firefox supports scrollbar-color but not scrollbar-width yet */
-/* You may need to prefix this with -moz- if it's not working */
 * {
-  scrollbar-color: #94d034 #f0f0f0;
-  scrollbar-width: thin;
+  scrollbar-color: #06061e transparent; /* Thumb color, track transparent */
+  scrollbar-width: thin; /* Make the scrollbar thin */
 }
 
 /* For Internet Explorer */
 * {
-  scrollbar-face-color: #94d034;
-  scrollbar-arrow-color: #f0f0f0;
+  scrollbar-face-color: #06061e;
+  scrollbar-arrow-color: transparent; /* Make arrows transparent */
 }
-
-
 
 
 /* For the Sidebar Effedt */

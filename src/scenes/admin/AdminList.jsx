@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { Box, Typography, useTheme, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from "@mui/material";
+import { Box, Typography, useTheme, Button, Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Tabs, Tab } from "@mui/material";
 import { getAdminData, deleteAdmin, updateAdmin } from "../../data/ApiController.js";
 import { useNavigate } from "react-router-dom";
 import PasswordModal from '../global/passwordConfirm.jsx';
@@ -15,6 +15,7 @@ const AdminList = () => {
   const [open, setOpen] = useState(false);
   const [updatedValues, setUpdatedValues] = useState({});
   const [modalOpen_Confirm, setModalOpen_Confirm] = useState(false);
+  const [tabValue, setTabValue] = useState(0);
 
   const fetchAdminList = async () => {
     const adminData = await getAdminData();
@@ -34,6 +35,7 @@ const AdminList = () => {
         phoneNumber: dataObject.phoneNumber,
         address: dataObject.address,
         roles: roles,
+        adminType: roles.some(role => ['Service', 'Materials', 'Labor Rate'].includes(role)) ? 'Static' : 'Dynamic',
       };
 
       temp_data.push(data_to_be_pushed);
@@ -50,6 +52,12 @@ const AdminList = () => {
     fetchAdminList();
   }, []);
 
+  // ... (keep all other functions as they are)
+
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(`This field with ID ${id} will be permanently deleted. Are you sure?`);
     if (confirmDelete) {
@@ -57,8 +65,6 @@ const AdminList = () => {
       fetchAdminList(); // Refresh the admin list after deletion
     }
   };
-
-
 
   const handleRoleCheckboxChange = async (adminId, role) => {
     const adminIndex = getAdmin.findIndex((admin) => admin.id === adminId);
@@ -83,7 +89,6 @@ const AdminList = () => {
   const handleCellEditCommit = async ({ id, field, value }) => {
     const updatedAdmin = { ...getAdmin[id], [field]: value };
     await updateAdmin(id, updatedAdmin);
-
     fetchAdminList(); // Refresh the admin list after update
   };
 
@@ -107,7 +112,6 @@ const AdminList = () => {
     }));
   };
 
-
   const handleOpenModal_Confirm = () => {
     setModalOpen_Confirm(true);
   };
@@ -121,21 +125,20 @@ const AdminList = () => {
     handleClose();
     fetchAdminList(); // Refresh the admin list after update
   };
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
 
-  const roles = ['Service', 'Material', 'Labor Rate']
+  const staticRoles = ['Service', 'Materials', 'Labor Rate'];
+  const dynamicRoles = ['Affiliate Admin', 'Support Admin', 'Inventory Admin', 'E-commerce', 'Supplier Management', 'Customer Support', 'Web Admin', 'Web Management', 'Blog Management'];
 
-  const columns = [
+  const createColumns = (roles) => [
     {
       field: "shown_id",
       headerName: "ID",
       cellClassName: (params) =>
         params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
     },
-
     {
       field: "name",
       headerName: "Name",
@@ -153,7 +156,6 @@ const AdminList = () => {
       cellClassName: (params) =>
         params.row.email === "Brian@readicharge.com" ? "highlighted-row" : "",
     },
-
     ...roles.map((role) => ({
       field: role,
       headerName: role,
@@ -198,16 +200,35 @@ const AdminList = () => {
     },
   ];
 
+  const staticColumns = createColumns(staticRoles);
+  const dynamicColumns = createColumns(dynamicRoles);
+
   return (
     <div style={{ overflowY: "auto", height: "calc(110vh)" }}>
       <Box m="20px">
         <Header title="Admin List" subtitle="Managing the Admins on the platform" />
+        <Tabs value={tabValue} onChange={handleTabChange} sx={{
+          "& .MuiTab-root": {
+            color: "white", // Default text color
+            textTransform: "none", // Keeps the text as is (no uppercase)
+          },
+          "& .Mui-selected": {
+            color: "green", // Text color for the selected tab
+            fontWeight: "bold", // Boldens the selected tab text
+          },
+          "& .MuiTabs-indicator": {
+            backgroundColor: "#96d232", // Indicator line color
+          },
+        }} >
+          <Tab label="Static Permissions" />
+          <Tab label="Dynamic Permissions" />
+        </Tabs>
         <Box
           m="40px 0 0 0"
           height="70vh"
           sx={{
             "& .MuiDataGrid-toolbar": {
-              color: "#fff"
+              color: "#fff",
             },
             "& .MuiDataGrid-root": {
               border: "1px solid #06061E",
@@ -255,84 +276,72 @@ const AdminList = () => {
             },
           }}
         >
-          <DataGrid
-            rows={getAdmin}
-            columns={columns}
-            components={{
-              Toolbar: GridToolbar,
-            }}
-            disableSelectionOnClick
-            onCellEditCommit={handleCellEditCommit}
-          />
+          {tabValue === 0 && (
+            <DataGrid
+              rows={getAdmin.filter(admin => admin.adminType === 'Static')}
+              columns={staticColumns}
+              components={{
+                Toolbar: GridToolbar,
+              }}
+              disableSelectionOnClick
+              onCellEditCommit={handleCellEditCommit}
+            />
+          )}
+          {tabValue === 1 && (
+            <DataGrid
+              rows={getAdmin.filter(admin => admin.adminType === 'Dynamic')}
+              columns={dynamicColumns}
+              components={{
+                Toolbar: GridToolbar,
+              }}
+              disableSelectionOnClick
+              onCellEditCommit={handleCellEditCommit}
+            />
+          )}
         </Box>
       </Box>
+
+      {/* Dialog for Editing Admin */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle style={{ fontSize: 24, alignItems: "center" }}>Edit Admin</DialogTitle>
+        <DialogTitle>Edit Admin</DialogTitle>
         <DialogContent>
-          {selectedRow && (
-            <>
-              <TextField
-                name="name"
-                label="Name"
-                value={updatedValues.name || ""}
-                onChange={handleInputChange}
-                fullWidth
-                style={{ marginBottom: "16px", marginTop: "16px" }}
-              />
-              <TextField
-                name="email"
-                label="Email"
-                value={updatedValues.email || ""}
-                onChange={handleInputChange}
-                fullWidth
-                disabled
-                style={{ marginBottom: "16px" }}
-              />
-              <TextField
-                name="phoneNumber"
-                label="Phone Number"
-                value={updatedValues.phoneNumber || ""}
-                onChange={handleInputChange}
-                fullWidth
-                style={{ marginBottom: "16px" }}
-              />
-              <TextField
-                name="address"
-                label="Address"
-                value={updatedValues.address || ""}
-                onChange={handleInputChange}
-                fullWidth
-                style={{ marginBottom: "16px" }}
-              />
-              <Typography style={{ fontWeight: "bold", marginBottom: "20px" }}>Has access to :</Typography>
-              <div style={{ display: "flex", alignItems: "center", marginBottom: "16px" }}>
-
-                {roles.map((role) => (
-                  <div key={role} style={{ marginRight: "16px" }}>
-                    <Checkbox
-                      checked={updatedValues.roles?.includes(role) || false}
-                      onChange={() => handleRoleCheckboxChange(selectedRow.id, role)}
-                    />
-                    <Typography>{role}</Typography>
-                  </div>
-                ))}
-              </div>
-            </>
-
-          )}
+          <TextField
+            fullWidth
+            label="Name"
+            name="name"
+            value={updatedValues.name || ""}
+            onChange={handleInputChange}
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            name="email"
+            value={updatedValues.email || ""}
+            onChange={handleInputChange}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="warning" variant="outlined">
+          <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => handleOpenModal_Confirm()} color="primary" variant="outlined">
+          <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </DialogActions>
       </Dialog>
-      <PasswordModal open={modalOpen_Confirm} handleClose={handleCloseModal_Confirm} onConfirm={() => { handleSave() }} />
+
+      {/* Confirm Modal for Deleting Admin */}
+      <PasswordModal
+        open={modalOpen_Confirm}
+        onClose={handleCloseModal_Confirm}
+        onSubmit={handleSave}
+        title={"Confirm Admin Deletion"}
+        action={"Confirm"}
+        message={"Are you sure you want to delete this admin?"}
+      />
     </div>
   );
 };
 
 export default AdminList;
+

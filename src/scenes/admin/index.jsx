@@ -60,7 +60,7 @@ const AdminForm = () => {
               gridTemplateColumns="repeat(2, 1fr)"
               sx={{
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 2" },
-                backgroundColor: "#F6F6F8",
+                backgroundColor: "#f9f9f9",
                 boxShadow: "0 2px 4px rgba(238, 242, 250, 1)",
                 padding: "20px",
                 borderRadius: "10px",

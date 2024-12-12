@@ -1,26 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
-import { Box, IconButton, Typography, useTheme, Image } from "@mui/material";
+import { Box, IconButton, Typography, useTheme, Avatar } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import ViewQuiltOutlinedIcon from '@mui/icons-material/ViewQuiltOutlined';
-import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined';
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
-import NoteAddOutlinedIcon from '@mui/icons-material/NoteAddOutlined';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import PostAddOutlinedIcon from '@mui/icons-material/PostAddOutlined';
-
-
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const fixed_username = 'Brian@readicharge.com';
 
@@ -29,67 +22,71 @@ const Item = ({ title, to, icon, selected, setSelected, isLoggedIn, username, en
   const colors = tokens(theme.palette.mode);
 
   const isSectionEnabled = () => {
-    if (!isLoggedIn) {
-      return false;
-    }
-
-    if (username === fixed_username) {
-      return true; // Enable all sections for the fixed username
-    }
-
-
+    if (!isLoggedIn) return false;
+    if (username === fixed_username) return true;
     const lowercaseTitle = title.toLowerCase();
-    console.log(enabled.some((role) => lowercaseTitle.includes(role.toLowerCase())))
-    // Enable the section if any role from the roles list is present in the lowercase title
     return enabled.some((role) => lowercaseTitle.includes(role.toLowerCase()));
   };
-
 
   return (
     <MenuItem
       active={selected === title}
       style={{
-        color: colors.grey[200],
-        width: "200px",
-        backgroundColor: selected === title ? "#96D232" : "inherit",
-        borderRadius: selected === title ? "23px" : 0,
+        color: colors.grey[100],
+        backgroundColor: selected === title ? "#96D232" : "transparent",
+        borderRadius: "8px",
+        margin: "5px 10px",
         pointerEvents: isSectionEnabled() ? "auto" : "none",
         opacity: isSectionEnabled() ? 1 : 0.5,
-
       }}
       onClick={() => setSelected(title)}
       icon={icon}
     >
-      <Typography
-        style={{
-          fontSize: "16px",
-        }}>{title}</Typography>
+      <Typography style={{ fontSize: "14px", fontWeight: selected === title ? "bold" : "normal" }}>
+        {title}
+      </Typography>
       <Link to={to} />
     </MenuItem>
   );
 };
 
 const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
-  console.log(enabledSections)
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setIsCollapsed(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <Box
       sx={{
         "& .pro-sidebar-inner": {
           background: `#06061E !important`,
+          boxShadow: "0 4px 12px 0 rgba(0, 0, 0, 0.05)",
+          borderRight: "1px solid rgba(255, 255, 255, 0.1)",
         },
         "& .pro-icon-wrapper": {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
           padding: "5px 35px 5px 20px !important",
+          transition: "all 0.2s ease-in-out",
         },
         "& .pro-inner-item:hover": {
           color: "#D2FF00 !important",
+          backgroundColor: "rgba(255, 255, 255, 0.05)",
         },
         "& .pro-menu-item.active": {
           color: "#0B0E37 !important",
@@ -98,55 +95,52 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
       }}
       style={{
         position: "sticky",
-
+        height: "100vh",
+        top: 0,
+        bottom: 0,
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
             style={{
-              margin: "-15px 0 40px 0",
+              margin: "10px 0 20px 0",
               color: colors.grey[100],
             }}
           >
             {!isCollapsed && (
               <Box
-                ml="7px"
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                ml="15px"
               >
                 <img
-                  alt="profile-user"
-                  width="200px"
-                  height="200px"
+                  alt="ReadiCharge logo"
+                  width="140px"
                   src={`./images/logo.png`}
-                  style={{ cursor: "pointer", position: "fixed", zIndex: 100, backgroundColor: "#06061E" }}
+                  style={{ cursor: "pointer" }}
                 />
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
-                  <MenuOutlinedIcon />
+                  <KeyboardArrowLeftIcon />
                 </IconButton>
               </Box>
             )}
           </MenuItem>
 
+          {isCollapsed && (
+            <Box display="flex" justifyContent="center" alignItems="center" mb="25px">
+              <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                <KeyboardArrowRightIcon />
+              </IconButton>
+            </Box>
+          )}
 
-
-          <Box paddingLeft={isCollapsed ? undefined : "10%"} height="110vh"
-            style={{
-              borderRight: '1px solid transparent',
-              backgroundImage: 'linear-gradient(to bottom, rgba(0, 128, 0, 0), rgba(16, 50, 87, 0.8))',
-              backgroundSize: '100% 100%',
-              backgroundRepeat: 'no-repeat',
-              animation: 'glitter 2s infinite linear',
-              animationName: 'glitter',
-              animationDuration: '2s',
-              animationIterationCount: 'infinite',
-              animationTimingFunction: 'linear',
-
-
-            }}
-          >
+          <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
               to="/"
@@ -160,31 +154,11 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
 
             <Typography
               variant="h6"
-              color="#fff"
-              sx={{ m: "15px 0 5px 20px" }}
+              color="rgba(255, 255, 255, 0.6)"
+              sx={{ m: "15px 0 5px 20px", fontSize: "12px", fontWeight: "bold" }}
             >
               Data
             </Typography>
-            {/* <Item
-              title="Installers"
-              to="/installer"
-              icon={<PermIdentityOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-              isLoggedIn={isLoggedIn}
-              username={username}
-              enabled={enabledSections}
-            /> */}
-            {/* <Item
-              title="Customers"
-              to="/customer"
-              icon={<PermIdentityOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-              isLoggedIn={isLoggedIn}
-              username={username}
-              enabled={enabledSections}
-            /> */}
             <Item
               title="Admins"
               to="admin-list"
@@ -196,54 +170,13 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               enabled={enabledSections}
             />
 
-            {/* <Item
-              title="Job Tickets"
-              to="/jobs"
-              selected={selected}
-              icon={<BusinessOutlinedIcon />}
-              setSelected={setSelected}
-              isLoggedIn={isLoggedIn}
-              username={username}
-              enabled={enabledSections}
-            /> */}
-
             <Typography
               variant="h6"
-              color="#fff"
-              sx={{ m: "15px 0 5px 20px" }}
+              color="rgba(255, 255, 255, 0.6)"
+              sx={{ m: "15px 0 5px 20px", fontSize: "12px", fontWeight: "bold" }}
             >
               Create New
             </Typography>
-            {/* <Item
-              title="Installer"
-              to="/installerForm"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-              isLoggedIn={isLoggedIn}
-              username={username}
-              enabled={enabledSections}
-            />
-            <Item
-              title="Customer"
-              to="/customerForm"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-              isLoggedIn={isLoggedIn}
-              username={username}
-              enabled={enabledSections}
-            /> */}
-            {/* <Item
-              title="Job Ticket"
-              to="/bookingForm"
-              icon={<NoteAddOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-              isLoggedIn={isLoggedIn}
-              username={username}
-              enabled={enabledSections}
-            /> */}
             <Item
               title="Admin Users"
               to="/admin"
@@ -257,12 +190,11 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
 
             <Typography
               variant="h6"
-              color="#fff"
-              sx={{ m: "15px 0 5px 20px" }}
+              color="rgba(255, 255, 255, 0.6)"
+              sx={{ m: "15px 0 5px 20px", fontSize: "12px", fontWeight: "bold" }}
             >
               Others
             </Typography>
-
             <Item
               title="Service Time"
               to="/serviceTime"
@@ -303,42 +235,61 @@ const Sidebar = ({ username, isLoggedIn, enabledSections }) => {
               username={username}
               enabled={enabledSections}
             />
-
           </Box>
         </Menu>
-        {!isCollapsed && (
-          <Box mb="25px" style={{
-            position: "fixed",
-            padding: 18, bottom: -20, left: 10,
-            borderTopRightRadius: "14px",
-            borderTopLeftRadius: "14px",
-            backgroundColor: "#EBEBEF", color: "#EBEBEF"
-          }}>
-            <Box textAlign="center">
-              <Typography
-                variant="h4"
-                color="#06061E"
-                fontWeight="bold"
-                sx={{ m: "10px 0 0 0" }}
-              >
-                {username}
-              </Typography>
-              {username === fixed_username ? (
-                <Typography variant="h5" color="#06061E">
-                  Super Admin
-                </Typography>
-              ) : (
-                <Typography variant="h5" color="#06061E">
-                  Sub Admin
-                </Typography>
-              )}
-            </Box>
-          </Box>
-        )}
-      </ProSidebar>
 
+        <Box
+          style={{
+            padding: "16px",
+            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+            borderTopRightRadius: "17px",
+            backgroundColor: "rgba(255, 255, 255, 0.05)",
+            marginTop: "auto",
+          }}
+        >
+          <Box
+            display="flex"
+            justifyContent={isCollapsed ? "center" : "flex-start"}
+            alignItems="center"
+          >
+            <Avatar
+              src="/path-to-avatar-image.jpg"
+              alt={username}
+              style={{
+                width: 40,
+                height: 40,
+                marginRight: isCollapsed ? 0 : 12,
+              }}
+            />
+            {!isCollapsed && (
+              <Box>
+                <Typography
+                  variant="subtitle1"
+                  style={{
+                    color: "rgba(255, 255, 255, 0.9)",
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                  }}
+                >
+                  {username}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  style={{
+                    color: "rgba(255, 255, 255, 0.6)",
+                    fontSize: "12px",
+                  }}
+                >
+                  {username === fixed_username ? "Super Admin" : "Sub Admin"}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </ProSidebar>
     </Box>
   );
 };
 
 export default Sidebar;
+

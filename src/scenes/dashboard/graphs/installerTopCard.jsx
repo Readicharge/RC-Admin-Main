@@ -1,107 +1,133 @@
-import React from "react";
-import { Card, Flex, Metric, Text, List, ListItem, ProgressBar, BadgeDelta, CategoryBar, Legend, Grid } from "@tremor/react";
+import React, { useEffect, useState } from "react";
+import {
+    Card,
+    Flex,
+    Metric,
+    Text,
+    List,
+    ListItem,
+    ProgressBar,
+    BadgeDelta,
+    CategoryBar,
+    Legend,
+    Grid,
+} from "@tremor/react";
 import { dashboardInstallerCard_data } from "../../../data/ApiController.js";
-import { useEffect } from "react";
-import { useState } from "react";
+import GeographyChart_02 from "../../../components/Geographychart_02.jsx";
+
+const states = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California",
+    "Colorado", "Connecticut", "Delaware", "Florida", "Georgia",
+    "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas",
+    "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts",
+    "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana",
+    "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico",
+    "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
+    "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota",
+    "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington",
+    "West Virginia", "Wisconsin", "Wyoming"
+];
 
 const InstallerTopCard = () => {
+    const [installerData, setInstallerData] = useState({
+        avgExperience: "0 years",
+        geographicalDistribution: {},
+        profileCompletionRate: "0%",
+        totalActiveInstallers: 0,
+        totalInstallers: 0,
+        totalVerifiedInstallers: 0,
+        todayStats: {
+            bookedInstallersToday: 0,
+            parkedInstallersToday: 0,
+        },
+    });
 
-    // Declaring the Initail Values as initial null
-    const [totalInstaller, setTotalInstaller] = useState("");
-    const [totalActive, setTotalActive] = useState(0);
-    const [totalScheduled, setTotalScheduled] = useState(0);
-    const [totalTodayAvail, setTotalTodayAvail] = useState(0);
+    const [formState, setFormState] = useState(
+        states.map((state) => ({ state, count: 0 }))
+    );
 
-
-    // Fetching the details while loading the page everytime 
     useEffect(() => {
         const fetchData = async () => {
             const installerCardData = await dashboardInstallerCard_data();
-            console.log(installerCardData)
+            console.log(installerCardData);
 
-            setTotalActive(installerCardData.data.overallActiveInstallersCount);
-            setTotalInstaller(installerCardData.data.overallInstallersCount);
-            setTotalScheduled(installerCardData.data.bookedInstaller);
-            setTotalTodayAvail(installerCardData.data.installersForToday);
-        }
+            setInstallerData(installerCardData.data);
+
+            const updatedFormState = formState.map((formStateItem) => {
+                const count = installerCardData.data.geographicalDistribution[formStateItem.state] || 0;
+                return { state: formStateItem.state, count };
+            });
+
+            setFormState(updatedFormState);
+        };
 
         fetchData();
-    }, [])
+    }, []);
 
-
-    // Setting the Data Skeleton 
-    const installerGrowthData = [
-        {
-            name: "Growth %",
-            TotalInstaller: (totalInstaller / 20),
-            amount: `${totalInstaller}`,
-
-        }
-    ];
-
-
-
-    const categories = [
-        {
-            title: "Installers",
-            metric: totalInstaller,
-            data: installerGrowthData,
-            activeCount: totalActive,
-            subCategoryValues: [
-               Math.floor(totalScheduled/totalInstaller*100),
-               Math.floor(totalTodayAvail/totalInstaller*100),
-               Math.floor(100 -( ( totalScheduled/totalInstaller*100) + (totalTodayAvail/totalInstaller*100)))
-            ],
-            subCategroyColors: ["yellow", "green", "blue"],
-            subCategoryTitles: ["Scheduled Today", "Active Today", "Inactive Today"],
-        }]
-
-
-
+    const { avgExperience, profileCompletionRate, totalActiveInstallers, totalInstallers, totalVerifiedInstallers, todayStats } = installerData;
 
     return (
-       <>
-            {categories.map((item) => (
-                <Card key={item.title}>
-                    <Flex alignItems="start">
-                        <Text>{item.title}</Text>
-                        <BadgeDelta deltaType="increase">{item.activeCount}</BadgeDelta>
-                    </Flex>
-
-                    <Metric>{item.metric}</Metric>
-                    <List className="mt-4">
-                        {item.data.map((product) => (
-                            <ListItem key={product.name}>
-                                <div className="w-full">
-                                    <Text>{product.name}</Text>
-                                    <ProgressBar
-                                        value={product.TotalInstaller}
-                                        label={`${product.TotalInstaller}%`}
-                                        tooltip={product.amount}
-                                        color="blue"
-                                    />
-                                </div>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <CategoryBar
-                        values={item.subCategoryValues}
-                        colors={item.subCategroyColors}
-                        className="mt-4"
-
-                    />
-                    <Legend
-                        categories={item.subCategoryTitles}
-                        colors={item.subCategroyColors}
-                        className="mt-3"
-                        showLabels={true}
-                        tooltip={item.subCategoryTitles}
-                        showAnimation= {true}
+        <div className=" w-full p-10">
+            <div className="flex flex-row w-[70vw]  gap-x-8">
+                <Card className="space-y-4">
+                    <Text>Average Installer Experience</Text>
+                    <Metric>{avgExperience}</Metric>
+                    <ProgressBar
+                        value={parseFloat(avgExperience)}
+                        label={`${avgExperience}`}
+                        tooltip="Average experience in years"
+                        color="green"
                     />
                 </Card>
-            ))}
-        </>
-    )
+
+                <Card className="space-y-4">
+                    <Text>Profile Completion Rate</Text>
+                    <Metric>{profileCompletionRate}</Metric>
+                    <ProgressBar
+                        value={parseFloat(profileCompletionRate)}
+                        label={`${profileCompletionRate}`}
+                        tooltip="Percentage of profile completion"
+                        color="blue"
+                    />
+                </Card>
+
+                <Card>
+                    <Text>Total Installers</Text>
+                    <Metric>{totalInstallers}</Metric>
+                    <Flex justifyContent="between" className="mt-2">
+                        <Text>Total Active Installers</Text>
+                        <BadgeDelta deltaType="increase">{totalActiveInstallers}</BadgeDelta>
+                    </Flex>
+                    <Flex justifyContent="between" className="mt-2">
+                        <Text>Total Verified Installers</Text>
+                        <BadgeDelta deltaType="increase">{totalVerifiedInstallers}</BadgeDelta>
+                    </Flex>
+                </Card>
+
+                <Card>
+                    <Text>Today's Stats</Text>
+                    <List>
+                        <ListItem>
+                            <Flex justifyContent="between">
+                                <Text>Booked Installers</Text>
+                                <Metric>{todayStats.bookedInstallersToday}</Metric>
+                            </Flex>
+                        </ListItem>
+                        <ListItem>
+                            <Flex justifyContent="between">
+                                <Text>Under Process Installers</Text>
+                                <Metric>{todayStats.parkedInstallersToday}</Metric>
+                            </Flex>
+                        </ListItem>
+                    </List>
+                </Card>
+            </div>
+            <div className="mt-6">
+                <Text>Geographical Distribution</Text>
+                <GeographyChart_02 data={formState} />
+            </div>
+        </div>
+    );
 };
 
 export default InstallerTopCard;
