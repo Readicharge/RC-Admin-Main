@@ -524,6 +524,18 @@ const dashboardJobMainCard_data = async () => {
     }
 }
 
+const dashboardJobList_data = async () => {
+    try {
+        const headers = await createHeaders(`/api/admin_web_app/dashboard-get-job-list-data`);
+        const response = await axios.get('https://rc-backend-main-production.up.railway.app/api/admin_web_app/dashboard-get-job-list-data', { headers });
+        console.log(response)
+        return response;
+    }
+    catch (error) {
+        console.log(error)
+        return null;
+    }
+}
 
 
 const deleteCustomerById = async (id) => {
@@ -829,6 +841,7 @@ export {
     , getInstallerNameById,
     dashboardInstallerCard_data,
     dashboardCustomerCard_data,
-    dashboardPaymentsCard_data
+    dashboardPaymentsCard_data,
+    dashboardJobList_data
 }
 

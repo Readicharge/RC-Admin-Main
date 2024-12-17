@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Title, DonutChart, BarChart, AreaChart, Table, TableHead, TableRow, TableHeaderCell, TableBody, TableCell, Text, Metric, Flex, ProgressBar, Legend } from "@tremor/react";
 import { dashboardJobMainCard_data } from "../../../data/ApiController.js";
 import GeographyChart_02 from "../../../components/Geographychart_02.jsx";
+import ExcelExportButton from "./JobListData.jsx";
 
 const states = [
   "Alabama", "Alaska", "Arizona", "Arkansas", "California",
@@ -91,6 +92,10 @@ const ComprehensiveJobDashboard = () => {
           ))}
         </Flex>
       </Flex>
+      <Card className="flex flex-row  justify-between items-center">
+        <Title>Export ReadiCharge Data</Title>
+        <ExcelExportButton />
+      </Card>
       <Card className="flex flex-row items-center">
         <Title>All Jobs Booked by Service Tier</Title>
         <DonutChart
@@ -122,7 +127,7 @@ const ComprehensiveJobDashboard = () => {
         </Card>
 
         <Card>
-          <Title>Stage-wise Job Count</Title>
+          <Title>INSTALLER Job Status</Title>
           <BarChart
             data={stageWiseData}
             index="name"
@@ -161,7 +166,7 @@ const ComprehensiveJobDashboard = () => {
         </Card>
 
         <Card>
-          <Title>Average Costs</Title>
+          <Title>Financial Averages</Title>
           <Flex className="mt-4">
             <Text>Avg. Customer Cost (without Insurance)</Text>
             <Text>${currentData.averageCustomerCost?.toFixed(2)}</Text>
@@ -187,7 +192,7 @@ const ComprehensiveJobDashboard = () => {
         <Card>
           <Title>Customer Metrics</Title>
           <Flex className="mt-4">
-            <Text>Avg. Rating</Text>
+            <Text>Avg. CSAT Rating</Text>
             <Text>{currentData.averageRating?.toFixed(2)}</Text>
           </Flex>
           <Flex className="mt-2">
@@ -298,7 +303,40 @@ const ComprehensiveJobDashboard = () => {
           </div>
         </Card>
       </div>
-
+      <Card>
+        <Title>Service-Specific Metrics</Title>
+        <Flex justifyContent="start" className="space-x-2 mb-4">
+          {Object.entries(data[dataMode].services).map(([serviceId, serviceData]) => (
+            <button
+              key={serviceId}
+              className={`px-3 py-1 rounded ${selectedService === serviceId ? "bg-[#96d232] text-[#06061e] scale-[1.05] transition-300" : "bg-[#96d232]/80 shadow-md text-[#06061e]/40"}`}
+              onClick={() => setSelectedService(serviceId)}
+            >
+              {serviceData.serviceName}
+            </button>
+          ))}
+        </Flex>
+        {selectedService && (
+          <div>
+            <Table className="mt-6">
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Metric</TableHeaderCell>
+                  <TableHeaderCell>Value</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Object.entries(data[dataMode].services[selectedService]).map(([key, value]) => (
+                  <TableRow key={key}>
+                    <TableCell>{key}</TableCell>
+                    <TableCell>{typeof value === 'number' ? value.toFixed(2) : value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </Card>
       <Card>
         <Title>Most Popular Vehicle Makes</Title>
         <BarChart
@@ -337,40 +375,7 @@ const ComprehensiveJobDashboard = () => {
           className="mt-6"
         />
       </Card>
-      <Card>
-        <Title>Service-Specific Metrics</Title>
-        <Flex justifyContent="start" className="space-x-2 mb-4">
-          {Object.entries(data[dataMode].services).map(([serviceId, serviceData]) => (
-            <button
-              key={serviceId}
-              className={`px-3 py-1 rounded ${selectedService === serviceId ? "bg-[#96d232] text-[#06061e] scale-[1.05] transition-300" : "bg-[#96d232]/80 shadow-md text-[#06061e]/40"}`}
-              onClick={() => setSelectedService(serviceId)}
-            >
-              {serviceData.serviceName}
-            </button>
-          ))}
-        </Flex>
-        {selectedService && (
-          <div>
-            <Table className="mt-6">
-              <TableHead>
-                <TableRow>
-                  <TableHeaderCell>Metric</TableHeaderCell>
-                  <TableHeaderCell>Value</TableHeaderCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {Object.entries(data[dataMode].services[selectedService]).map(([key, value]) => (
-                  <TableRow key={key}>
-                    <TableCell>{key}</TableCell>
-                    <TableCell>{typeof value === 'number' ? value.toFixed(2) : value}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        )}
-      </Card>
+
       <GeographyChart_02 data={formState} />
 
 
