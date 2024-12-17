@@ -44,7 +44,7 @@ const Dashboard = () => {
         {/* Tab Panels */}
         <Box className="p-4">
           {activeTab === 0 && (
-            <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
+            <Grid numItemsSm={2} numItemsLg={3} className="gap-6 flex">
               <InstallerTopCard />
             </Grid>
           )}

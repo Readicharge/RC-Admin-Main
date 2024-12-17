@@ -11,6 +11,8 @@ import {
     CategoryBar,
     Legend,
     Grid,
+    BarChart,
+    Title,
 } from "@tremor/react";
 import { dashboardInstallerCard_data } from "../../../data/ApiController.js";
 import GeographyChart_02 from "../../../components/Geographychart_02.jsx";
@@ -64,7 +66,9 @@ const InstallerTopCard = () => {
         fetchData();
     }, []);
 
-    const { avgExperience, profileCompletionRate, totalActiveInstallers, totalInstallers, totalVerifiedInstallers, todayStats } = installerData;
+    const { avgExperience, profileCompletionRate, totalActiveInstallers, totalInstallers, totalVerifiedInstallers, todayStats, weeklyData, servicesData } = installerData;
+
+
 
     return (
         <div className=" w-full p-10">
@@ -122,6 +126,47 @@ const InstallerTopCard = () => {
                     </List>
                 </Card>
             </div>
+            {
+                weeklyData !== undefined && weeklyData !== null && (
+                    <Card className="mt-6">
+                        <Title>Installer Schedules OverView</Title>
+                        <BarChart
+                            data={Object.entries(weeklyData)?.map(([day, values]) => ({
+                                day, // x-axis label
+                                "Avg Start Time": parseFloat(values?.averageStartTime), // y-axis category
+                                "Avg End Time": parseFloat(values?.averageEndTime),
+                                "Active Count": values?.count,
+                            }))}
+                            index="day" // x-axis key
+                            categories={["Avg Start Time", "Avg End Time", "Active Count"]} // y-axis keys
+                            colors={["blue", "green", "amber"]} // bar colors
+                            valueFormatter={(value) => `${value}`} // Format y-axis values
+                            yAxisWidth={48} // Adjust y-axis width
+                            className="mt-6"
+                        />
+                    </Card>
+                )
+            }
+            {
+                servicesData !== undefined && servicesData !== null && (
+                    <Card className="mt-6">
+                        <Title>Service wise statistics</Title>
+                        <BarChart
+                            data={servicesData.map(({ serviceId, count }) => ({
+                                serviceId, // x-axis label
+                                count, // y-axis value
+                            }))}
+                            index="serviceId" // x-axis key
+                            categories={["count"]} // y-axis keys
+                            colors={["blue", "green", "amber"]} // bar colors
+                            valueFormatter={(value) => `${value}`} // Format y-axis values
+                            yAxisWidth={48} // Adjust y-axis width
+                            className="mt-6"
+                        />
+                    </Card>
+                )
+            }
+
             <div className="mt-6">
                 <Text>Geographical Distribution</Text>
                 <GeographyChart_02 data={formState} />

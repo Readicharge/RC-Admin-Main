@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Title, DonutChart, BarChart, AreaChart, Table, TableHead, TableRow, TableHeaderCell, TableBody, TableCell, Text, Metric, Flex, ProgressBar, Legend } from "@tremor/react";
 import { dashboardJobMainCard_data } from "../../../data/ApiController.js";
-import { GridSeparatorIcon } from "@mui/x-data-grid";
 import GeographyChart_02 from "../../../components/Geographychart_02.jsx";
-
 
 const states = [
   "Alabama", "Alaska", "Arizona", "Arkansas", "California",
@@ -18,26 +16,27 @@ const states = [
   "West Virginia", "Wisconsin", "Wyoming"
 ];
 
-
-
 const ComprehensiveJobDashboard = () => {
   const [dataMode, setDataMode] = useState("day");
   const [data, setData] = useState(null);
   const [formState, setFormState] = useState(
     states.map((state) => ({ state, count: 0 }))
   );
+  const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await dashboardJobMainCard_data();
         setData(response.data);
-        console.log(response.data)
-        const updatedFormState = formState.map((formStateItem) => {
-          const count = data[dataMode].stateWiseCount[formStateItem.state] || 0;
-          return { state: formStateItem.state, count };
-        });
-        setFormState(updatedFormState);
+        console.log(response.data);
+        if (response.data && response.data[dataMode] && response.data[dataMode].total) {
+          const updatedFormState = formState.map((formStateItem) => {
+            const count = response.data[dataMode].total.stateWiseCount[formStateItem.state] || 0;
+            return { state: formStateItem.state, count };
+          });
+          setFormState(updatedFormState);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -47,30 +46,19 @@ const ComprehensiveJobDashboard = () => {
 
   if (!data) return <div>Loading...</div>;
 
-
-
-  const currentData = data[dataMode];
-
-  const serviceData = Object.entries(currentData.serviceWiseCount)
-    .filter(([key, value]) => value && value.serviceName && value.totalJobs !== undefined && value.totalPaidJobs !== undefined)
-    .map(([key, value]) => ({
-      name: value.serviceName,
-      totalJobs: value.totalJobs,
-      paidJobs: value.totalPaidJobs,
-    }));
-
-
-
-
-  console.log(serviceData);
-
+  const currentData = data[dataMode].total;
+  const serviceData = Object.entries(data[dataMode].services).map(([key, value]) => ({
+    name: value.serviceName,
+    totalJobs: value.totalJobs,
+    paidJobs: value.totalPaidAmount,
+  }));
 
   const jobStatusData = [
-    { name: "Upcoming ", value: currentData.liveJobs },
-    { name: "Active ", value: currentData.activeJobs },
+    { name: "Upcoming", value: currentData.liveJobs },
+    { name: "Active", value: currentData.activeJobs },
     { name: "Completed", value: currentData.completedJobs },
     { name: "Cancelled", value: currentData.cancelledJobs },
-    { name: "Modified ", value: currentData.modifiedJobs }
+    { name: "Modified", value: currentData.modifiedJobs }
   ];
 
   const stageWiseData = [
@@ -104,20 +92,17 @@ const ComprehensiveJobDashboard = () => {
         </Flex>
       </Flex>
       <Card className="flex flex-row items-center">
-        <Title>Jobs by Service</Title>
+        <Title>All Jobs Booked by Service Tier</Title>
         <DonutChart
           data={serviceData}
           category="totalJobs"
           showLabel={true}
           colors={["rose", "yellow", "orange", "indigo", "blue", "emerald"]}
-          valueFormatter={(value) => {
-            console.log(value);
-            return `${value} jobs`;
-          }}
+          valueFormatter={(value) => `${value} jobs`}
           className="mt-6"
         />
         <Legend
-          categories={['Advanced 80 Installaton (AI80)', 'Advanced Installation (AI)', 'Intermidiate Installation (II)', 'Basic Installaton (BI)']}
+          categories={serviceData.map(service => service.name)}
           colors={["rose", "yellow", "orange", "indigo", "blue", "emerald"]}
           className="max-w-xs mt-8"
         />
@@ -156,21 +141,21 @@ const ComprehensiveJobDashboard = () => {
 
           <Text color="green" className="mt-4">Incoming</Text>
           <Flex className="mx-2">
-            <Text >Total Bookings Cost</Text>
-            <Text >${currentData.totalCustomerCost?.toFixed(2)}</Text>
+            <Text>Total Bookings Cost</Text>
+            <Text>${currentData.totalCustomerCost?.toFixed(2)}</Text>
           </Flex>
           <Flex className="mt-2 mx-2">
-            <Text >Total Insurance Cost</Text>
-            <Text >${currentData.totalInsuranceCost?.toFixed(2)}</Text>
+            <Text>Total Insurance Cost</Text>
+            <Text>${currentData.totalInsuranceCost?.toFixed(2)}</Text>
           </Flex>
           <Text color="red" className="mt-2">Outgoing</Text>
           <Flex className="mx-2 ">
-            <Text >Total Material Cost Paid</Text>
-            <Text >${currentData.totalMaterialCost?.toFixed(2)}</Text>
+            <Text>Total Material Cost Paid</Text>
+            <Text>${currentData.totalMaterialCost?.toFixed(2)}</Text>
           </Flex>
           <Flex className="mt-2 mx-2">
-            <Text >Total Labor Cost Paid</Text>
-            <Text >${currentData.totalInstallerPaidCost?.toFixed(2)}</Text>
+            <Text>Total Labor Cost Paid</Text>
+            <Text>${currentData.totalInstallerPaidCost?.toFixed(2)}</Text>
           </Flex>
           <Text color="green" className="mt-2 text-lg">Total Remaining balance: ${parseFloat(currentData.totalPaidAmount?.toFixed(2)) - (parseFloat(currentData.totalMaterialCost?.toFixed(2)) + parseFloat(currentData.totalInstallerPaidCost?.toFixed(2)))}</Text>
         </Card>
@@ -197,8 +182,6 @@ const ComprehensiveJobDashboard = () => {
             <Text>Avg. Material Cost</Text>
             <Text>${currentData.averageMaterialCost?.toFixed(2)}</Text>
           </Flex>
-
-
         </Card>
 
         <Card>
@@ -286,10 +269,10 @@ const ComprehensiveJobDashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Object.entries(currentData.customerSatisfactionByService).map(([serviceId, rating]) => (
+              {Object.entries(data[dataMode].services).map(([serviceId, serviceData]) => (
                 <TableRow key={serviceId}>
-                  <TableCell>{serviceId}</TableCell>
-                  <TableCell>{rating.toFixed(2)}</TableCell>
+                  <TableCell>{serviceData.serviceName}</TableCell>
+                  <TableCell>{serviceData.averageRating?.toFixed(2) || 'N/A'}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -314,10 +297,7 @@ const ComprehensiveJobDashboard = () => {
             </Flex>
           </div>
         </Card>
-
       </div>
-
-
 
       <Card>
         <Title>Most Popular Vehicle Makes</Title>
@@ -357,7 +337,42 @@ const ComprehensiveJobDashboard = () => {
           className="mt-6"
         />
       </Card>
+      <Card>
+        <Title>Service-Specific Metrics</Title>
+        <Flex justifyContent="start" className="space-x-2 mb-4">
+          {Object.entries(data[dataMode].services).map(([serviceId, serviceData]) => (
+            <button
+              key={serviceId}
+              className={`px-3 py-1 rounded ${selectedService === serviceId ? "bg-[#96d232] text-[#06061e] scale-[1.05] transition-300" : "bg-[#96d232]/80 shadow-md text-[#06061e]/40"}`}
+              onClick={() => setSelectedService(serviceId)}
+            >
+              {serviceData.serviceName}
+            </button>
+          ))}
+        </Flex>
+        {selectedService && (
+          <div>
+            <Table className="mt-6">
+              <TableHead>
+                <TableRow>
+                  <TableHeaderCell>Metric</TableHeaderCell>
+                  <TableHeaderCell>Value</TableHeaderCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {Object.entries(data[dataMode].services[selectedService]).map(([key, value]) => (
+                  <TableRow key={key}>
+                    <TableCell>{key}</TableCell>
+                    <TableCell>{typeof value === 'number' ? value.toFixed(2) : value}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+      </Card>
       <GeographyChart_02 data={formState} />
+
 
     </div>
   );
