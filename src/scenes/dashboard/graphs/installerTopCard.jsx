@@ -35,6 +35,7 @@ const InstallerTopCard = () => {
         avgExperience: "0 years",
         geographicalDistribution: {},
         profileCompletionRate: "0%",
+        avgRating: 0,
         totalActiveInstallers: 0,
         totalInstallers: 0,
         totalVerifiedInstallers: 0,
@@ -66,7 +67,7 @@ const InstallerTopCard = () => {
         fetchData();
     }, []);
 
-    const { avgExperience, profileCompletionRate, totalActiveInstallers, totalInstallers, totalVerifiedInstallers, todayStats, weeklyData, servicesData } = installerData;
+    const { avgExperience, profileCompletionRate, totalActiveInstallers, totalInstallers, totalVerifiedInstallers, todayStats, weeklyData, servicesData, avgRating } = installerData;
 
 
 
@@ -81,6 +82,17 @@ const InstallerTopCard = () => {
                         label={`${avgExperience}`}
                         tooltip="Average experience in years"
                         color="green"
+                    />
+                </Card>
+
+                <Card className="space-y-4">
+                    <Text>Average Installer Rating</Text>
+                    <Metric>{avgRating}</Metric>
+                    <ProgressBar
+                        value={parseFloat(avgRating)}
+                        label={`${avgRating}`}
+                        tooltip="Average Rating"
+                        color="yellow"
                     />
                 </Card>
 

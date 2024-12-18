@@ -300,6 +300,12 @@ const ComprehensiveJobDashboard = () => {
               <Text>Cancelled Insured Jobs</Text>
               <Text>{currentData.cancelledInsuredJobs}</Text>
             </Flex>
+            <ProgressBar value={currentData.cancelledInsuredJobs / currentData.totalJobs * 100} className="mt-2" />
+            <Flex className="mt-4">
+              <Text>Cancelled Not Insured Jobs</Text>
+              <Text>{parseFloat(currentData.cancelledJobs) - parseFloat(currentData.cancelledInsuredJobs)}</Text>
+            </Flex>
+            <ProgressBar value={(parseFloat(currentData.cancelledJobs) - parseFloat(currentData.cancelledInsuredJobs)) / currentData.totalJobs * 100} className="mt-2" />
           </div>
         </Card>
       </div>
