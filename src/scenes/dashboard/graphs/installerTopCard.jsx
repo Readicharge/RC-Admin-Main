@@ -162,7 +162,7 @@ const InstallerTopCard = () => {
             {
                 servicesData !== undefined && servicesData !== null && (
                     <Card className="mt-6">
-                        <Title>Service wise statistics</Title>
+                        <Title>Service tier statistics</Title>
                         <BarChart
                             data={servicesData.map(({ serviceId, count }) => ({
                                 serviceId, // x-axis label
